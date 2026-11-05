@@ -28,7 +28,7 @@ mapa-plaza-mayor-animado/
 └── .nojekyll
 ```
 
-Coloca `plaza-mayor.png` con 4000 × 1843 px en `assets/`. Genera `plaza-mayor.webp` a aproximadamente 2400 px de ancho. El proyecto ya usa `<picture>` con WebP y PNG de respaldo. Las fotos individuales se agregan en `assets/fotos/` y se referencian desde `fotos` en `js/datos.js`.
+La imagen aérea entregada por el usuario es de 2048 × 943 px (proporción 2.17:1). El proyecto está preparado para `assets/plaza-mayor.png` y `assets/plaza-mayor.webp`, optimizada para carga web. La zona coloreada de la imagen corresponde a todo Plaza Mayor. Las fotos individuales se agregan en `assets/fotos/` y se referencian desde `fotos` en `js/datos.js`.
 
 ## Ejecutar localmente
 
