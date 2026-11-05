@@ -1,7 +1,7 @@
 const COLORES_PABELLON = {
   amarillo:{nombre:'Amarillo',fondo:'#F2C200',texto:'#14171C'},
   azul:{nombre:'Azul',fondo:'#1D5FD6',texto:'#FFFFFF'},
-  rojo:{nombre:'Rojo',fondo:'#D42A2A',texto:'#FFFFFF'},
+  rojo:{nombre:'Naranja',fondo:'#F47721',texto:'#FFFFFF'},
   blanco:{nombre:'Blanco',fondo:'#F6F6F6',texto:'#14171C'},
   verde:{nombre:'Verde',fondo:'#2F9E50',texto:'#FFFFFF'},
   sin:{nombre:'Sin asignar',fondo:'#8B93A0',texto:'#14171C'},
