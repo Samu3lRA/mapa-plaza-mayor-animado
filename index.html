@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F1F2F4">
+  <title>Mapa interactivo · Plaza Mayor Medellín</title>
+  <meta name="description" content="Mapa interactivo y animado de proyectos de inversión de Plaza Mayor Medellín.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <header class="page-header">
+      <div><p class="eyebrow">Plaza Mayor Medellín</p><h1>Mapa de proyectos de inversión</h1></div>
+      <div class="header-actions" aria-label="Controles principales">
+        <button class="button button-secondary" id="themeToggle" type="button">Tema oscuro</button>
+        <button class="button button-secondary" id="editToggle" type="button" aria-pressed="false">Modo edición</button>
+        <button class="button button-primary" id="presentToggle" type="button">Presentar</button>
+      </div>
+    </header>
+    <section class="legend" id="mainLegend" aria-label="Leyenda de pabellones">
+      <span class="legend-title">Pabellones</span><div id="legendItems" class="legend-items"></div>
+    </section>
+    <main>
+      <section class="map-section" aria-label="Mapa interactivo">
+        <div class="map-viewport" id="mapViewport">
+          <div class="map-stage" id="mapStage">
+            <picture class="map-picture">
+              <source srcset="assets/plaza-mayor.webp" type="image/webp">
+              <img src="assets/plaza-mayor.png" alt="Vista aérea de Plaza Mayor Medellín" class="map-image" decoding="async">
+            </picture>
+            <div class="points-layer" id="pointsLayer" aria-label="Proyectos sobre el mapa"></div>
+          </div>
+        </div>
+        <div class="recording-legend" id="recordingLegend" aria-hidden="true">
+          <span class="recording-legend-title">Plaza Mayor</span><span class="recording-dot"></span><span>General</span><span class="recording-dot recording-dot-gray"></span><span>Por asignar</span>
+        </div>
+      </section>
+      <section class="summary" aria-label="Resumen de proyectos">
+        <div class="summary-card"><span>Contratado</span><strong>$16.321</strong><small>Ejecutado 8.334 · Ejecución $7.986</small></div>
+        <div class="summary-card"><span>Estructuración</span><strong>$13.503</strong></div>
+      </section>
+      <section class="project-lists" aria-label="Listas de proyectos">
+        <div class="list-section"><div class="section-heading"><div><p class="eyebrow">13 proyectos</p><h2>Proyectos generales</h2></div></div><div id="generalList" class="project-list"></div></div>
+        <div class="list-section"><div class="section-heading"><div><p class="eyebrow">9 proyectos</p><h2>Proyectos específicos</h2></div></div><div id="specificList" class="project-list"></div></div>
+      </section>
+    </main>
+    <section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
+      <div class="edit-head"><div><p class="eyebrow">Edición local</p><h2>Ajustar puntos</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
+      <p class="edit-help">Arrastra los puntos con mouse o dedo. Selecciona un específico para asignar su pabellón.</p>
+      <label class="field-label" for="pavilionSelect">Pabellón del punto seleccionado</label>
+      <select id="pavilionSelect" class="field-select"><option value="sin">Sin asignar</option><option value="amarillo">Amarillo</option><option value="azul">Azul</option><option value="rojo">Rojo</option><option value="blanco">Blanco</option><option value="verde">Verde</option></select>
+      <div class="edit-actions"><button class="button button-secondary" id="copyData" type="button">Copiar datos</button><button class="button button-secondary" id="downloadData" type="button">Descargar puntos.json</button><button class="button button-danger" id="resetData" type="button">Restablecer</button></div>
+      <textarea id="dataOutput" class="data-output" rows="7" readonly aria-label="Datos editados"></textarea>
+    </section>
+    <div class="presentation-controls" id="presentationControls" hidden><div class="presentation-progress"><span id="presentationProgressBar"></span></div><div class="presentation-meta"><span id="presentationCounter">1 / 22</span><span>Espacio: pausar · ← →: navegar · Esc: salir</span></div></div>
+  </div>
+  <aside class="info-panel" id="infoPanel" aria-hidden="true" aria-label="Información del proyecto">
+    <button class="icon-button panel-close" id="panelClose" type="button" aria-label="Cerrar información">×</button>
+    <div class="panel-scroll" id="panelScroll">
+      <div class="panel-photo-wrap" id="panelPhotoWrap"></div>
+      <div class="panel-block panel-status-block" data-panel-block="status"><span class="status-pill" id="panelStatus"></span></div>
+      <div class="panel-block" data-panel-block="title"><h2 id="panelTitle"></h2></div>
+      <div class="panel-block panel-value-block" data-panel-block="value"><strong id="panelValue">$0</strong></div>
+      <div class="panel-block panel-meta" data-panel-block="meta"><div><span>Fecha</span><strong id="panelDate"></strong></div><div><span>Ubicación</span><strong id="panelLocation"></strong></div></div>
+      <div class="panel-block" data-panel-block="description" id="descriptionBlock"><h3>Descripción</h3><p id="panelDescription"></p></div>
+      <div class="panel-block" data-panel-block="scope" id="scopeBlock"><h3>Alcance</h3><ul id="panelScope"></ul></div>
+      <div class="panel-block" data-panel-block="progress" id="progressBlock"><div class="progress-head"><h3>Avance</h3><strong id="panelProgressText"></strong></div><div class="progress-track"><span id="panelProgressBar"></span></div></div>
+      <div class="panel-block panel-small" data-panel-block="responsible" id="responsibleBlock"><span>Responsable</span><strong id="panelResponsible"></strong></div>
+      <div class="panel-block panel-small" data-panel-block="notes" id="notesBlock"><span>Notas</span><p id="panelNotes"></p></div>
+    </div>
+  </aside>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/datos.js"></script><script src="js/app.js"></script>
+</body>
+</html>
