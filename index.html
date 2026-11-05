@@ -14,41 +14,21 @@
 </head>
 <body>
   <div class="app-shell" id="appShell">
-    <header class="page-header">
-      <div><p class="eyebrow">Plaza Mayor Medellín</p><h1>Mapa de proyectos de inversión</h1></div>
-      <div class="header-actions" aria-label="Controles principales">
-        <button class="button button-secondary" id="themeToggle" type="button">Tema oscuro</button>
-        <button class="button button-secondary" id="editToggle" type="button" aria-pressed="false">Modo edición</button>
-        <button class="button button-primary" id="presentToggle" type="button">Presentar</button>
-      </div>
-    </header>
-    <section class="legend" id="mainLegend" aria-label="Leyenda de pabellones">
-      <span class="legend-title">Pabellones</span><div id="legendItems" class="legend-items"></div>
-    </section>
-    <main>
-      <section class="map-section" aria-label="Mapa interactivo">
-        <div class="map-viewport" id="mapViewport">
-          <div class="map-stage" id="mapStage">
-            <picture class="map-picture">
-              <source srcset="assets/plaza-mayor.webp" type="image/webp">
-              <img src="assets/plaza-mayor.png" alt="Vista aérea de Plaza Mayor Medellín" class="map-image" decoding="async">
-            </picture>
-            <div class="points-layer" id="pointsLayer" aria-label="Proyectos sobre el mapa"></div>
-          </div>
-        </div>
-        <div class="recording-legend" id="recordingLegend" aria-hidden="true">
-          <span class="recording-legend-title">Plaza Mayor</span><span class="recording-dot"></span><span>General</span><span class="recording-dot recording-dot-gray"></span><span>Por asignar</span>
-        </div>
-      </section>
-      <section class="summary" aria-label="Resumen de proyectos">
-        <div class="summary-card"><span>Contratado</span><strong>$16.321</strong><small>Ejecutado 8.334 · Ejecución $7.986</small></div>
-        <div class="summary-card"><span>Estructuración</span><strong>$13.503</strong></div>
-      </section>
-      <section class="project-lists" aria-label="Listas de proyectos">
-        <div class="list-section"><div class="section-heading"><div><p class="eyebrow">13 proyectos</p><h2>Proyectos generales</h2></div></div><div id="generalList" class="project-list"></div></div>
-        <div class="list-section"><div class="section-heading"><div><p class="eyebrow">9 proyectos</p><h2>Proyectos específicos</h2></div></div><div id="specificList" class="project-list"></div></div>
-      </section>
-    </main>
+    <header class="topbar">
+  <a class="brand" href="#inicio"><span class="brand-mark">◢</span><span class="brand-name"><strong>PLAZA MAYOR</strong><small>MEDELLÍN</small></span><i class="brand-divider"></i><span class="brand-tagline">Un complejo que impulsa<br>el desarrollo de la ciudad</span></a>
+  <div class="header-actions"><button class="button button-glass theme-button" id="themeToggle" type="button">☼ <span>●</span> ☾</button><button class="button button-glass" id="presentToggle" type="button">▶ Modo presentación</button><button class="button button-outline-orange" id="editToggle" type="button" aria-pressed="false">✎ Modo edición</button></div>
+</header>
+    
+    <main class="workspace" id="inicio">
+<aside class="project-sidebar glass-panel"><div class="list-tabs"><button class="list-tab is-active" data-list-tab="specific" type="button">Proyectos específicos <b>(9)</b></button><button class="list-tab" data-list-tab="general" type="button">Proyectos generales <b>(13)</b></button></div>
+<div class="project-list tab-list is-active" id="specificList"></div><div class="project-list tab-list" id="generalList" hidden></div><div class="sidebar-divider"></div>
+<section class="totals"><h2>Totales del proyecto</h2><div class="totals-grid"><div><span class="status-dot green"></span><span class="total-label">Contratado</span><strong>$16.321</strong><small>Ejecutado: $8.334<br>Ejecución: $7.986</small></div><div><span class="status-dot orange"></span><span class="total-label">Estructuración</span><strong>$13.503</strong></div></div></section></aside>
+<section class="map-section" aria-label="Mapa interactivo de Plaza Mayor"><div class="map-viewport" id="mapViewport"><div class="map-stage" id="mapStage"><picture class="map-picture"><source srcset="assets/plaza-mayor.webp" type="image/webp"><img src="assets/plaza-mayor.png" alt="Vista aérea completa de Plaza Mayor Medellín; toda la zona a color corresponde al complejo" class="map-image" decoding="async" fetchpriority="high"></picture><div class="points-layer" id="pointsLayer" aria-label="Proyectos sobre el mapa"></div></div></div>
+<div class="map-legend glass-panel" id="mainLegend"><div id="legendItems" class="legend-items"></div></div><div class="map-center-control"><button class="icon-button glass-panel" id="centerMap" type="button" aria-label="Centrar mapa">⌖</button></div>
+<div class="map-bottom glass-panel"><div class="map-bottom-left"><strong>▥ 22 Proyectos en total</strong><i></i><span>▧ Plaza Mayor Medellín</span></div><div class="zoom-controls"><button class="icon-button" id="zoomOut" type="button" aria-label="Alejar">−</button><button class="icon-button" id="zoomIn" type="button" aria-label="Acercar">+</button><button class="icon-button" id="fullscreenMap" type="button" aria-label="Pantalla completa">⛶</button></div><div class="map-hint"><span>ⓘ</span> Haz clic en un punto para ver más información</div></div>
+<div class="recording-legend" id="recordingLegend" aria-hidden="true"><span class="recording-legend-title">Plaza Mayor</span><span class="recording-dot"></span><span>General</span><span class="recording-dot recording-dot-gray"></span><span>Por asignar</span></div></section></main>
+<section class="summary" aria-label="Resumen de proyectos"><div class="summary-card"><span>Contratado</span><strong>$16.321</strong><small>Ejecutado $8.334 · Ejecución $7.986</small></div><div class="summary-card"><span>Estructuración</span><strong>$13.503</strong></div></section>
+<section class="project-lists"><div class="list-section"><div class="section-heading"><p class="eyebrow">13 proyectos</p><h2>Proyectos generales</h2></div><div id="generalListFull" class="project-list"></div></div><div class="list-section"><div class="section-heading"><p class="eyebrow">9 proyectos</p><h2>Proyectos específicos</h2></div><div id="specificListFull" class="project-list"></div></div></section>
     <section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
       <div class="edit-head"><div><p class="eyebrow">Edición local</p><h2>Ajustar puntos</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
       <p class="edit-help">Arrastra los puntos con mouse o dedo. Selecciona un específico para asignar su pabellón.</p>
@@ -75,6 +55,10 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="js/datos.js"></script><script src="js/app.js"></script>
+  <script src="js/datos.js"></script><script src="js/app.js"></script><script>
+(()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.toggle('is-active',x===t));document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
+const fullG=document.getElementById('generalListFull'),fullS=document.getElementById('specificListFull');const sync=()=>{fullG.innerHTML=document.getElementById('generalList').innerHTML;fullS.innerHTML=document.getElementById('specificList').innerHTML;};new MutationObserver(sync).observe(document.getElementById('generalList'),{childList:true,subtree:true});new MutationObserver(sync).observe(document.getElementById('specificList'),{childList:true,subtree:true});setTimeout(sync,60);document.addEventListener('click',e=>{const item=e.target.closest('#generalListFull .project-list-item,#specificListFull .project-list-item');if(item)document.querySelector('.map-point[data-id="'+item.dataset.id+'"]')?.click();});
+const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,z+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,z-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();
+})();</script>
 </body>
 </html>
