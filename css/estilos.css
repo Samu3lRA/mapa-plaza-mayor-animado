@@ -31,3 +31,130 @@ body{background:radial-gradient(ellipse at 20% -20%,#174f9c,transparent 48%),lin
 .map-viewport:fullscreen{width:100vw;height:100vh;max-height:none;aspect-ratio:auto;border-radius:0}
 .map-viewport:fullscreen .map-stage{width:100%;height:100%;aspect-ratio:auto}
 .map-viewport:fullscreen .map-image{object-fit:contain;background:#003e99}
+
+
+/* -------------------------------------------------------
+   Sistema visual refinado · interfaz institucional
+-------------------------------------------------------- */
+:root{
+  --ink:#071629;
+  --navy:#08264b;
+  --blue:#003e99;
+  --orange:#ff9700;
+  --muted:#b9c7d8;
+  --line:rgba(220,235,255,.14);
+  --shadow:0 18px 52px rgba(0,12,35,.28);
+}
+html,body{background:#071629}
+body{background:radial-gradient(ellipse at 78% 0%,rgba(0,62,153,.32),transparent 38%),#071629}
+.app-shell{max-width:1920px;margin:0 auto;padding:0 28px 36px}
+.topbar{
+  height:96px;margin:0 -28px;padding:16px 34px;
+  background:rgba(5,24,48,.88);
+  border-bottom:1px solid rgba(255,255,255,.1);
+  box-shadow:0 8px 30px rgba(0,0,0,.16);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)
+}
+.brand{gap:12px}.brand-logo{height:58px;max-width:160px}
+.brand-name strong{font-size:21px;letter-spacing:.025em}
+.brand-name small{font-size:12px;color:#c5d3e5}
+.brand-divider{height:42px;width:1px;background:rgba(255,151,0,.75);margin:0 8px}
+.brand-tagline{font-size:12px;color:#bdcce0}
+.header-actions{gap:9px}
+.button{padding:11px 16px;border-radius:10px;font-size:12px;transition:background .2s,border-color .2s,transform .2s}
+.button:hover{transform:translateY(-1px)}
+.button-glass{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
+.button-outline-orange{background:rgba(255,151,0,.08)}
+.workspace{
+  max-width:1680px;min-height:0;margin:0 auto;
+  grid-template-columns:minmax(290px,340px) minmax(0,1fr);
+  gap:20px;padding:26px 0 12px
+}
+.project-sidebar{
+  margin:0;align-self:stretch;min-height:0;max-height:calc(100vh - 150px);
+  padding:20px;border-radius:18px;
+  background:linear-gradient(155deg,rgba(15,38,67,.88),rgba(8,23,42,.9));
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:var(--shadow)
+}
+.sidebar-heading{padding:2px 3px 18px}
+.sidebar-heading .eyebrow{margin:0 0 7px;color:#ffb44a;letter-spacing:.14em;font-weight:800}
+.sidebar-heading h1{font-size:20px;line-height:1.25;margin:0 0 7px;letter-spacing:-.035em}
+.sidebar-heading>p:last-child{margin:0;color:#aebed1;font-size:11px;line-height:1.5}
+.list-tabs{gap:6px;padding:12px 0;border-top:1px solid var(--line)}
+.list-tab{padding:10px 8px;border:1px solid transparent;font-size:11px;color:#c8d5e5}
+.list-tab.is-active{background:rgba(255,151,0,.16);border-color:rgba(255,151,0,.45);color:#ffd08b}
+.project-list-item{padding:12px 7px;gap:9px;border-bottom-color:rgba(255,255,255,.075)}
+.project-list-item:hover,.project-list-item.is-selected{background:rgba(255,255,255,.07);border-radius:10px}
+.list-marker{width:27px;height:27px}
+.list-copy strong{font-size:11px;line-height:1.4}
+.list-copy span{font-size:10px;color:#9fb1c7}
+.list-status{padding:4px 7px;background:rgba(255,255,255,.09);font-size:8px;color:#dce7f4}
+.sidebar-divider{margin:15px 4px}
+.totals h2{font-size:13px;margin:0 4px 13px}
+.totals-grid>div{padding:0 7px}
+.totals-grid strong{font-size:22px;letter-spacing:-.04em}
+.totals-grid small{font-size:10px;color:#9fb1c7}
+.map-section{min-height:0;display:block;align-self:center}
+.map-viewport{
+  aspect-ratio:2048/943;border-radius:18px;
+  border:1px solid rgba(255,255,255,.17);
+  background:#0a2c58;box-shadow:0 24px 65px rgba(0,0,0,.28)
+}
+.map-image{object-fit:contain}
+.map-legend{top:16px;right:16px;border-radius:12px;padding:10px 13px;background:rgba(5,24,48,.76)}
+.legend-item{font-size:10px}
+.map-center-control{top:16px;left:16px}
+.map-center-control .icon-button{width:42px;height:42px}
+.map-bottom{
+  bottom:14px;left:14px;right:14px;padding:9px 11px;
+  border-radius:12px;background:rgba(5,24,48,.78);
+  grid-template-columns:1fr auto 1fr
+}
+.map-bottom-left{font-size:10px;color:#e0e9f5}
+.map-hint{font-size:10px;padding:8px 11px;background:rgba(255,255,255,.07)}
+.icon-button{background:rgba(5,24,48,.78);backdrop-filter:blur(12px)}
+.summary,.project-lists{max-width:1680px}
+.summary{margin:18px auto;gap:14px}
+.summary-card{min-width:210px;background:linear-gradient(145deg,rgba(15,38,67,.9),rgba(8,23,42,.9));border-color:var(--line);padding:16px 19px}
+.summary-card span{font-size:11px}.summary-card strong{font-size:24px;margin:5px 0}
+.project-lists{gap:24px;margin:28px auto}
+.list-section{padding:20px;border:1px solid var(--line);border-radius:16px;background:rgba(10,29,52,.55)}
+.section-heading{padding-bottom:10px}
+.section-heading .eyebrow{color:#ffb44a;letter-spacing:.12em}
+.section-heading h2{font-size:18px;margin:4px 0 0}
+.info-panel{
+  background:linear-gradient(145deg,rgba(8,42,83,.88),rgba(5,19,37,.9));
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 28px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.12)
+}
+.info-panel .panel-block{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.1)}
+.info-panel .panel-block h2{font-size:21px;line-height:1.25}
+.info-panel .panel-block h3{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#ffd08b}
+.info-panel .panel-block p,.info-panel .panel-block li{color:#d5e0ed}
+.info-panel .panel-value-block strong{font-size:27px;color:#ffb44a}
+.edit-panel,.presentation-controls{background:rgba(5,24,48,.94);border:1px solid rgba(255,255,255,.16);box-shadow:0 20px 60px rgba(0,0,0,.35);backdrop-filter:blur(20px)}
+.toast{box-shadow:0 12px 36px rgba(0,0,0,.25)}
+.map-viewport:fullscreen{border-radius:0}
+.map-viewport:fullscreen .info-panel{position:fixed!important;right:24px!important;top:50%!important;z-index:2147483000!important}
+@media(max-width:1100px){
+  .app-shell{padding:0 18px 28px}
+  .topbar{margin:0 -18px;padding:14px 20px}
+  .workspace{grid-template-columns:280px minmax(0,1fr);gap:14px}
+}
+@media(max-width:760px){
+  .app-shell{padding:0 12px 24px}
+  .topbar{margin:0 -12px;padding:13px 14px;gap:12px}
+  .brand-logo{height:44px;max-width:120px}
+  .brand-name strong{font-size:16px}.brand-name small{font-size:10px}
+  .header-actions{width:100%;flex-wrap:wrap}
+  .header-actions .button{flex:1;padding:9px 10px;font-size:10px}
+  .workspace{gap:12px;padding-top:14px}
+  .project-sidebar{padding:15px;border-radius:15px}
+  .sidebar-heading h1{font-size:18px}
+  .map-viewport{border-radius:14px}
+  .summary{display:none}
+  .project-lists{gap:14px}
+  .list-section{padding:15px}
+  .info-panel{background:linear-gradient(145deg,rgba(8,42,83,.94),rgba(5,19,37,.96))}
+}
