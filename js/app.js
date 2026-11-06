@@ -132,22 +132,25 @@ function updateDataOutput(){els.dataOutput.value=JSON.stringify({proyectos:state
 function updateDataQualityReport(){
  const root=els.dataQualityReport;if(!root)return;
  const total=state.data.length;
+ const ids=state.data.map(p=>p.id);
+ const duplicateIds=ids.filter((id,index)=>ids.indexOf(id)!==index).length;
  const checks=[
-  ['Fotografías',p=>!Array.isArray(p.fotos)||p.fotos.length===0],
-  ['Descripción',p=>!String(p.descripcion||'').trim()],
-  ['Alcance',p=>!Array.isArray(p.alcance)||p.alcance.length===0],
-  ['Avance',p=>!Number.isFinite(p.avance)],
-  ['Responsable',p=>!String(p.responsable||'').trim()],
-  ['Notas',p=>!String(p.notas||'').trim()],
-  ['Pabellón sin asignar',p=>p.tipo==='especifico'&&(!p.pabellon||p.pabellon==='sin')]
+  ['Fotografías pendientes',p=>!Array.isArray(p.fotos)||p.fotos.length===0],
+  ['Descripción pendiente',p=>!String(p.descripcion||'').trim()],
+  ['Alcance pendiente',p=>!Array.isArray(p.alcance)||p.alcance.length===0],
+  ['Avance por revisar',p=>!Number.isFinite(Number(p.avance))||Number(p.avance)<0||Number(p.avance)>100],
+  ['Responsable pendiente',p=>!String(p.responsable||'').trim()],
+  ['Notas pendientes',p=>!String(p.notas||'').trim()],
+  ['Pabellón sin asignar',p=>p.tipo==='especifico'&&(!p.pabellon||p.pabellon==='sin')],
+  ['Coordenadas por revisar',p=>!Number.isFinite(Number(p.x))||!Number.isFinite(Number(p.y))||Number(p.x)<0||Number(p.x)>100||Number(p.y)<0||Number(p.y)>100]
  ];
  const rows=checks.map(([label,test])=>{
   const count=state.data.filter(test).length;
   return '<div class="quality-row"><span>'+label+'</span><strong>'+count+' / '+total+'</strong></div>';
  }).join('');
- root.innerHTML='<p class="quality-intro">Campos pendientes según la información cargada. No se han completado automáticamente para evitar inventar datos.</p>'+rows;
+ const integrity='<div class="quality-row"><span>Identificadores duplicados</span><strong>'+duplicateIds+'</strong></div>';
+ root.innerHTML='<p class="quality-intro">Diagnóstico local de integridad y campos pendientes. Los datos no se modifican automáticamente.</p>'+rows+integrity;
 }
-
 function persistEdits(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.data));}catch(_){}}
 function restoreEdits(){
  try{
