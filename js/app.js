@@ -2,7 +2,7 @@
 (() => {
 'use strict';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PRESENTATION_MS=6000;
+const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PLACE_STORAGE_KEY='plaza-mayor-ubicaciones-v1', PRESENTATION_MS=6000;
 const PRESENTATION_ORDER=Array.isArray(ORDEN_PRESENTACION)?ORDEN_PRESENTACION:PROYECTOS.map(p=>p.id);
 const state={selectedId:null,previousFocus:null,panelOpen:false,editing:false,presentation:false,presentationPaused:false,presentationIndex:0,presentationTimer:null,touchStartY:null,data:cloneProjects(PROYECTOS)};
 const els={appShell:$('#appShell'),mapViewport:$('#mapViewport'),mapStage:$('#mapStage'),pointsLayer:$('#pointsLayer'),generalList:$('#generalList'),specificList:$('#specificList'),legendItems:$('#legendItems'),themeToggle:$('#themeToggle'),editToggle:$('#editToggle'),presentToggle:$('#presentToggle'),infoPanel:$('#infoPanel'),panelScroll:$('#panelScroll'),panelClose:$('#panelClose'),panelPhotoWrap:$('#panelPhotoWrap'),panelStatus:$('#panelStatus'),panelTitle:$('#panelTitle'),panelValue:$('#panelValue'),panelDate:$('#panelDate'),panelLocation:$('#panelLocation'),panelDescription:$('#panelDescription'),panelScope:$('#panelScope'),panelProgressText:$('#panelProgressText'),panelProgressBar:$('#panelProgressBar'),panelResponsible:$('#panelResponsible'),panelNotes:$('#panelNotes'),descriptionBlock:$('#descriptionBlock'),scopeBlock:$('#scopeBlock'),progressBlock:$('#progressBlock'),responsibleBlock:$('#responsibleBlock'),notesBlock:$('#notesBlock'),editPanel:$('#editPanel'),editClose:$('#editClose'),pavilionSelect:$('#pavilionSelect'),copyData:$('#copyData'),downloadData:$('#downloadData'),resetData:$('#resetData'),dataOutput:$('#dataOutput'),presentationControls:$('#presentationControls'),presentationProgressBar:$('#presentationProgressBar'),presentationCounter:$('#presentationCounter'),toast:$('#toast'),recordingLegend:$('#recordingLegend')};
@@ -25,9 +25,38 @@ const PLACE_MARKERS=[
  {id:'blanco',name:'Pabellón Blanco',x:53,y:82,color:'#F6F6F6'},
  {id:'convenciones',name:'Convenciones',x:82,y:75,color:'#8B5A2B'}
 ];
+const placeState=PLACE_MARKERS.map(p=>({...p}));
 function renderPlaceMarkers(){
  const layer=$('#placeMarkers');if(!layer)return;
- layer.innerHTML=PLACE_MARKERS.map(p=>'<div class="place-marker" style="left:'+p.x+'%;top:'+p.y+'%;--place-color:'+p.color+'" title="'+p.name+'"><span class="place-pin" aria-hidden="true">⌖</span><span class="place-label">'+p.name+'</span></div>').join('');
+ layer.innerHTML='';
+ placeState.forEach(p=>{
+  const marker=document.createElement('div');
+  marker.className='place-marker';marker.dataset.placeId=p.id;
+  marker.style.left=p.x+'%';marker.style.top=p.y+'%';marker.style.setProperty('--place-color',p.color);
+  marker.title=p.name;marker.setAttribute('aria-label',p.name);
+  marker.innerHTML='<span class="place-pin" aria-hidden="true">⌖</span><span class="place-label">'+escapeHtml(p.name)+'</span>';
+  marker.addEventListener('pointerdown',e=>{if(state.editing)beginPlaceDrag(e,marker);});
+  layer.appendChild(marker);
+ });
+}
+function beginPlaceDrag(event,marker){
+ event.preventDefault();event.stopPropagation();marker.setPointerCapture?.(event.pointerId);
+ const move=e=>{
+  const r=els.mapStage.getBoundingClientRect();
+  const x=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100));
+  const y=Math.max(0,Math.min(100,((e.clientY-r.top)/r.height)*100));
+  const p=placeState.find(v=>v.id===marker.dataset.placeId);if(!p)return;
+  p.x=Number(x.toFixed(1));p.y=Number(y.toFixed(1));
+  marker.style.left=p.x+'%';marker.style.top=p.y+'%';persistPlaceEdits();
+ };
+ const end=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',end);};
+ window.addEventListener('pointermove',move);window.addEventListener('pointerup',end,{once:true});
+}
+function persistPlaceEdits(){try{localStorage.setItem(PLACE_STORAGE_KEY,JSON.stringify(placeState));}catch(_){}}
+function restorePlaceEdits(){
+ try{const saved=JSON.parse(localStorage.getItem(PLACE_STORAGE_KEY)||'null');if(!Array.isArray(saved))return;
+  placeState.forEach(p=>{const s=saved.find(v=>v.id===p.id);if(s&&Number.isFinite(s.x)&&Number.isFinite(s.y)){p.x=Math.max(0,Math.min(100,s.x));p.y=Math.max(0,Math.min(100,s.y));}});
+ }catch(_){}
 }
 function applyProjectFilters(){
  const q=($('#projectSearch')?.value||'').trim().toLocaleLowerCase('es');
@@ -82,15 +111,15 @@ function openPanel(p,trigger){state.previousFocus=trigger||document.activeElemen
 function closePanel({returnFocus=true}={}){state.panelOpen=false;els.infoPanel.classList.remove('is-open');els.infoPanel.setAttribute('aria-hidden','true');applyCamera({scale:1,x:0,y:0});clearSelected();if(returnFocus&&state.previousFocus&&document.contains(state.previousFocus))state.previousFocus.focus();state.previousFocus=null;}
 function selectProject(id,{open=true,fromPresentation=false}={}){const p=projectById(id);if(!p)return;if(state.panelOpen&&state.selectedId!==id){els.infoPanel.classList.add('is-crossfade');setTimeout(()=>els.infoPanel.classList.remove('is-crossfade'),REDUCED.matches?80:200);}state.selectedId=id;markSelected(id);if(open)openPanel(p,document.querySelector('.map-point[data-id="'+CSS.escape(id)+'"]'));else renderPanel(p);if(fromPresentation)updatePresentationProgress();}
 function beginDrag(event,b){event.preventDefault();b.setPointerCapture?.(event.pointerId);const move=e=>{const r=els.mapStage.getBoundingClientRect(),x=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100)),y=Math.max(0,Math.min(100,((e.clientY-r.top)/r.height)*100)),p=projectById(b.dataset.id);p.x=Number(x.toFixed(1));p.y=Number(y.toFixed(1));b.style.left=p.x+'%';b.style.top=p.y+'%';updateDataOutput();persistEdits();notifyDataChanged();};const end=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',end);};window.addEventListener('pointermove',move);window.addEventListener('pointerup',end,{once:true});}
-function updateDataOutput(){els.dataOutput.value=state.data.map(p=>{const o={nombre:p.nombre,x:p.x,y:p.y};if(p.tipo==='especifico')o.pabellon=p.pabellon;return JSON.stringify(o);}).join('\n');}
+function updateDataOutput(){els.dataOutput.value=JSON.stringify({proyectos:state.data.map(p=>{const o={id:p.id,nombre:p.nombre,x:p.x,y:p.y};if(p.tipo==='especifico')o.pabellon=p.pabellon;return o;}),ubicaciones:placeState.map(p=>({id:p.id,nombre:p.name,x:p.x,y:p.y}))},null,2);}
 function persistEdits(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.data));}catch(_){}}
 function restoreEdits(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;const saved=JSON.parse(raw);if(!Array.isArray(saved)||saved.length!==state.data.length)return;state.data=state.data.map(p=>{const s=saved.find(x=>x.id===p.id);return s?{...p,x:s.x,y:s.y,pabellon:p.tipo==='especifico'?(s.pabellon||'sin'):undefined}:p;});}catch(_){}}
-function resetEdits(){try{localStorage.removeItem(STORAGE_KEY);}catch(_){}state.data=cloneProjects(PROYECTOS);renderAll();showToast('Puntos restablecidos a datos.js.');}
+function resetEdits(){try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(PLACE_STORAGE_KEY);}catch(_){}state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));renderAll();showToast('Proyectos y ubicaciones restablecidos.');}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
 function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
 window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
 function toggleEdit(force){state.editing=force??!state.editing;els.editToggle.setAttribute('aria-pressed',String(state.editing));els.editToggle.textContent=state.editing?'Cerrar edición':'Modo edición';els.editPanel.hidden=!state.editing;document.body.classList.toggle('editing',state.editing);if(state.editing)updateDataOutput();}
-function downloadJSON(){const data=state.data.map(p=>{const o={nombre:p.nombre,x:p.x,y:p.y};if(p.tipo==='especifico')o.pabellon=p.pabellon;return o;});const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='puntos.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function downloadJSON(){updateDataOutput();const blob=new Blob([els.dataOutput.value],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa-plaza-mayor-datos.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
 async function copyData(){updateDataOutput();try{await navigator.clipboard.writeText(els.dataOutput.value);showToast('Datos copiados.');}catch(_){els.dataOutput.focus();els.dataOutput.select();showToast('Selecciona el texto y cópialo manualmente.');}}
 function applyTheme(theme,{persist=true}={}){const root=document.documentElement;const next=theme==='light'?'light':'dark';root.dataset.theme=next;els.themeToggle.textContent=next==='dark'?'☼ Tema claro':'☾ Tema oscuro';els.themeToggle.setAttribute('aria-label',next==='dark'?'Cambiar a tema claro':'Cambiar a tema oscuro');els.themeToggle.setAttribute('aria-pressed',String(next==='light'));if(persist){try{localStorage.setItem('plaza-mayor-theme',next);}catch(_){}}}
 function initTheme(){let saved=null;try{saved=localStorage.getItem('plaza-mayor-theme');}catch(_){}applyTheme(saved==='light'?'light':'dark',{persist:false});}
@@ -107,5 +136,5 @@ els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;co
 els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
-initTheme();restoreEdits();renderAll();initProjectFilters();initSwipeClose();recordingMode();
+initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();recordingMode();
 })();
