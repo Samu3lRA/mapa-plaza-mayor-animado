@@ -1215,3 +1215,15 @@ html[data-theme="light"] .timeline-detail-stats>div,html[data-theme="light"] .ti
  .edit-panel{max-height:min(68dvh,520px);overflow:auto}
  .edit-actions .button{flex:1 1 calc(50% - 6px)}
 }
+
+
+/* Historial local de modificaciones y acceso a informes internos */
+.edit-history-details{margin-top:9px;padding:9px 10px;border:1px solid rgba(66,165,245,.24);border-radius:10px;background:rgba(66,165,245,.045);font-size:11px;color:var(--text)}
+.edit-history-details summary{cursor:pointer;font-weight:750;color:#65b8ff;user-select:none}
+.edit-history-list{display:grid;gap:7px;margin-top:10px;max-height:220px;overflow:auto}
+.edit-history-entry{display:grid;gap:3px;padding:8px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.035)}
+.edit-history-entry time{font-size:9px;color:var(--muted)}
+.edit-history-entry strong{font-size:10px;color:var(--text)}
+.edit-history-entry span{font-size:10px;line-height:1.4;color:var(--muted)}
+html[data-theme="light"] .edit-history-details{border-color:rgba(0,62,153,.16);background:rgba(0,62,153,.035)}
+html[data-theme="light"] .edit-history-details summary{color:#1459a5}
