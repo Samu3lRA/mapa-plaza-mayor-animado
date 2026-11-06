@@ -30,8 +30,8 @@ function dashboard(){
  const n=getProjects().length,by=s=>getProjects().filter(p=>p.estado===s).length;
  const metrics=[['Proyectos registrados',n],['Contratados',by('Contratado')],['En estructuración',by('Estructuración')],['En ejecución',by('En ejecución')],['Finalizados',by('Finalizado')]];
  if(metricGrid)metricGrid.innerHTML=metrics.map(m=>'<article class="metric-card"><span>'+m[0]+'</span><strong>'+m[1]+'</strong></article>').join('');
- const keys=['amarillo','rojo','verde','azul','blanco','sin'];
- bars($('#pavilionBreakdown'),keys.map(k=>({label:colors[k]?.nombre||k,count:getProjects().filter(p=>p.tipo==='especifico'&&(p.pabellon||'sin')===k).length,color:colors[k]?.fondo||'#8B93A0'})).concat([{label:'General',count:getProjects().filter(p=>p.tipo==='general').length,color:colors.general?.fondo||'#7B3FC6'}]),n);
+ const keys=['amarillo','rojo','verde','azul','blanco','convenciones','sin'];
+ bars($('#pavilionBreakdown'),keys.map(k=>({label:colors[k]?.nombre||k,count:getProjects().filter(p=>p.tipo==='especifico'&&(p.pabellon||'sin')===k).length,color:colors[k]?.fondo||'#8B93A0'})).concat([{label:'Toda la infraestructura',count:getProjects().filter(p=>p.tipo==='general').length,color:colors.general?.fondo||'#7B3FC6'}]),n);
  bars($('#statusBreakdown'),['Contratado','Estructuración','En ejecución','Finalizado'].map((s,i)=>({label:s,count:by(s),color:['#2F9E50','#ff9700','#1D5FD6','#7B3FC6'][i]})),n);
 }
 function chronology(p){
@@ -66,13 +66,13 @@ function gallery(p){
 }
 function printReport(){
  const w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para generar el informe.');return;}
- const rows=getProjects().map(p=>'<tr><td>'+safe(p.nombre)+'</td><td>'+safe(p.tipo==='general'?'General':(colors[p.pabellon]?.nombre||'Sin asignar'))+'</td><td>'+safe(p.estado)+'</td><td>'+safe(p.valor)+'</td><td>'+safe(p.fecha)+'</td></tr>').join('');
+ const rows=getProjects().map(p=>'<tr><td>'+safe(p.nombre)+'</td><td>'+safe(p.tipo==='general'?'Toda la infraestructura':(colors[p.pabellon]?.nombre||'Sin asignar'))+'</td><td>'+safe(p.estado)+'</td><td>'+safe(p.valor)+'</td><td>'+safe(p.fecha)+'</td></tr>').join('');
  w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Informe de proyectos · Plaza Mayor</title><style>body{font:13px Arial;padding:30px;color:#172b45}h1{color:#003e99}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{padding:10px;text-align:left;border-bottom:1px solid #dce4ee}th{background:#edf3fa;color:#003e99}@media print{body{padding:0}}</style><h1>Plaza Mayor · Informe de proyectos</h1><p>'+getProjects().length+' proyectos registrados</p><table><thead><tr><th>Proyecto</th><th>Ubicación</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr></thead><tbody>'+rows+'</tbody></table><script>window.onload=()=>window.print()<\\/script></html>');
  w.document.close();
 }
 function printProject(p){
  const w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para generar la ficha.');return;}
- const location=p.tipo==='general'?'Todo el complejo':(colors[p.pabellon]?.nombre||'Sin asignar');
+ const location=p.tipo==='general'?'Toda la infraestructura':(p.pabellon==='convenciones'?'Convenciones':(colors[p.pabellon]?.nombre||'Sin asignar'));
  w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Ficha · '+safe(p.nombre)+'</title><style>body{font:15px Arial;padding:38px;color:#172b45;max-width:850px;margin:auto}h1{color:#003e99}h2{font-size:16px;color:#003e99;margin-top:28px}.meta{padding:14px;background:#eef3fa;border-radius:10px;line-height:1.8}.tag{display:inline-block;padding:7px 12px;background:#fff0d9;border-radius:20px}li{margin:7px 0}@media print{button{display:none}}</style><h1>'+safe(p.nombre)+'</h1><p class="tag">'+safe(p.estado)+'</p><div class="meta"><b>Valor:</b> '+safe(p.valor)+'<br><b>Fecha:</b> '+safe(p.fecha)+'<br><b>Ubicación:</b> '+safe(location)+'<br><b>Responsable:</b> '+safe(p.responsable||'Por definir')+'</div><h2>Descripción</h2><p>'+safe(p.descripcion||'Sin descripción registrada')+'</p><h2>Alcance</h2><ul>'+(p.alcance||[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><h2>Notas</h2><p>'+safe(p.notas||'Sin notas registradas')+'</p><script>window.onload=()=>window.print()<\\/script></html>');
  w.document.close();
 }
