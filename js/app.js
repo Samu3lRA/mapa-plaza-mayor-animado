@@ -2,7 +2,7 @@
 (() => {
 'use strict';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PLACE_STORAGE_KEY='plaza-mayor-ubicaciones-v1', AUDIT_STORAGE_KEY='plaza-mayor-historial-v1', PRESENTATION_MS=6000;
+const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PLACE_STORAGE_KEY='plaza-mayor-ubicaciones-v1', AUDIT_STORAGE_KEY='plaza-mayor-historial-v1', BACKUP_STATUS_KEY='plaza-mayor-respaldo-fecha-v1', PRESENTATION_MS=6000;
 const PRESENTATION_ORDER=Array.isArray(ORDEN_PRESENTACION)?ORDEN_PRESENTACION:PROYECTOS.map(p=>p.id);
 let auditEntries=[];
 let storageWarningShown=false;
@@ -180,6 +180,7 @@ function resetEdits(){
  $('[data-priority]').forEach(input=>{const defaults={experience:45,technology:37,safety:15};input.value=defaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
  recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
 }
+function updateBackupStatus(){const node=$('#backupStatus');if(!node)return;try{const saved=localStorage.getItem(BACKUP_STATUS_KEY);node.textContent=saved?'Último respaldo descargado en este navegador: '+new Date(saved).toLocaleString('es-CO'):'Aún no has descargado un respaldo en este navegador.';}catch(_){node.textContent='No se pudo consultar el estado del respaldo en este navegador.';}}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
 function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();updateDataQualityReport();renderEditHistory();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
 window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
@@ -191,7 +192,8 @@ function downloadJSON(){
  const url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='respaldo-mapa-plaza-mayor.json';a.click();
  setTimeout(()=>URL.revokeObjectURL(url),1500);
- showToast('Respaldo completo descargado.');
+ const backupDate=new Date().toISOString();persistLocal(BACKUP_STATUS_KEY,backupDate);updateBackupStatus();
+ showToast(storageWarningShown?'Archivo de respaldo descargado; no se pudo guardar la fecha local.':'Respaldo completo descargado.');
 }
 function importBackup(file){
  if(!file)return;
@@ -446,5 +448,5 @@ els.pavilionSelect?.addEventListener('change',()=>{if(!state.selectedId)return;c
 els.copyData?.addEventListener('click',copyData);els.downloadData?.addEventListener('click',downloadJSON);els.importData?.addEventListener('click',()=>els.importFile?.click());els.importFile?.addEventListener('change',e=>importBackup(e.target.files?.[0]));els.resetData?.addEventListener('click',resetEdits);els.presentToggle?.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
-initTheme();restoreEditHistory();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();initMiniCharts();initInteractiveTimeline();initUpdateDate();recordingMode();
+initTheme();restoreEditHistory();restoreEdits();restorePlaceEdits();updateBackupStatus();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();initMiniCharts();initInteractiveTimeline();initUpdateDate();recordingMode();
 })()
