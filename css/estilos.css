@@ -828,3 +828,49 @@ html[data-theme="light"] .priority-value{color:#40536b}
 html[data-theme="light"] .priority-input-wrap input{color:#172b45;background:#fff;border-color:rgba(0,62,153,.2)}
 html[data-theme="light"] .priority-footnote{color:#64758b}
 @media(max-width:760px){.project-sidebar{margin-top:0!important;max-height:none!important}.priority-donut{width:148px;height:148px}}
+
+
+/* Cabecera institucional del Plan de Inversión */
+.topbar.investment-header{
+  height:auto;min-height:150px;align-items:center;gap:26px;padding:22px 30px;
+  background:linear-gradient(110deg,#002b69 0%,#003e99 58%,#0751ad 100%);
+}
+.investment-brand{display:flex;align-items:center;gap:22px;min-width:300px}
+.investment-header .brand-logo{height:82px;max-width:190px}
+.investment-heading{border-left:2px solid #ff9700;padding-left:18px}
+.investment-kicker{margin:0 0 5px;color:#ffb84d;font-size:10px;font-weight:800;letter-spacing:.15em}
+.investment-heading h1{margin:0;color:#fff;font-size:clamp(20px,2vw,29px);line-height:1.12;letter-spacing:.025em}
+.investment-heading h2{margin:5px 0 0;color:#d9e7f8;font-size:15px;font-weight:600}
+.investment-intro{flex:1;min-width:220px;max-width:540px}
+.investment-motto{margin:0;color:#fff;font-size:14px;font-weight:700;line-height:1.5}
+.investment-instruction{margin:6px 0 12px;color:#d8e6f7;font-size:11px}
+.investment-meta{display:flex;align-items:center;gap:9px;color:#c4d8f1;font-size:10px}
+.investment-meta strong{padding:5px 9px;border:1px solid #ffffff35;border-radius:7px;background:#ffffff12;color:#fff;font-size:11px}
+.investment-disclaimer{max-width:1680px;margin:26px auto 12px;padding:16px 20px;border:1px solid rgba(255,255,255,.16);border-left:3px solid #ff9700;border-radius:12px;background:rgba(0,30,75,.42)}
+.investment-disclaimer p{margin:0;color:#d2dfef;font-size:10px;line-height:1.7}
+.priority-donut{width:176px;height:176px;transition:background-image .18s ease;will-change:background-image}
+.priority-input-wrap input{font-variant-numeric:tabular-nums}
+.priority-heading-meta>strong{min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
+html[data-theme="light"] .investment-disclaimer{background:rgba(255,255,255,.8);border-color:rgba(0,62,153,.14);border-left-color:#ff9700}
+html[data-theme="light"] .investment-disclaimer p{color:#52657d}
+@media(max-width:1100px){
+ .topbar.investment-header{flex-wrap:wrap;min-height:0}
+ .investment-intro{order:3;flex-basis:100%;max-width:none}
+ .investment-header .header-actions{margin-left:auto}
+}
+@media(max-width:760px){
+ .topbar.investment-header{padding:15px 14px;gap:14px}
+ .investment-brand{min-width:0;gap:12px}
+ .investment-header .brand-logo{height:52px;max-width:105px}
+ .investment-heading{padding-left:11px}
+ .investment-kicker{font-size:8px}
+ .investment-heading h1{font-size:18px}
+ .investment-heading h2{font-size:12px}
+ .investment-intro{order:initial}
+ .investment-motto{font-size:12px}
+ .investment-header .header-actions{width:100%;margin:0;flex-wrap:wrap;gap:7px}
+ .investment-header .header-actions .button{padding:9px 11px;font-size:10px}
+ .priority-donut{width:160px;height:160px}
+ .investment-disclaimer{margin:18px 0 8px;padding:13px}
+ .investment-disclaimer p{font-size:9px}
+}
