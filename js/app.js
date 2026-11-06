@@ -136,5 +136,5 @@ els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;co
 els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
-initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();recordingMode();
+initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();recordingMode();
 })();
