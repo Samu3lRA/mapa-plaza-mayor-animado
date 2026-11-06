@@ -20,11 +20,7 @@
 </header>
     
     <main class="workspace" id="inicio">
-<aside class="project-sidebar glass-panel"><div class="sidebar-heading"><p class="eyebrow">CENTRO DE CONTROL</p><h1>Proyectos de inversión</h1><p>Consulta y explora los proyectos del complejo.</p></div><section class="map-tools" aria-label="Buscar y filtrar proyectos">
-<label class="search-field"><span>⌕</span><input id="projectSearch" type="search" placeholder="Buscar proyecto, responsable..." autocomplete="off"></label>
-<div class="filter-row"><select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="En ejecución">En ejecución</option><option value="Finalizado">Finalizado</option></select><select id="pavilionFilter" aria-label="Filtrar por pabellón"><option value="">Todos los pabellones</option><option value="amarillo">Amarillo</option><option value="rojo">Rojo</option><option value="verde">Verde</option><option value="azul">Azul</option><option value="blanco">Blanco</option><option value="convenciones">Convenciones</option><option value="sin">Sin asignar</option><option value="general">Toda la infraestructura</option></select></div><button class="clear-filters" id="clearFilters" type="button">Limpiar búsqueda y filtros</button></section>
-<div class="list-tabs"><button class="list-tab is-active" data-list-tab="specific" type="button">Proyectos específicos <b id="specificCount">(9)</b></button><button class="list-tab" data-list-tab="general" type="button">Toda la infraestructura <b id="generalCount">(13)</b></button></div>
-<div class="project-list tab-list is-active" id="specificList"></div><div class="project-list tab-list" id="generalList" hidden></div><div class="sidebar-divider"></div>
+<aside class="project-sidebar glass-panel"><div class="sidebar-heading"><p class="eyebrow">CENTRO DE CONTROL</p><h1>Proyectos de inversión</h1><p>Consulta y explora los proyectos del complejo.</p></div>
 <section class="priority-progress" aria-label="Porcentajes por línea de inversión">
   <div class="priority-heading"><div><p class="eyebrow">DISTRIBUCIÓN</p><h2>Avance por líneas</h2></div><div class="priority-heading-meta"><strong id="priorityTotal">97%</strong><span class="priority-edit-hint">Editable</span></div></div>
   <div class="priority-content">
@@ -37,6 +33,12 @@
   </div>
   <p class="priority-footnote">Puedes modificar los valores; los cambios se guardan en este navegador.</p>
 </section>
+<section class="map-tools" aria-label="Buscar y filtrar proyectos">
+<label class="search-field"><span>⌕</span><input id="projectSearch" type="search" placeholder="Buscar proyecto, responsable..." autocomplete="off"></label>
+<div class="filter-row"><select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="En ejecución">En ejecución</option><option value="Finalizado">Finalizado</option></select><select id="pavilionFilter" aria-label="Filtrar por pabellón"><option value="">Todos los pabellones</option><option value="amarillo">Amarillo</option><option value="rojo">Rojo</option><option value="verde">Verde</option><option value="azul">Azul</option><option value="blanco">Blanco</option><option value="convenciones">Convenciones</option><option value="sin">Sin asignar</option><option value="general">Toda la infraestructura</option></select></div><button class="clear-filters" id="clearFilters" type="button">Limpiar búsqueda y filtros</button></section>
+<div class="list-tabs"><button class="list-tab is-active" data-list-tab="specific" type="button">Proyectos específicos <b id="specificCount">(9)</b></button><button class="list-tab" data-list-tab="general" type="button">Toda la infraestructura <b id="generalCount">(13)</b></button></div>
+<div class="project-list tab-list is-active" id="specificList"></div><div class="project-list tab-list" id="generalList" hidden></div><div class="sidebar-divider"></div>
+
 <div class="sidebar-divider"></div>
 <section class="totals"><h2>Totales del proyecto</h2><div class="totals-grid" id="financialTotals" aria-live="polite"></div></section></aside>
 <section class="map-section" aria-label="Mapa interactivo de Plaza Mayor"><div class="map-viewport" id="mapViewport"><div class="map-stage" id="mapStage"><picture class="map-picture"><img src="./IMAGEN_MAPA/Imagen%20de%20ChatGPT%205%20nov%202026,%2004_48_55%20p.m.png" alt="Vista aérea completa de Plaza Mayor Medellín; toda la zona a color corresponde al complejo" class="map-image" decoding="async" fetchpriority="high"></picture><div class="place-markers" id="placeMarkers" aria-label="Pabellones y zonas del complejo"></div><div class="points-layer" id="pointsLayer" aria-label="Proyectos sobre el mapa"></div></div></div>
