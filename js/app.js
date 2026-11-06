@@ -225,7 +225,7 @@ function initInteractiveTimeline(){
  const summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsBox=$('#timelineDetailProjects');
  if(!root||!overlay||!closeBtn)return;
  const events=Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[];
- const getYear=p=>{const m=String(p.fecha||'').match(/20\\d{2}/);return m?Number(m[0]):null;};
+ const getYear=p=>{const m=String(p.fecha||'').match(/20\d{2}/);return m?Number(m[0]):null;};
  const getPhoto=(event,projects)=>event.foto||(projects.find(p=>getYear(p)===event.year&&p.fotos&&p.fotos.length)?.fotos[0]||'');
  function renderPhotos(){events.forEach(event=>{const node=root.querySelector('[data-timeline-year="'+event.year+'"] .timeline-year-photo');if(!node)return;const src=getPhoto(event,state.data);node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';});}
  function openYear(year){
@@ -248,31 +248,4 @@ els.copyData.addEventListener('click',copyData);els.downloadData.addEventListene
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
 initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();initMiniCharts();initInteractiveTimeline();initUpdateDate();recordingMode();
-})();+formatNumber(amount)+'</strong></div>';
-  const cards=projects.map(p=>{const image=p.fotos&&p.fotos.length?'<img src="'+escapeHtml(p.fotos[0])+'" alt="">':'<span class="timeline-project-thumb">⌂</span>';return '<button type="button" class="timeline-project-card" data-timeline-project="'+escapeHtml(p.id)+'">'+image+'<span><strong>'+escapeHtml(p.nombre)+'</strong><small>'+escapeHtml(p.estado)+' · '+escapeHtml(p.fecha)+'</small></span><b>›</b></button>';}).join('');
-  projectsBox.innerHTML='<div class="timeline-detail-description"><h3>Sobre esta etapa</h3><p>'+escapeHtml(event.detalle||event.summary)+'</p></div>'+(projects.length?'<div><h3>Proyectos relacionados</h3>'+cards+'</div>':'<div class="timeline-no-projects">No hay proyectos con fecha registrada en '+year+'.</div>');
-  overlay.hidden=false;document.body.classList.add('timeline-modal-open');requestAnimationFrame(()=>overlay.classList.add('is-open'));closeBtn.focus();
- }
- function close(){overlay.classList.remove('is-open');window.setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('timeline-modal-open');},220);}
- root.addEventListener('click',event=>{const button=event.target.closest('[data-timeline-year]');if(button)openYear(Number(button.dataset.timelineYear));});
- projectsBox.addEventListener('click',event=>{const button=event.target.closest('[data-timeline-project]');if(!button)return;const project=projectById(button.dataset.timelineProject);if(!project)return;close();window.setTimeout(()=>selectProject(project.id,{open:true}),230);});
- closeBtn.addEventListener('click',close);overlay.addEventListener('click',event=>{if(event.target===overlay)close();});
- document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)close();});
- renderPhotos();window.addEventListener('plaza:datachange',renderPhotos);
-}
-
-function initUpdateDate(){
- const target=$('#updateDate');
- if(!target)return;
- const now=new Date();
- target.textContent=[now.getDate(),now.getMonth()+1,now.getFullYear()].map((n,i)=>i<2?String(n).padStart(2,'0'):String(n)).join('/');
-}
-
-function initSwipeClose(){els.infoPanel.addEventListener('touchstart',e=>{state.touchStartY=e.touches[0].clientY;},{passive:true});els.infoPanel.addEventListener('touchend',e=>{if(state.touchStartY==null)return;if(e.changedTouches[0].clientY-state.touchStartY>90)closePanel();state.touchStartY=null;},{passive:true});}
-els.panelClose.addEventListener('click',()=>closePanel());els.themeToggle.addEventListener('click',toggleTheme);els.editToggle.addEventListener('click',()=>toggleEdit());els.editClose.addEventListener('click',()=>toggleEdit(false));
-els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;const p=projectById(state.selectedId);if(p?.tipo==='especifico'){p.pabellon=els.pavilionSelect.value;renderAll();persistEdits();}});
-els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
-window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
-initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();initMiniCharts();initUpdateDate();recordingMode();
-})();
+})()
