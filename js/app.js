@@ -2,7 +2,7 @@
 (() => {
 'use strict';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PLACE_STORAGE_KEY='plaza-mayor-ubicaciones-v1', PRIORITY_STORAGE_KEY='plaza-mayor-prioridades-v1', AUDIT_STORAGE_KEY='plaza-mayor-historial-v1', PRESENTATION_MS=6000;
+const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PLACE_STORAGE_KEY='plaza-mayor-ubicaciones-v1', AUDIT_STORAGE_KEY='plaza-mayor-historial-v1', PRESENTATION_MS=6000;
 const PRESENTATION_ORDER=Array.isArray(ORDEN_PRESENTACION)?ORDEN_PRESENTACION:PROYECTOS.map(p=>p.id);
 let auditEntries=[];
 const state={selectedId:null,previousFocus:null,panelOpen:false,editing:false,presentation:false,presentationPaused:false,presentationIndex:0,presentationTimer:null,touchStartY:null,data:cloneProjects(PROYECTOS)};
