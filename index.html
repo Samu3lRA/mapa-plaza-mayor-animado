@@ -34,12 +34,12 @@
 <section class="summary" id="financialSummary" aria-label="Resumen de proyectos"></section>
 <section class="project-lists"><div class="list-section"><div class="section-heading"><p class="eyebrow" id="generalFullCount">13 proyectos</p><h2>Toda la infraestructura</h2></div><div id="generalListFull" class="project-list"></div></div><div class="list-section"><div class="section-heading"><p class="eyebrow" id="specificFullCount">9 proyectos</p><h2>Proyectos específicos</h2></div><div id="specificListFull" class="project-list"></div></div></section>
     <section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
-      <div class="edit-head"><div><p class="eyebrow">Edición local</p><h2>Ajustar puntos</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
-      <p class="edit-help">Arrastra los puntos con mouse o dedo. Selecciona un específico para asignar su pabellón.</p>
-      <label class="field-label" for="pavilionSelect">Pabellón del punto seleccionado</label>
+      <div class="edit-head"><div><p class="eyebrow">MODO EDICIÓN</p><h2>Ajustes del mapa</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
+      <p class="edit-help">Arrastra los marcadores para reubicarlos. Selecciona un proyecto para cambiar su pabellón.</p>
+      <label class="field-label" for="pavilionSelect">Asignar pabellón al proyecto seleccionado</label>
       <select id="pavilionSelect" class="field-select"><option value="sin">Sin asignar</option><option value="amarillo">Amarillo</option><option value="azul">Azul</option><option value="rojo">Rojo</option><option value="blanco">Blanco</option><option value="verde">Verde</option><option value="convenciones">Convenciones</option></select>
-      <div class="edit-actions"><button class="button button-secondary" id="copyData" type="button">Copiar datos</button><button class="button button-secondary" id="downloadData" type="button">Descargar puntos.json</button><button class="button button-danger" id="resetData" type="button">Restablecer</button></div>
-      <textarea id="dataOutput" class="data-output" rows="7" readonly aria-label="Datos editados"></textarea>
+      <div class="edit-actions"><button class="button button-secondary" id="copyData" type="button">Copiar datos</button><button class="button button-secondary" id="downloadData" type="button">Exportar JSON</button><button class="button button-danger" id="resetData" type="button">Restablecer</button></div>
+      <details class="edit-data-details"><summary>Ver datos técnicos</summary><textarea id="dataOutput" class="data-output" rows="5" readonly aria-label="Datos editados"></textarea></details>
     </section>
     <div class="presentation-controls" id="presentationControls" hidden><div class="presentation-progress"><span id="presentationProgressBar"></span></div><div class="presentation-meta"><span id="presentationCounter">1 / 22</span><span>Espacio: pausar · ← →: navegar · Esc: salir</span></div></div>
   </div>
