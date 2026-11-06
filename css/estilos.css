@@ -1227,3 +1227,7 @@ html[data-theme="light"] .timeline-detail-stats>div,html[data-theme="light"] .ti
 .edit-history-entry span{font-size:10px;line-height:1.4;color:var(--muted)}
 html[data-theme="light"] .edit-history-details{border-color:rgba(0,62,153,.16);background:rgba(0,62,153,.035)}
 html[data-theme="light"] .edit-history-details summary{color:#1459a5}
+
+
+/* Estado de respaldo: visible únicamente dentro del modo de edición */
+.backup-status{margin:7px 0 10px;padding:7px 9px;border-left:2px solid #ff9700;border-radius:0 7px 7px 0;background:rgba(255,151,0,.055);color:var(--muted);font-size:10px;line-height:1.4}
