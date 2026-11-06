@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-8">
+  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-9">
 </head>
 <body>
   <div class="app-shell" id="appShell">
@@ -45,6 +45,16 @@
   </div>
   <p class="priority-footnote">Puedes modificar los valores; los cambios se guardan en este navegador.</p>
 </section>
+<section class="sidebar-mini-charts" aria-label="Indicadores de inversión">
+  <div class="mini-chart-card">
+    <div class="mini-chart-head"><div><p class="eyebrow">ESTADO</p><h2>Proyectos por estado</h2></div><strong id="statusChartTotal">22</strong></div>
+    <div class="mini-bars" id="statusMiniChart"></div>
+  </div>
+  <div class="mini-chart-card">
+    <div class="mini-chart-head"><div><p class="eyebrow">ALCANCE</p><h2>Proyectos por tipo</h2></div><strong id="typeChartTotal">22</strong></div>
+    <div class="mini-bars" id="typeMiniChart"></div>
+  </div>
+</section>
 <section class="map-tools" aria-label="Buscar y filtrar proyectos">
 <label class="search-field"><span>⌕</span><input id="projectSearch" type="search" placeholder="Buscar proyecto, responsable..." autocomplete="off"></label>
 <div class="filter-row"><select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="En ejecución">En ejecución</option><option value="Finalizado">Finalizado</option></select><select id="pavilionFilter" aria-label="Filtrar por pabellón"><option value="">Todos los pabellones</option><option value="amarillo">Amarillo</option><option value="rojo">Rojo</option><option value="verde">Verde</option><option value="azul">Azul</option><option value="blanco">Blanco</option><option value="convenciones">Convenciones</option><option value="sin">Sin asignar</option><option value="general">Toda la infraestructura</option></select></div><button class="clear-filters" id="clearFilters" type="button">Limpiar búsqueda y filtros</button></section>
@@ -53,6 +63,21 @@
 <div class="map-legend glass-panel" id="mainLegend"><div id="legendItems" class="legend-items"></div></div><div class="map-center-control"><button class="icon-button glass-panel" id="centerMap" type="button" aria-label="Centrar mapa">⌖</button><button class="icon-button glass-panel" id="focusMode" type="button" aria-label="Activar modo de enfoque" aria-pressed="false">◎</button></div>
 <div class="map-bottom glass-panel"><div class="map-bottom-left"><strong id="mapProjectCount">▥ 22 proyectos</strong><i></i><span>▧ Plaza Mayor Medellín</span></div><div class="zoom-controls"><button class="icon-button" id="zoomOut" type="button" aria-label="Alejar">−</button><button class="icon-button" id="zoomIn" type="button" aria-label="Acercar">+</button><button class="icon-button" id="fullscreenMap" type="button" aria-label="Pantalla completa">⛶</button></div><div class="map-hint"><span>ⓘ</span> Haz clic en un punto para ver más información</div></div>
 <div class="recording-legend" id="recordingLegend" aria-hidden="true"><span class="recording-legend-title">Plaza Mayor</span><span class="recording-dot"></span><span>Toda la infraestructura</span><span class="recording-dot recording-dot-gray"></span><span>Por asignar</span></div></section></main>
+<section class="investment-timeline" id="historiaInversion" aria-label="Línea de tiempo del plan de inversión">
+  <div class="timeline-global-head">
+    <div>
+      <p class="eyebrow">EVOLUCIÓN DEL PLAN</p>
+      <h2>Línea de tiempo · 2024 — 2027</h2>
+    </div>
+    <span>Hitos del proceso de inversión</span>
+  </div>
+  <div class="timeline-global">
+    <article class="timeline-year is-past"><div class="timeline-year-node">2024</div><div class="timeline-year-copy"><strong>Antecedentes</strong><span>Inicio del horizonte de planificación.</span></div></article>
+    <article class="timeline-year is-past"><div class="timeline-year-node">2025</div><div class="timeline-year-copy"><strong>Planeación</strong><span>Definición y priorización de necesidades.</span></div></article>
+    <article class="timeline-year is-current"><div class="timeline-year-node">2026</div><div class="timeline-year-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></div></article>
+    <article class="timeline-year is-future"><div class="timeline-year-node">2027</div><div class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></div></article>
+  </div>
+</section>
 <footer class="investment-disclaimer"><p>La información presentada en este tablero tiene carácter informativo y corresponde al estado de avance de las obras con corte a la fecha de actualización. Los cronogramas, porcentajes y fechas estimadas pueden estar sujetos a modificaciones de acuerdo con las condiciones técnicas, operativas y administrativas de cada proyecto. Las actualizaciones se realizarán conforme avance la ejecución y se valide la información correspondiente.</p></footer>
 <section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
       <div class="edit-head"><div><p class="eyebrow">MODO EDICIÓN</p><h2>Ajustes del mapa</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
@@ -80,7 +105,7 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-5"></script><script src="./js/animaciones.js"></script><script src="./js/mejoras.js?v=seguimiento-3"></script><script>
+  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-6"></script><script src="./js/animaciones.js"></script><script src="./js/mejoras.js?v=seguimiento-3"></script><script>
 (()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.toggle('is-active',x===t));document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
 
 const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const currentZoom=()=>Number(getComputedStyle(stage).getPropertyValue('--camera-scale'))||z;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,currentZoom()+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,currentZoom()-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};const infoPanel=document.getElementById('infoPanel'),infoHome=infoPanel.parentElement,infoNext=infoPanel.nextElementSibling;document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement===view){view.appendChild(infoPanel);infoPanel.style.position='fixed';infoPanel.style.zIndex='2147483000';infoPanel.style.right='24px';infoPanel.style.top='50%';}else{if(infoNext&&infoNext.parentElement===infoHome)infoHome.insertBefore(infoPanel,infoNext);else infoHome.appendChild(infoPanel);infoPanel.style.position='';infoPanel.style.zIndex='';infoPanel.style.right='';infoPanel.style.top='';}});
