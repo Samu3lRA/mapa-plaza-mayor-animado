@@ -220,21 +220,96 @@ function initMiniCharts(){
 
 
 function initInteractiveTimeline(){
- const root=$('#globalTimeline'),overlay=$('#timelineDetailOverlay'),closeBtn=$('#timelineDetailClose');
- const photoBox=$('#timelineDetailPhoto'),title=$('#timelineDetailTitle'),eyebrow=$('#timelineDetailEyebrow');
- const summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsBox=$('#timelineDetailProjects');
- if(!root||!overlay||!closeBtn)return;
+ const root=$('#globalTimeline');
+ const overlay=$('#timelineDetailOverlay');
+ const closeBtn=$('#timelineDetailClose');
+ const photoBox=$('#timelineDetailPhoto');
+ const title=$('#timelineDetailTitle');
+ const eyebrow=$('#timelineDetailEyebrow');
+ const summary=$('#timelineDetailSummary');
+ const stats=$('#timelineDetailStats');
+ const projectsBox=$('#timelineDetailProjects');
+ if(!root||!overlay||!closeBtn||!photoBox||!title||!eyebrow||!summary||!stats||!projectsBox)return;
  const events=Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[];
- const getYear=p=>{const m=String(p.fecha||'').match(/20\d{2}/);return m?Number(m[0]):null;};
- const getPhoto=(event,projects)=>event.foto||(projects.find(p=>getYear(p)===event.year&&p.fotos&&p.fotos.length)?.fotos[0]||'');
- function renderPhotos(){events.forEach(event=>{const node=root.querySelector('[data-timeline-year="'+event.year+'"] .timeline-year-photo');if(!node)return;const src=getPhoto(event,state.data);node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';});}
+ const getYear=p=>{
+  const match=String(p.fecha||'').match(/20\d{2}/);
+  return match?Number(match[0]):null;
+ };
+ const getPhoto=(event,projects)=>{
+  if(event.foto)return event.foto;
+  const related=projects.find(p=>getYear(p)===event.year&&Array.isArray(p.fotos)&&p.fotos.length);
+  return related?related.fotos[0]:'';
+ };
+ function renderPhotos(){
+  events.forEach(event=>{
+   const node=root.querySelector('[data-timeline-year="'+event.year+'"] .timeline-year-photo');
+   if(!node)return;
+   const src=getPhoto(event,state.data);
+   node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';
+  });
+ }
  function openYear(year){
-  const event=events.find(item=>item.year===year);if(!event)return;
-  const projects=state.data.filter(p=>getYear(p)===year),photo=getPhoto(event,projects);
+  const event=events.find(item=>item.year===year);
+  if(!event)return;
+  const projects=state.data.filter(p=>getYear(p)===year);
+  const photo=getPhoto(event,projects);
   const amount=projects.reduce((sum,p)=>sum+parseMoney(p.valor),0);
-  eyebrow.textContent='LÍNEA DE TIEMPO · '+year;title.textContent=event.title;summary.textContent=event.summary;
-  photoBox.innerHTML=photo?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(event.title)+'" loading="lazy">':'<div class="timeline-detail-photo-placeholder"><span>⌂</span><strong>Foto pendiente</strong><small>La fotografía de esta etapa aún no está cargada.</small></div>';
-  stats.innerHTML='<div><span>Año</span><strong>'+year+'</strong></div><div><span>Proyectos asociados</span><strong>'+projects.length+'</strong></div><div><span>Valor registrado</span><strong>
+  eyebrow.textContent='LÍNEA DE TIEMPO · '+year;
+  title.textContent=event.title;
+  summary.textContent=event.summary;
+  photoBox.innerHTML=photo
+   ?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(event.title)+'" loading="lazy">'
+   :'<div class="timeline-detail-photo-placeholder"><span>⌂</span><strong>Foto pendiente</strong><small>La fotografía de esta etapa aún no está cargada.</small></div>';
+  stats.innerHTML=
+   '<div><span>Año</span><strong>'+year+'</strong></div>'+
+   '<div><span>Proyectos asociados</span><strong>'+projects.length+'</strong></div>'+
+   '<div><span>Valor registrado</span><strong>$'+formatNumber(amount)+'</strong></div>';
+  const cards=projects.map(p=>{
+   const image=p.fotos&&p.fotos.length
+    ?'<img src="'+escapeHtml(p.fotos[0])+'" alt="">'
+    :'<span class="timeline-project-thumb" aria-hidden="true">⌂</span>';
+   return '<button type="button" class="timeline-project-card" data-timeline-project="'+escapeHtml(p.id)+'">'+image+
+    '<span><strong>'+escapeHtml(p.nombre)+'</strong><small>'+escapeHtml(p.estado)+' · '+escapeHtml(p.fecha)+'</small></span><b aria-hidden="true">›</b></button>';
+  }).join('');
+  projectsBox.innerHTML=
+   '<div class="timeline-detail-description"><h3>Sobre esta etapa</h3><p>'+escapeHtml(event.detalle||event.summary)+'</p></div>'+
+   (projects.length
+    ?'<div><h3>Proyectos relacionados</h3>'+cards+'</div>'
+    :'<div class="timeline-no-projects">No hay proyectos con fecha registrada en '+year+'.</div>');
+  overlay.hidden=false;
+  overlay.setAttribute('aria-hidden','false');
+  document.body.classList.add('timeline-modal-open');
+  requestAnimationFrame(()=>overlay.classList.add('is-open'));
+  closeBtn.focus();
+ }
+ function close(){
+  overlay.classList.remove('is-open');
+  overlay.setAttribute('aria-hidden','true');
+  window.setTimeout(()=>{
+   overlay.hidden=true;
+   document.body.classList.remove('timeline-modal-open');
+  },220);
+ }
+ root.addEventListener('click',event=>{
+  const button=event.target.closest('[data-timeline-year]');
+  if(button)openYear(Number(button.dataset.timelineYear));
+ });
+ projectsBox.addEventListener('click',event=>{
+  const button=event.target.closest('[data-timeline-project]');
+  if(!button)return;
+  const project=projectById(button.dataset.timelineProject);
+  if(!project)return;
+  close();
+  window.setTimeout(()=>selectProject(project.id,{open:true}),230);
+ });
+ closeBtn.addEventListener('click',close);
+ overlay.addEventListener('click',event=>{if(event.target===overlay)close();});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)close();});
+ renderPhotos();
+ window.addEventListener('plaza:datachange',renderPhotos);
+}
+
+function initUpdateDate(){
  const target=$('#updateDate');
  if(!target)return;
  const now=new Date();
