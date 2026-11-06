@@ -1090,3 +1090,44 @@ html[data-theme="light"] .priority-donut::after{
   .project-sidebar{min-width:350px}
   .workspace{grid-template-columns:minmax(350px,370px) minmax(0,1fr)}
 }
+
+
+/* Indicadores compactos debajo de la gráfica principal */
+.sidebar-mini-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 0 12px}
+.mini-chart-card{min-width:0;padding:10px 9px 9px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018))}
+.mini-chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;margin-bottom:9px}
+.mini-chart-head .eyebrow{margin:0 0 3px;font-size:7px;letter-spacing:.12em;color:#ffb44a}
+.mini-chart-head h2{margin:0;font-size:9px;line-height:1.2;color:#f2f6fc}
+.mini-chart-head>strong{font-size:13px;line-height:1;color:#fff}
+.mini-bars{display:grid;gap:6px}
+.mini-bar-row{display:grid;grid-template-columns:44px minmax(0,1fr) 22px;align-items:center;gap:4px;font-size:7px;color:#b9c8d9}
+.mini-bar-track{height:6px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}
+.mini-bar-fill{height:100%;border-radius:999px;background:var(--mini-color,#ff9700);transition:width .55s ease}
+.mini-bar-value{text-align:right;font-weight:800;color:#eef4fb;font-size:7px}
+html[data-theme="light"] .mini-chart-card{border-color:rgba(0,62,153,.12);background:linear-gradient(145deg,rgba(0,62,153,.045),rgba(0,62,153,.015))}
+html[data-theme="light"] .mini-chart-head h2,html[data-theme="light"] .mini-chart-head>strong{color:#17345b}
+html[data-theme="light"] .mini-bar-row{color:#60728a}
+html[data-theme="light"] .mini-bar-value{color:#17345b}
+
+/* Línea de tiempo general 2024–2027 */
+.investment-timeline{max-width:1680px;margin:18px auto 12px;padding:20px 24px 22px;border:1px solid rgba(255,255,255,.15);border-radius:17px;background:linear-gradient(145deg,rgba(12,35,65,.82),rgba(4,22,48,.76));box-shadow:var(--shadow)}
+.timeline-global-head{display:flex;align-items:baseline;justify-content:space-between;gap:15px;margin-bottom:22px}
+.timeline-global-head .eyebrow{margin:0 0 4px;color:#ffb44a;font-size:9px;letter-spacing:.14em}
+.timeline-global-head h2{margin:0;font-size:17px}
+.timeline-global-head>span{color:#aebed1;font-size:10px}
+.timeline-global{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:relative;gap:0}
+.timeline-global::before{content:"";position:absolute;left:8%;right:8%;top:16px;height:3px;border-radius:999px;background:linear-gradient(90deg,#ff9700 0%,#ff9700 33%,#42a5f5 66%,#43c69b 100%);opacity:.65}
+.timeline-year{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;min-width:0}
+.timeline-year-node{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;border:3px solid #8494a8;background:#071629;color:#fff;font-size:8px;font-weight:800;box-shadow:0 0 0 5px rgba(255,255,255,.05)}
+.timeline-year.is-past .timeline-year-node{border-color:#ff9700;box-shadow:0 0 0 5px rgba(255,151,0,.12)}
+.timeline-year.is-current .timeline-year-node{border-color:#42a5f5;box-shadow:0 0 0 5px rgba(66,165,245,.13),0 0 18px rgba(66,165,245,.25)}
+.timeline-year.is-future .timeline-year-node{border-color:#43c69b;box-shadow:0 0 0 5px rgba(67,198,155,.1)}
+.timeline-year-copy{max-width:210px}
+.timeline-year-copy strong{display:block;font-size:11px;color:#f3f7fc;line-height:1.3}
+.timeline-year-copy span{display:block;margin-top:4px;font-size:9px;color:#aebed1;line-height:1.45}
+html[data-theme="light"] .investment-timeline{background:linear-gradient(145deg,#fff,#edf3fa);border-color:rgba(0,62,153,.14)}
+html[data-theme="light"] .timeline-global-head>span,html[data-theme="light"] .timeline-year-copy span{color:#64758b}
+html[data-theme="light"] .timeline-year-copy strong{color:#172b45}
+html[data-theme="light"] .timeline-year-node{background:#fff;color:#17345b}
+@media(max-width:760px){.sidebar-mini-charts{grid-template-columns:1fr 1fr;gap:7px}.mini-chart-card{padding:8px 7px}.mini-bar-row{grid-template-columns:39px minmax(0,1fr) 20px;font-size:6.5px}.investment-timeline{margin:15px 0 10px;padding:16px 10px}.timeline-global-head{display:block;margin-bottom:18px}.timeline-global-head>span{display:block;margin-top:4px}.timeline-global{grid-template-columns:repeat(4,minmax(72px,1fr));overflow-x:auto;padding-bottom:4px}.timeline-global::before{left:36px;right:36px}.timeline-year-copy{max-width:105px}.timeline-year-copy strong{font-size:9px}.timeline-year-copy span{font-size:8px}}
+@media(max-width:420px){.sidebar-mini-charts{grid-template-columns:1fr}}
