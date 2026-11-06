@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-10">
+  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-11">
 </head>
 <body>
   <div class="app-shell" id="appShell">
@@ -71,11 +71,11 @@
     </div>
     <span>Hitos del proceso de inversión</span>
   </div>
-  <div class="timeline-global">
-    <article class="timeline-year is-past"><div class="timeline-year-node">2024</div><div class="timeline-year-copy"><strong>Antecedentes</strong><span>Inicio del horizonte de planificación.</span></div></article>
-    <article class="timeline-year is-past"><div class="timeline-year-node">2025</div><div class="timeline-year-copy"><strong>Planeación</strong><span>Definición y priorización de necesidades.</span></div></article>
-    <article class="timeline-year is-current"><div class="timeline-year-node">2026</div><div class="timeline-year-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></div></article>
-    <article class="timeline-year is-future"><div class="timeline-year-node">2027</div><div class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></div></article>
+  <div class="timeline-global" id="globalTimeline">
+    <button class="timeline-year is-past" type="button" data-timeline-year="2024" aria-label="Ver información de 2024"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2024</span></span><span class="timeline-year-copy"><strong>Antecedentes</strong><span>Inicio del horizonte de planificación.</span></span></button>
+    <button class="timeline-year is-past" type="button" data-timeline-year="2025" aria-label="Ver información de 2025"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2025</span></span><span class="timeline-year-copy"><strong>Planeación</strong><span>Definición y priorización de necesidades.</span></span></button>
+    <button class="timeline-year is-current" type="button" data-timeline-year="2026" aria-label="Ver información de 2026"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2026</span></span><span class="timeline-year-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></span></button>
+    <button class="timeline-year is-future" type="button" data-timeline-year="2027" aria-label="Ver información de 2027"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2027</span></span><span class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></span></button>
   </div>
 </section>
 <footer class="investment-disclaimer"><p>La información presentada en este tablero tiene carácter informativo y corresponde al estado de avance de las obras con corte a la fecha de actualización. Los cronogramas, porcentajes y fechas estimadas pueden estar sujetos a modificaciones de acuerdo con las condiciones técnicas, operativas y administrativas de cada proyecto. Las actualizaciones se realizarán conforme avance la ejecución y se valide la información correspondiente.</p></footer>
@@ -105,7 +105,7 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-6"></script><script src="./js/animaciones.js"></script><script src="./js/mejoras.js?v=seguimiento-3"></script><script>
+  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-7"></script><script src="./js/animaciones.js"></script><script src="./js/mejoras.js?v=seguimiento-3"></script><script>
 (()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.toggle('is-active',x===t));document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
 
 const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const currentZoom=()=>Number(getComputedStyle(stage).getPropertyValue('--camera-scale'))||z;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,currentZoom()+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,currentZoom()-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};const infoPanel=document.getElementById('infoPanel'),infoHome=infoPanel.parentElement,infoNext=infoPanel.nextElementSibling;document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement===view){view.appendChild(infoPanel);infoPanel.style.position='fixed';infoPanel.style.zIndex='2147483000';infoPanel.style.right='24px';infoPanel.style.top='50%';}else{if(infoNext&&infoNext.parentElement===infoHome)infoHome.insertBefore(infoPanel,infoNext);else infoHome.appendChild(infoPanel);infoPanel.style.position='';infoPanel.style.zIndex='';infoPanel.style.right='';infoPanel.style.top='';}});
