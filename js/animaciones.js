@@ -41,8 +41,16 @@
     stage.style.setProperty('--camera-x',clamp(read('--camera-x'),-limit.x,limit.x)+'px');
     stage.style.setProperty('--camera-y',clamp(read('--camera-y'),-limit.y,limit.y)+'px');
   });
-  document.querySelectorAll('.map-point').forEach(point=>{
-    point.addEventListener('mouseenter',()=>point.classList.add('is-hovered'));
-    point.addEventListener('mouseleave',()=>point.classList.remove('is-hovered'));
+  // Delegación: los puntos se regeneran al filtrar o actualizar datos.
+  // Así el efecto hover también funciona en marcadores creados después del inicio.
+  stage.addEventListener('pointerover',e=>{
+    const point=e.target.closest('.map-point');
+    if(!point||!stage.contains(point)||point.contains(e.relatedTarget))return;
+    point.classList.add('is-hovered');
+  });
+  stage.addEventListener('pointerout',e=>{
+    const point=e.target.closest('.map-point');
+    if(!point||!stage.contains(point)||point.contains(e.relatedTarget))return;
+    point.classList.remove('is-hovered');
   });
 })();
