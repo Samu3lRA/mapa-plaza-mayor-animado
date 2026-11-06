@@ -64,7 +64,7 @@ function printProject(p){
  w.document.close();
 }
 function bind(){
- $('#printReport')?.addEventListener('click',printReport);\n $('#dashboardToggle')?.addEventListener('click',e=>{const content=$('#dashboardContent'),hide=!content.hidden;content.hidden=hide;e.currentTarget.textContent=hide?'Mostrar indicadores':'Ocultar indicadores';e.currentTarget.setAttribute('aria-expanded',String(!hide));});
+ $('#printReport')?.addEventListener('click',printReport);
  $('#focusMode')?.addEventListener('click',e=>{const active=document.body.classList.toggle('focus-mode');e.currentTarget.setAttribute('aria-pressed',String(active));e.currentTarget.setAttribute('aria-label',active?'Desactivar modo de enfoque':'Activar modo de enfoque');});
  pointLayer?.addEventListener('click',e=>{const point=e.target.closest('.map-point');if(!point)return;const p=getProjects().find(x=>x.id===point.dataset.id);if(!p)return;setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);});
  document.querySelectorAll('.project-list-item').forEach(el=>el.addEventListener('click',()=>{const p=getProjects().find(x=>x.id===el.dataset.id);if(p)setTimeout(()=>{gallery(p);chronology(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);}));
