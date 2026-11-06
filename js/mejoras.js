@@ -67,7 +67,12 @@ function bind(){
  $('#printReport')?.addEventListener('click',printReport);
  $('#focusMode')?.addEventListener('click',e=>{const active=document.body.classList.toggle('focus-mode');e.currentTarget.setAttribute('aria-pressed',String(active));e.currentTarget.setAttribute('aria-label',active?'Desactivar modo de enfoque':'Activar modo de enfoque');});
  pointLayer?.addEventListener('click',e=>{const point=e.target.closest('.map-point');if(!point)return;const p=getProjects().find(x=>x.id===point.dataset.id);if(!p)return;setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);});
- document.querySelectorAll('.project-list-item').forEach(el=>el.addEventListener('click',()=>{const p=getProjects().find(x=>x.id===el.dataset.id);if(p)setTimeout(()=>{gallery(p);chronology(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);}));
+ const listRoot=$('.project-sidebar');
+  listRoot?.addEventListener('click',event=>{
+   const el=event.target.closest('.project-list-item');if(!el)return;
+   const p=getProjects().find(x=>x.id===el.dataset.id);if(!p)return;
+   setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);
+  });
 }
 function renderFinancials(){
  const ps=getProjects(),fmt=n=>new Intl.NumberFormat('es-CO').format(n),money=p=>Number(String(p.valor||'').replace(/[^0-9]/g,''))||0;
