@@ -167,6 +167,7 @@ function initPriorityChart(){
   chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';
   chart.style.setProperty('--priority-total',sum+'%');
   totalLabel.textContent=sum+'%';
+  chart.setAttribute('data-total',sum+'%');
   chart.setAttribute('aria-label','Gráfica pastel: mejora de experiencias '+values.experience+'%, actualización tecnológica '+values.technology+'%, seguridad humana y mejora de operación '+values.safety+'%, total '+sum+'%');
   try{localStorage.setItem(PRIORITY_STORAGE_KEY,JSON.stringify(values));}catch(_){}
  }
