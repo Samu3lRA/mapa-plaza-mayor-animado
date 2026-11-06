@@ -749,3 +749,8 @@ html[data-theme="light"] .comparison-empty{background:rgba(0,62,153,.06);color:#
  .map-point,.point-tooltip,.info-panel,.map-stage,.panel-photo{animation:none!important;transition:none!important}
  .map-point::after{display:none}
 }
+
+/* El estado hover reemplaza el transform final de la animación de entrada. */
+.map-point:hover,.map-point:focus-visible{animation:pointBreath 3s ease-in-out infinite;transform:scale(1.2)}
+.map-point.is-selected{animation:pointBreath 3s ease-in-out infinite;transform:scale(1.3)}
+.map-viewport{touch-action:none}
