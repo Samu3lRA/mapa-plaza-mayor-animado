@@ -218,6 +218,50 @@ function initMiniCharts(){
   window.addEventListener('plaza:datachange',update);
 }
 
+
+function initInteractiveTimeline(){
+ const root=$('#globalTimeline'),overlay=$('#timelineDetailOverlay'),closeBtn=$('#timelineDetailClose');
+ const detailPhoto=$('#timelineDetailPhoto'),title=$('#timelineDetailTitle'),eyebrow=$('#timelineDetailEyebrow');
+ const summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsRoot=$('#timelineDetailProjects');
+ if(!root||!overlay||!closeBtn)return;
+ const timelineData=Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[];
+ const yearFromProject=p=>{const m=String(p.fecha||'').match(/(20\\d{2})/);return m?Number(m[1]):null;};
+ const photoForYear=(entry,projects)=>{if(entry.foto)return entry.foto;const p=projects.find(x=>yearFromProject(x)===entry.year&&Array.isArray(x.fotos)&&x.fotos.length);return p?.fotos?.[0]||'';};
+ const renderYearVisuals=()=>timelineData.forEach(entry=>{const node=root.querySelector('[data-timeline-year="'+entry.year+'"] .timeline-year-photo');if(!node)return;const src=photoForYear(entry,state.data);node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';node.classList.toggle('has-photo',!!src);});
+ const openYear=year=>{
+  const entry=timelineData.find(x=>x.year===year);if(!entry)return;
+  const projects=state.data.filter(p=>yearFromProject(p)===year);
+  const total=projects.reduce((sum,p)=>sum+(parseMoney(p.valor)||0),0);
+  const photo=photoForYear(entry,projects);
+  eyebrow.textContent='LÍNEA DE TIEMPO · '+year;title.textContent=entry.title;summary.textContent=entry.summary;
+  detailPhoto.innerHTML=photo?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(entry.title)+' · '+year+'" loading="lazy">':'<div class="timeline-detail-photo-placeholder"><span>⌂</span><strong>Foto pendiente</strong><small>Agrega la imagen de esta etapa en js/datos.js</small></div>';
+  stats.innerHTML='<div><span>Año</span><strong>'+year+'</strong></div><div><span>Proyectos asociados</span><strong>'+projects.length+'</strong></div><div><span>Valor registrado</span><strong>
+ const target=$('#updateDate');
+ if(!target)return;
+ const now=new Date();
+ target.textContent=[now.getDate(),now.getMonth()+1,now.getFullYear()].map((n,i)=>i<2?String(n).padStart(2,'0'):String(n)).join('/');
+}
+
+function initSwipeClose(){els.infoPanel.addEventListener('touchstart',e=>{state.touchStartY=e.touches[0].clientY;},{passive:true});els.infoPanel.addEventListener('touchend',e=>{if(state.touchStartY==null)return;if(e.changedTouches[0].clientY-state.touchStartY>90)closePanel();state.touchStartY=null;},{passive:true});}
+els.panelClose.addEventListener('click',()=>closePanel());els.themeToggle.addEventListener('click',toggleTheme);els.editToggle.addEventListener('click',()=>toggleEdit());els.editClose.addEventListener('click',()=>toggleEdit(false));
+els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;const p=projectById(state.selectedId);if(p?.tipo==='especifico'){p.pabellon=els.pavilionSelect.value;renderAll();persistEdits();}});
+els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
+window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
+initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();initMiniCharts();initInteractiveTimeline();initUpdateDate();recordingMode();
+})();+formatNumber(total)+'</strong></div>';
+  const list=projects.map(p=>{const img=Array.isArray(p.fotos)&&p.fotos.length?p.fotos[0]:'';return '<button type="button" class="timeline-project-card" data-timeline-project="'+escapeHtml(p.id)+'">'+(img?'<img src="'+escapeHtml(img)+'" alt="" loading="lazy">':'<span class="timeline-project-thumb">⌂</span>')+'<span><strong>'+escapeHtml(p.nombre)+'</strong><small>'+escapeHtml(p.estado)+' · '+escapeHtml(p.fecha)+'</small></span><b>›</b></button>';}).join('');
+  projectsRoot.innerHTML='<div class="timeline-detail-description"><h3>Sobre esta etapa</h3><p>'+escapeHtml(entry.detalle||entry.summary)+'</p></div>'+(projects.length?'<div><h3>Proyectos relacionados</h3>'+list+'</div>':'<div class="timeline-no-projects">No hay proyectos con una fecha registrada para '+year+' en los datos actuales.</div>');
+  overlay.hidden=false;document.body.classList.add('timeline-modal-open');requestAnimationFrame(()=>overlay.classList.add('is-open'));closeBtn.focus();
+ };
+ const close=()=>{overlay.classList.remove('is-open');setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('timeline-modal-open');},220);};
+ root.addEventListener('click',e=>{const btn=e.target.closest('[data-timeline-year]');if(btn)openYear(Number(btn.dataset.timelineYear));});
+ projectsRoot.addEventListener('click',e=>{const btn=e.target.closest('[data-timeline-project]');if(!btn)return;const p=projectById(btn.dataset.timelineProject);if(!p)return;close();setTimeout(()=>selectProject(p.id,{open:true}),230);});
+ closeBtn.addEventListener('click',close);overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)close();});
+ renderYearVisuals();window.addEventListener('plaza:datachange',renderYearVisuals);
+}
+
 function initUpdateDate(){
  const target=$('#updateDate');
  if(!target)return;
