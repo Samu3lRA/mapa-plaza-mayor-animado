@@ -158,3 +158,304 @@ body{background:radial-gradient(ellipse at 78% 0%,rgba(0,62,153,.32),transparent
   .list-section{padding:15px}
   .info-panel{background:linear-gradient(145deg,rgba(8,42,83,.94),rgba(5,19,37,.96))}
 }
+
+
+/* =========================================================
+   Refinamiento UI · puntos y ficha de información
+========================================================= */
+
+/* Puntos más pequeños y discretos */
+.map-point{
+  width:26px;
+  height:26px;
+  margin:-13px 0 0 -13px;
+  border-width:1.5px;
+  outline:1px solid rgba(5,17,36,.75);
+  box-shadow:0 4px 11px rgba(0,0,0,.42);
+}
+.map-point span:first-child{
+  font-size:10px;
+  font-weight:800;
+}
+.map-point:hover,
+.map-point:focus-visible{
+  transform:scale(1.16);
+}
+.map-point.is-selected{
+  transform:scale(1.22);
+  box-shadow:0 0 0 3px rgba(255,255,255,.42),0 0 16px rgba(255,151,0,.72);
+}
+.point-tooltip{
+  bottom:calc(100% + 8px);
+  padding:6px 9px;
+  border-radius:7px;
+  font-size:10px;
+  background:rgba(5,24,48,.92);
+  border-color:rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+}
+
+/* Ficha de información: estructura más limpia */
+.info-panel{
+  width:min(390px,calc(100% - 32px));
+  border-radius:20px;
+  background:
+    linear-gradient(145deg,rgba(5,31,64,.91),rgba(4,17,34,.94));
+  border:1px solid rgba(255,255,255,.17);
+  box-shadow:
+    0 28px 85px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,255,255,.10);
+  -webkit-backdrop-filter:blur(26px) saturate(145%);
+  backdrop-filter:blur(26px) saturate(145%);
+}
+
+.panel-scroll{
+  max-height:calc(100vh - 40px);
+  overflow:auto;
+  padding:18px;
+  scrollbar-width:thin;
+}
+
+.panel-scroll::-webkit-scrollbar{width:5px}
+.panel-scroll::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.18);
+  border-radius:99px;
+}
+
+/* Imagen */
+.panel-photo-wrap{
+  aspect-ratio:16/9;
+  margin:-18px -18px 16px;
+  border-radius:20px 20px 0 0;
+  position:relative;
+  background:#08264b;
+}
+.panel-photo-wrap::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 58%,rgba(3,16,32,.38));
+  pointer-events:none;
+}
+.panel-photo{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* Estado */
+.info-panel .panel-status-block{
+  display:inline-flex;
+  width:max-content;
+  min-width:0;
+  margin:0 0 10px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,151,0,.12);
+  border:1px solid rgba(255,151,0,.35);
+  color:#ffd18e;
+}
+.status-pill{
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+/* Título */
+.info-panel .panel-block[data-panel-block="title"]{
+  padding:0;
+  margin:0 0 14px;
+  border:0;
+  background:transparent;
+}
+.info-panel .panel-block[data-panel-block="title"] h2{
+  margin:0;
+  font-size:23px;
+  line-height:1.18;
+  letter-spacing:-.025em;
+  color:#fff;
+}
+
+/* Valor destacado */
+.info-panel .panel-value-block{
+  margin:0 0 14px;
+  padding:13px 15px;
+  border-radius:13px;
+  background:linear-gradient(90deg,rgba(255,151,0,.13),rgba(255,151,0,.035));
+  border:1px solid rgba(255,151,0,.25);
+  border-left:3px solid #ff9700;
+}
+.info-panel .panel-value-block::before{
+  content:"INVERSIÓN";
+  display:block;
+  margin-bottom:3px;
+  color:#ffbe63;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+.info-panel .panel-value-block strong{
+  display:block;
+  font-size:25px;
+  line-height:1.1;
+  color:#fff;
+}
+
+/* Metadatos */
+.info-panel .panel-meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  padding:0;
+  margin:0 0 14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:13px;
+  overflow:hidden;
+  background:rgba(255,255,255,.035);
+}
+.info-panel .panel-meta>div{
+  min-width:0;
+  padding:12px 13px;
+}
+.info-panel .panel-meta>div+div{
+  border-left:1px solid rgba(255,255,255,.09);
+}
+.info-panel .panel-meta span,
+.info-panel .panel-small span{
+  margin-bottom:4px;
+  color:#91a7c0;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.info-panel .panel-meta strong{
+  display:block;
+  font-size:11px;
+  line-height:1.4;
+  color:#e9f1fa;
+}
+
+/* Bloques de contenido */
+.info-panel .panel-block[data-panel-block="description"],
+.info-panel .panel-block[data-panel-block="scope"],
+.info-panel .panel-block[data-panel-block="progress"],
+.info-panel .panel-block[data-panel-block="responsible"],
+.info-panel .panel-block[data-panel-block="notes"]{
+  margin:0 0 10px;
+  padding:13px 14px;
+  border-radius:13px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.085);
+}
+.info-panel .panel-block h3{
+  margin:0 0 7px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#ffbd61;
+}
+.info-panel .panel-block p,
+.info-panel .panel-block li{
+  margin:0;
+  color:#d5e0ed;
+  font-size:11px;
+  line-height:1.6;
+}
+.info-panel .panel-block ul{
+  margin:0;
+  padding-left:17px;
+}
+.info-panel .panel-block li+li{margin-top:5px}
+
+/* Avance */
+.info-panel .progress-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+.info-panel .progress-head h3{margin:0}
+.info-panel .progress-head strong{
+  font-size:11px;
+  color:#fff;
+}
+.info-panel .progress-track{
+  height:6px;
+  background:rgba(255,255,255,.10);
+}
+.info-panel .progress-track span{
+  background:linear-gradient(90deg,#ff9700,#ffc76e);
+  box-shadow:0 0 10px rgba(255,151,0,.3);
+}
+
+/* Responsable / notas */
+.info-panel .panel-small strong{
+  display:block;
+  color:#e9f1fa;
+  font-size:11px;
+  line-height:1.45;
+}
+.info-panel .panel-small p{margin-top:2px}
+
+/* Botón cerrar */
+.info-panel .panel-close{
+  top:12px;
+  right:12px;
+  width:34px;
+  height:34px;
+  z-index:5;
+  background:rgba(4,20,40,.72);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 8px 22px rgba(0,0,0,.25);
+  backdrop-filter:blur(12px);
+  font-size:18px;
+}
+
+/* Entrada de la ficha */
+.info-panel.is-open{
+  animation:panelIn .36s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes panelIn{
+  from{opacity:0;filter:blur(5px)}
+  to{opacity:1;filter:blur(0)}
+}
+
+/* Pantalla completa: ficha siempre visible sobre el mapa */
+.map-viewport:fullscreen .info-panel{
+  width:min(390px,calc(100vw - 32px));
+  max-height:calc(100vh - 32px);
+}
+.map-viewport:fullscreen .panel-scroll{
+  max-height:calc(100vh - 32px);
+}
+
+/* Móvil */
+@media(max-width:760px){
+  .map-point{
+    width:23px;
+    height:23px;
+    margin:-11.5px 0 0 -11.5px;
+  }
+  .map-point span:first-child{font-size:9px}
+  .info-panel{
+    width:100%;
+    border-radius:20px 20px 0 0;
+  }
+  .panel-scroll{
+    padding:16px;
+    max-height:82dvh;
+  }
+  .panel-photo-wrap{
+    margin:-16px -16px 15px;
+    border-radius:20px 20px 0 0;
+  }
+  .info-panel .panel-block[data-panel-block="title"] h2{
+    font-size:21px;
+  }
+}
