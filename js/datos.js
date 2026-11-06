@@ -1,11 +1,11 @@
 const COLORES_PABELLON = {
   amarillo:{nombre:'Amarillo',fondo:'#F2C200',texto:'#14171C'},
-  azul:{nombre:'Azul',fondo:'#1D5FD6',texto:'#FFFFFF'},
-  rojo:{nombre:'Naranja',fondo:'#ff9700',texto:'#10213a'},
-  blanco:{nombre:'Blanco',fondo:'#F6F6F6',texto:'#14171C'},
+  rojo:{nombre:'Rojo',fondo:'#D93636',texto:'#FFFFFF'},
   verde:{nombre:'Verde',fondo:'#2F9E50',texto:'#FFFFFF'},
+  azul:{nombre:'Azul',fondo:'#1D5FD6',texto:'#FFFFFF'},
+  blanco:{nombre:'Blanco',fondo:'#F6F6F6',texto:'#14171C'},
   sin:{nombre:'Sin asignar',fondo:'#8B93A0',texto:'#14171C'},
-  general:{nombre:'General (G)',fondo:'#003e99',texto:'#FFFFFF'}
+  general:{nombre:'General (G)',fondo:'#7B3FC6',texto:'#FFFFFF'}
 };
 
 const PROYECTOS = [
