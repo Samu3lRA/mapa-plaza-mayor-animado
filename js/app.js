@@ -136,7 +136,7 @@ function persistEdits(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(stat
 function restoreEdits(){
  try{
   const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;
-  const saved=JSON.parse(raw);if(!Array.isArray(saved)||saved.length!==state.data.length)return;
+  const saved=JSON.parse(raw);if(!Array.isArray(saved))return;
   const validPavilions=new Set(Object.keys(COLORES_PABELLON).filter(k=>k!=='general'));
   state.data=state.data.map(p=>{
    const s=saved.find(x=>x.id===p.id);if(!s)return p;
@@ -149,7 +149,14 @@ function restoreEdits(){
   });
  }catch(_){}
 }
-function resetEdits(){try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(PLACE_STORAGE_KEY);}catch(_){}state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));renderAll();showToast('Proyectos y ubicaciones restablecidos.');}
+function resetEdits(){
+ if(!window.confirm('¿Restablecer las posiciones, pabellones y porcentajes a los valores iniciales? Esta acción no se puede deshacer en este navegador.'))return;
+ try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(PLACE_STORAGE_KEY);localStorage.removeItem(PRIORITY_STORAGE_KEY);}catch(_){}
+ state.data=cloneProjects(PROYECTOS);
+ PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
+ $('[data-priority]').forEach(input=>{const defaults={experience:45,technology:37,safety:15};input.value=defaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
+ renderAll();showToast('Mapa restablecido a los valores iniciales.');
+}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
 function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();updateDataQualityReport();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
 window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
