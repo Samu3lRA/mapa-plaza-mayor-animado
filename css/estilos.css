@@ -692,3 +692,30 @@ html[data-theme="light"] .history-entry{border-bottom-color:rgba(0,62,153,.12)}
 html[data-theme="light"] .history-entry span,html[data-theme="light"] .history-empty{color:#64758b}
 html[data-theme="light"] .comparison-empty{background:rgba(0,62,153,.06);color:#64758b}
 @media(max-width:760px){.dashboard-actions{flex-wrap:wrap;justify-content:flex-end}.comparison-grid{grid-template-columns:1fr 1fr}}
+
+
+/* Mapa protagonista: más espacio útil y mayor tamaño en pantalla */
+@media(min-width:761px){
+  .app-shell{max-width:2048px;padding-left:16px;padding-right:16px}
+  .workspace{
+    max-width:2016px;
+    grid-template-columns:minmax(250px,285px) minmax(0,1fr);
+    gap:14px;
+    padding-top:18px;
+  }
+  .project-sidebar{padding:16px}
+  .map-section{width:100%;min-width:0}
+  .map-viewport{
+    width:100%;
+    max-width:none;
+    aspect-ratio:2048/943;
+  }
+}
+@media(min-width:1500px){
+  .app-shell{padding-left:20px;padding-right:20px}
+  .workspace{grid-template-columns:300px minmax(0,1fr);gap:18px}
+}
+@media(max-width:760px){
+  .map-section{width:100%}
+  .map-viewport{width:100%}
+}
