@@ -113,14 +113,103 @@ function closePanel({returnFocus=true}={}){state.panelOpen=false;els.infoPanel.c
 function selectProject(id,{open=true,fromPresentation=false}={}){const p=projectById(id);if(!p)return;if(state.panelOpen&&state.selectedId!==id){els.infoPanel.classList.add('is-crossfade');setTimeout(()=>els.infoPanel.classList.remove('is-crossfade'),REDUCED.matches?80:200);}state.selectedId=id;markSelected(id);if(open)openPanel(p,document.querySelector('.map-point[data-id="'+CSS.escape(id)+'"]'));else renderPanel(p);if(fromPresentation)updatePresentationProgress();}
 function beginDrag(event,b){event.preventDefault();b.setPointerCapture?.(event.pointerId);const move=e=>{const r=els.mapStage.getBoundingClientRect(),x=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100)),y=Math.max(0,Math.min(100,((e.clientY-r.top)/r.height)*100)),p=projectById(b.dataset.id);p.x=Number(x.toFixed(1));p.y=Number(y.toFixed(1));b.style.left=p.x+'%';b.style.top=p.y+'%';updateDataOutput();persistEdits();notifyDataChanged();};const end=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',end);};window.addEventListener('pointermove',move);window.addEventListener('pointerup',end,{once:true});}
 function updateDataOutput(){els.dataOutput.value=JSON.stringify({proyectos:state.data.map(p=>{const o={id:p.id,nombre:p.nombre,x:p.x,y:p.y};if(p.tipo==='especifico')o.pabellon=p.pabellon;return o;}),ubicaciones:placeState.map(p=>({id:p.id,nombre:p.name,x:p.x,y:p.y}))},null,2);}
+function updateDataQualityReport(){
+ const root=els.dataQualityReport;if(!root)return;
+ const total=state.data.length;
+ const checks=[
+  ['Fotografías',p=>!Array.isArray(p.fotos)||p.fotos.length===0],
+  ['Descripción',p=>!String(p.descripcion||'').trim()],
+  ['Alcance',p=>!Array.isArray(p.alcance)||p.alcance.length===0],
+  ['Avance',p=>!Number.isFinite(p.avance)],
+  ['Responsable',p=>!String(p.responsable||'').trim()],
+  ['Notas',p=>!String(p.notas||'').trim()],
+  ['Pabellón sin asignar',p=>p.tipo==='especifico'&&(!p.pabellon||p.pabellon==='sin')]
+ ];
+ const rows=checks.map(([label,test])=>{
+  const count=state.data.filter(test).length;
+  return '<div class="quality-row"><span>'+label+'</span><strong>'+count+' / '+total+'</strong></div>';
+ }).join('');
+ root.innerHTML='<p class="quality-intro">Campos pendientes según la información cargada. No se han completado automáticamente para evitar inventar datos.</p>'+rows;
+}
+
 function persistEdits(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.data));}catch(_){}}
-function restoreEdits(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;const saved=JSON.parse(raw);if(!Array.isArray(saved)||saved.length!==state.data.length)return;state.data=state.data.map(p=>{const s=saved.find(x=>x.id===p.id);return s?{...p,x:s.x,y:s.y,pabellon:p.tipo==='especifico'?(s.pabellon||'sin'):undefined}:p;});}catch(_){}}
+function restoreEdits(){
+ try{
+  const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;
+  const saved=JSON.parse(raw);if(!Array.isArray(saved)||saved.length!==state.data.length)return;
+  const validPavilions=new Set(Object.keys(COLORES_PABELLON).filter(k=>k!=='general'));
+  state.data=state.data.map(p=>{
+   const s=saved.find(x=>x.id===p.id);if(!s)return p;
+   const x=Number(s.x),y=Number(s.y);
+   const next={...p};
+   if(Number.isFinite(x)&&x>=0&&x<=100)next.x=x;
+   if(Number.isFinite(y)&&y>=0&&y<=100)next.y=y;
+   if(p.tipo==='especifico'&&validPavilions.has(s.pabellon))next.pabellon=s.pabellon;
+   return next;
+  });
+ }catch(_){}
+}
 function resetEdits(){try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(PLACE_STORAGE_KEY);}catch(_){}state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));renderAll();showToast('Proyectos y ubicaciones restablecidos.');}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
-function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
+function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();updateDataQualityReport();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
 window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
 function toggleEdit(force){state.editing=force??!state.editing;els.editToggle.setAttribute('aria-pressed',String(state.editing));els.editToggle.textContent=state.editing?'Cerrar edición':'Modo edición';els.editPanel.hidden=!state.editing;document.body.classList.toggle('editing',state.editing);if(state.editing)updateDataOutput();}
-function downloadJSON(){updateDataOutput();const blob=new Blob([els.dataOutput.value],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mapa-plaza-mayor-datos.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function downloadJSON(){
+ const priority={};$('[data-priority]').forEach(input=>priority[input.dataset.priority]=Number(input.value)||0);
+ const backup={format:'plaza-mayor-map-backup',version:1,exportedAt:new Date().toISOString(),projects:state.data.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]})),locations:placeState.map(p=>({...p})),priority};
+ const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='respaldo-mapa-plaza-mayor.json';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+ showToast('Respaldo completo descargado.');
+}
+function importBackup(file){
+ if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const backup=JSON.parse(String(reader.result||''));
+   if(backup.format!=='plaza-mayor-map-backup'||backup.version!==1||!Array.isArray(backup.projects))throw new Error('El archivo no es un respaldo compatible.');
+   const currentIds=state.data.map(p=>p.id).sort(),incomingIds=backup.projects.map(p=>p.id).sort();
+   if(currentIds.length!==incomingIds.length||currentIds.some((id,i)=>id!==incomingIds[i]))throw new Error('El respaldo pertenece a otra versión del mapa.');
+   const pavilionKeys=new Set(Object.keys(COLORES_PABELLON).filter(k=>k!=='general'));
+   const nextProjects=state.data.map(p=>{
+    const incoming=backup.projects.find(x=>x.id===p.id);
+    const x=Number(incoming.x),y=Number(incoming.y);
+    if(!Number.isFinite(x)||x<0||x>100||!Number.isFinite(y)||y<0||y>100)throw new Error('Hay coordenadas inválidas en el respaldo.');
+    const next={...p,x,y};
+    if(p.tipo==='especifico'){
+     if(!pavilionKeys.has(incoming.pabellon))throw new Error('Hay un pabellón no válido en el respaldo.');
+     next.pabellon=incoming.pabellon;
+    }
+    return next;
+   });
+   const nextLocations=placeState.map(p=>{
+    const incoming=Array.isArray(backup.locations)?backup.locations.find(x=>x.id===p.id):null;
+    if(!incoming)return {...p};
+    const x=Number(incoming.x),y=Number(incoming.y);
+    if(!Number.isFinite(x)||x<0||x>100||!Number.isFinite(y)||y<0||y>100)throw new Error('Hay ubicaciones inválidas en el respaldo.');
+    return {...p,x,y};
+   });
+   const priorities=backup.priority&&typeof backup.priority==='object'?backup.priority:null;
+   if(priorities){
+    for(const key of ['experience','technology','safety']){
+     if(priorities[key]!==undefined&&(!Number.isFinite(Number(priorities[key]))||Number(priorities[key])<0||Number(priorities[key])>100))throw new Error('Hay porcentajes inválidos en el respaldo.');
+    }
+   }
+   state.data=nextProjects;
+   nextLocations.forEach((p,i)=>Object.assign(placeState[i],p));
+   persistEdits();persistPlaceEdits();
+   if(priorities){
+    $('[data-priority]').forEach(input=>{if(priorities[input.dataset.priority]!==undefined){input.value=Number(priorities[input.dataset.priority]);input.dispatchEvent(new Event('input',{bubbles:true}));}});
+   }
+   renderAll();showToast('Respaldo importado correctamente.');
+  }catch(error){showToast(error.message||'No se pudo importar el respaldo.');}
+  if(els.importFile)els.importFile.value='';
+ };
+ reader.onerror=()=>showToast('No se pudo leer el archivo seleccionado.');
+ reader.readAsText(file);
+}
 async function copyData(){updateDataOutput();try{await navigator.clipboard.writeText(els.dataOutput.value);showToast('Datos copiados.');}catch(_){els.dataOutput.focus();els.dataOutput.select();showToast('Selecciona el texto y cópialo manualmente.');}}
 function applyTheme(theme,{persist=true}={}){const root=document.documentElement;const next=theme==='light'?'light':'dark';root.dataset.theme=next;els.themeToggle.textContent=next==='dark'?'☼ Tema claro':'☾ Tema oscuro';els.themeToggle.setAttribute('aria-label',next==='dark'?'Cambiar a tema claro':'Cambiar a tema oscuro');els.themeToggle.setAttribute('aria-pressed',String(next==='light'));if(persist){try{localStorage.setItem('plaza-mayor-theme',next);}catch(_){}}}
 function initTheme(){let saved=null;try{saved=localStorage.getItem('plaza-mayor-theme');}catch(_){}applyTheme(saved==='light'?'light':'dark',{persist:false});}
@@ -319,7 +408,7 @@ function initUpdateDate(){
 function initSwipeClose(){els.infoPanel.addEventListener('touchstart',e=>{state.touchStartY=e.touches[0].clientY;},{passive:true});els.infoPanel.addEventListener('touchend',e=>{if(state.touchStartY==null)return;if(e.changedTouches[0].clientY-state.touchStartY>90)closePanel();state.touchStartY=null;},{passive:true});}
 els.panelClose.addEventListener('click',()=>closePanel());els.themeToggle.addEventListener('click',toggleTheme);els.editToggle.addEventListener('click',()=>toggleEdit());els.editClose.addEventListener('click',()=>toggleEdit(false));
 els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;const p=projectById(state.selectedId);if(p?.tipo==='especifico'){p.pabellon=els.pavilionSelect.value;renderAll();persistEdits();}});
-els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
+els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.importData.addEventListener('click',()=>els.importFile.click());els.importFile.addEventListener('change',e=>importBackup(e.target.files?.[0]));els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
 initTheme();restoreEdits();restorePlaceEdits();renderAll();initProjectFilters();initSwipeClose();initPriorityChart();initMiniCharts();initInteractiveTimeline();initUpdateDate();recordingMode();
