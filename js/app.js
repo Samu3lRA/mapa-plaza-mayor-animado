@@ -184,26 +184,35 @@ function initPriorityChart(){
 }
 
 function initMiniCharts(){
-  const statusRoot=$('#statusMiniChart'),typeRoot=$('#typeMiniChart');
-  if(!statusRoot||!typeRoot)return;
-  function renderBarChart(root,items,total){
-    root.innerHTML=items.map(item=>{
-      const pct=total?Math.round((item.value/total)*100):0;
-      return '<div class="mini-bar-row"><span>'+escapeHtml(item.label)+'</span><span class="mini-bar-track"><span class="mini-bar-fill" style="--mini-color:'+item.color+';width:'+pct+'%"></span></span><strong class="mini-bar-value">'+item.value+'</strong></div>';
-    }).join('');
-  }
+  const statusChart=$('#statusMiniChart'),typeChart=$('#typeMiniChart');
+  const statusLegend=$('#statusPieLegend'),typeLegend=$('#typePieLegend');
+  if(!statusChart||!typeChart)return;
+  const render=(chart,legend,items,total)=>{
+    let cursor=0;
+    const stops=items.map(item=>{
+      const pct=total?(item.value/total)*100:0;
+      const next=cursor+pct;
+      const stop=item.color+' '+cursor+'% '+next+'%';
+      cursor=next;
+      return stop;
+    });
+    if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor+'% 100%');
+    chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';
+    chart.setAttribute('data-total',total);
+    legend.innerHTML=items.map(item=>'<div class="mini-pie-item"><i style="--pie-color:'+item.color+'"></i><span>'+escapeHtml(item.label)+'</span><strong>'+item.value+'</strong></div>').join('');
+  };
   function update(){
-    const projects=state.data;
+    const projects=state.data,total=projects.length;
     const statusOrder=['Contratado','Estructuración','En ejecución','Finalizado'];
     const statusColors=['#ff9700','#42a5f5','#43c69b','#9aa8ba'];
     const statuses=statusOrder.map((label,i)=>({label:label==='En ejecución'?'En ejec.':label,value:projects.filter(p=>p.estado===label).length,color:statusColors[i]})).filter(x=>x.value>0);
     const specific=projects.filter(p=>p.tipo==='especifico').length;
     const general=projects.filter(p=>p.tipo==='general').length;
-    renderBarChart(statusRoot,statuses,projects.length);
-    renderBarChart(typeRoot,[{label:'Específicos',value:specific,color:'#ff9700'},{label:'Generales',value:general,color:'#7B3FC6'}],projects.length);
+    render(statusChart,statusLegend,statuses,total);
+    render(typeChart,typeLegend,[{label:'Específicos',value:specific,color:'#ff9700'},{label:'Generales',value:general,color:'#7B3FC6'}],total);
     const st=$('#statusChartTotal'),tt=$('#typeChartTotal');
-    if(st)st.textContent=projects.length;
-    if(tt)tt.textContent=projects.length;
+    if(st)st.textContent=total;
+    if(tt)tt.textContent=total;
   }
   update();
   window.addEventListener('plaza:datachange',update);
