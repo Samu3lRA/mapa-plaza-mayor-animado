@@ -2,35 +2,36 @@
 (() => {
 'use strict';
 const $=s=>document.querySelector(s);
-const projects=typeof PROYECTOS!=='undefined'&&Array.isArray(PROYECTOS)?PROYECTOS:[];
+const fallbackProjects=typeof PROYECTOS!=='undefined'&&Array.isArray(PROYECTOS)?PROYECTOS:[];
+const getProjects=()=>window.PlazaMayorData?.getProjects?.()||fallbackProjects;
 const colors=typeof COLORES_PABELLON!=='undefined'?COLORES_PABELLON:{};
 const search=$('#projectSearch'),status=$('#statusFilter'),pavilion=$('#pavilionFilter');
 const pointLayer=$('#pointsLayer'),metricGrid=$('#metricGrid');
 const safe=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const all=()=>projects;
+const all=()=>getProjects();
 function filter(){
  const q=(search?.value||'').trim().toLocaleLowerCase('es'),st=status?.value||'',pv=pavilion?.value||'';
  let count=0;
  document.querySelectorAll('.map-point,.project-list-item').forEach(el=>{
-   const p=projects.find(x=>x.id===el.dataset.id);if(!p)return;
+   const p=getProjects().find(x=>x.id===el.dataset.id);if(!p)return;
    const hay=[p.nombre,p.responsable,p.descripcion,p.notas,p.fecha,p.estado].join(' ').toLocaleLowerCase('es');
    const ok=(!q||hay.includes(q))&&(!st||p.estado===st)&&(!pv||(pv==='general'?p.tipo==='general':p.tipo==='especifico'&&(p.pabellon||'sin')===pv));
    if(el.classList.contains('map-point')){el.classList.toggle('is-filtered-out',!ok);el.disabled=!ok;}
    else el.hidden=!ok;
    if(el.classList.contains('map-point')&&ok)count++;
  });
- const label=$('#mapProjectCount');if(label)label.textContent='▥ '+count+' de '+projects.length+' proyectos';
+ const label=$('#mapProjectCount');if(label)label.textContent='▥ '+count+' de '+getProjects().length+' proyectos';
 }
 function bars(node,rows,total){
  if(!node)return;
  node.innerHTML=rows.map(r=>'<div class="breakdown-row"><span>'+safe(r.label)+'</span><div class="mini-track"><i style="width:'+(total?100*r.count/total:0)+'%;--bar-color:'+r.color+'"></i></div><strong>'+r.count+'</strong></div>').join('');
 }
 function dashboard(){
- const n=projects.length,by=s=>projects.filter(p=>p.estado===s).length;
+ const n=getProjects().length,by=s=>getProjects().filter(p=>p.estado===s).length;
  const metrics=[['Proyectos registrados',n],['Contratados',by('Contratado')],['En estructuración',by('Estructuración')],['En ejecución',by('En ejecución')],['Finalizados',by('Finalizado')]];
  if(metricGrid)metricGrid.innerHTML=metrics.map(m=>'<article class="metric-card"><span>'+m[0]+'</span><strong>'+m[1]+'</strong></article>').join('');
  const keys=['amarillo','rojo','verde','azul','blanco','sin'];
- bars($('#pavilionBreakdown'),keys.map(k=>({label:colors[k]?.nombre||k,count:projects.filter(p=>p.tipo==='especifico'&&(p.pabellon||'sin')===k).length,color:colors[k]?.fondo||'#8B93A0'})).concat([{label:'General',count:projects.filter(p=>p.tipo==='general').length,color:colors.general?.fondo||'#7B3FC6'}]),n);
+ bars($('#pavilionBreakdown'),keys.map(k=>({label:colors[k]?.nombre||k,count:getProjects().filter(p=>p.tipo==='especifico'&&(p.pabellon||'sin')===k).length,color:colors[k]?.fondo||'#8B93A0'})).concat([{label:'General',count:getProjects().filter(p=>p.tipo==='general').length,color:colors.general?.fondo||'#7B3FC6'}]),n);
  bars($('#statusBreakdown'),['Contratado','Estructuración','En ejecución','Finalizado'].map((s,i)=>({label:s,count:by(s),color:['#2F9E50','#ff9700','#1D5FD6','#7B3FC6'][i]})),n);
 }
 function chronology(p){
@@ -65,8 +66,8 @@ function gallery(p){
 }
 function printReport(){
  const w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para generar el informe.');return;}
- const rows=projects.map(p=>'<tr><td>'+safe(p.nombre)+'</td><td>'+safe(p.tipo==='general'?'General':(colors[p.pabellon]?.nombre||'Sin asignar'))+'</td><td>'+safe(p.estado)+'</td><td>'+safe(p.valor)+'</td><td>'+safe(p.fecha)+'</td></tr>').join('');
- w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Informe de proyectos · Plaza Mayor</title><style>body{font:13px Arial;padding:30px;color:#172b45}h1{color:#003e99}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{padding:10px;text-align:left;border-bottom:1px solid #dce4ee}th{background:#edf3fa;color:#003e99}@media print{body{padding:0}}</style><h1>Plaza Mayor · Informe de proyectos</h1><p>'+projects.length+' proyectos registrados</p><table><thead><tr><th>Proyecto</th><th>Ubicación</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr></thead><tbody>'+rows+'</tbody></table><script>window.onload=()=>window.print()<\\/script></html>');
+ const rows=getProjects().map(p=>'<tr><td>'+safe(p.nombre)+'</td><td>'+safe(p.tipo==='general'?'General':(colors[p.pabellon]?.nombre||'Sin asignar'))+'</td><td>'+safe(p.estado)+'</td><td>'+safe(p.valor)+'</td><td>'+safe(p.fecha)+'</td></tr>').join('');
+ w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Informe de proyectos · Plaza Mayor</title><style>body{font:13px Arial;padding:30px;color:#172b45}h1{color:#003e99}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{padding:10px;text-align:left;border-bottom:1px solid #dce4ee}th{background:#edf3fa;color:#003e99}@media print{body{padding:0}}</style><h1>Plaza Mayor · Informe de proyectos</h1><p>'+getProjects().length+' proyectos registrados</p><table><thead><tr><th>Proyecto</th><th>Ubicación</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr></thead><tbody>'+rows+'</tbody></table><script>window.onload=()=>window.print()<\\/script></html>');
  w.document.close();
 }
 function printProject(p){
@@ -80,8 +81,13 @@ function bind(){
  $('#clearFilters')?.addEventListener('click',()=>{search.value='';status.value='';pavilion.value='';filter();});
  $('#printReport')?.addEventListener('click',printReport);\n $('#dashboardToggle')?.addEventListener('click',e=>{const content=$('#dashboardContent'),hide=!content.hidden;content.hidden=hide;e.currentTarget.textContent=hide?'Mostrar indicadores':'Ocultar indicadores';e.currentTarget.setAttribute('aria-expanded',String(!hide));});
  $('#focusMode')?.addEventListener('click',e=>{const active=document.body.classList.toggle('focus-mode');e.currentTarget.setAttribute('aria-pressed',String(active));e.currentTarget.setAttribute('aria-label',active?'Desactivar modo de enfoque':'Activar modo de enfoque');});
- pointLayer?.addEventListener('click',e=>{const point=e.target.closest('.map-point');if(!point)return;const p=projects.find(x=>x.id===point.dataset.id);if(!p)return;setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);});
- document.querySelectorAll('.project-list-item').forEach(el=>el.addEventListener('click',()=>{const p=projects.find(x=>x.id===el.dataset.id);if(p)setTimeout(()=>{gallery(p);chronology(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);}));
+ pointLayer?.addEventListener('click',e=>{const point=e.target.closest('.map-point');if(!point)return;const p=getProjects().find(x=>x.id===point.dataset.id);if(!p)return;setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);});
+ document.querySelectorAll('.project-list-item').forEach(el=>el.addEventListener('click',()=>{const p=getProjects().find(x=>x.id===el.dataset.id);if(p)setTimeout(()=>{gallery(p);chronology(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);}));
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{dashboard();bind();filter();});else{dashboard();bind();filter();}
+function renderFinancials(){const ps=getProjects(),fmt=n=>new Intl.NumberFormat('es-CO').format(n),money=p=>Number(String(p.valor||'').replace(/[^0-9]/g,''))||0;const groups=[['Contratado','#2F9E50'],['Estructuración','#ff9700'],['En ejecución','#1D5FD6'],['Finalizado','#7B3FC6']];const target=$('#financialTotals'),summary=$('#financialSummary');const cards=groups.map(([name,color])=>{const list=ps.filter(p=>p.estado===name),sum=list.reduce((a,p)=>a+money(p),0);return '<div><span class="status-dot" style="background:'+color+'"></span><span class="total-label">'+name+'</span><strong>'+list.length+'</strong><small>Valor registrado: 
+})();+fmt(sum)+'</small></div>';}).join('');if(target)target.innerHTML=cards;if(summary)summary.innerHTML=groups.slice(0,2).map(([name,color])=>{const list=ps.filter(p=>p.estado===name),sum=list.reduce((a,p)=>a+money(p),0);return '<div class="summary-card"><span>'+name+'</span><strong>'+list.length+' proyectos</strong><small>Valor registrado: 
+})();+fmt(sum)+'</small></div>';}).join('');const specific=ps.filter(p=>p.tipo==='especifico').length,general=ps.filter(p=>p.tipo==='general').length;[['specificCount',specific],['specificFullCount',specific],['generalCount',general],['generalFullCount',general]].forEach(([id,n])=>{const el=document.getElementById(id);if(el)el.textContent=id.includes('Full')?n+' proyectos':'('+n+')';});}
+function refreshAll(){dashboard();filter();renderFinancials();}
+window.addEventListener('plaza:datachange',refreshAll);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{bind();refreshAll();});else{bind();refreshAll();}
 })();
