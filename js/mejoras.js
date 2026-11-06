@@ -2,8 +2,8 @@
 (() => {
 'use strict';
 const $=s=>document.querySelector(s);
-const projects=Array.isArray(window.PROYECTOS)?window.PROYECTOS:[];
-const colors=window.COLORES_PABELLON||{};
+const projects=typeof PROYECTOS!=='undefined'&&Array.isArray(PROYECTOS)?PROYECTOS:[];
+const colors=typeof COLORES_PABELLON!=='undefined'?COLORES_PABELLON:{};
 const search=$('#projectSearch'),status=$('#statusFilter'),pavilion=$('#pavilionFilter');
 const pointLayer=$('#pointsLayer'),metricGrid=$('#metricGrid');
 const safe=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
