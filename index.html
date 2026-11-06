@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-12">
+  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-13">
 </head>
 <body>
   <div class="app-shell" id="appShell">
@@ -78,6 +78,20 @@
     <button class="timeline-year is-future" type="button" data-timeline-year="2027" aria-label="Ver información de 2027"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2027</span><span class="timeline-action-label">Ver etapa</span></span><span class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></span></button>
   </div>
 </section>
+
+<div class="timeline-detail-overlay" id="timelineDetailOverlay" hidden aria-hidden="true">
+  <section class="timeline-detail" role="dialog" aria-modal="true" aria-labelledby="timelineDetailTitle">
+    <button class="icon-button timeline-detail-close" id="timelineDetailClose" type="button" aria-label="Cerrar detalle">×</button>
+    <div class="timeline-detail-photo" id="timelineDetailPhoto"></div>
+    <div class="timeline-detail-body">
+      <p class="eyebrow" id="timelineDetailEyebrow">LÍNEA DE TIEMPO</p>
+      <h2 id="timelineDetailTitle"></h2>
+      <p class="timeline-detail-summary" id="timelineDetailSummary"></p>
+      <div class="timeline-detail-stats" id="timelineDetailStats"></div>
+      <div class="timeline-detail-projects" id="timelineDetailProjects"></div>
+    </div>
+  </section>
+</div>
 <footer class="investment-disclaimer"><p>La información presentada en este tablero tiene carácter informativo y corresponde al estado de avance de las obras con corte a la fecha de actualización. Los cronogramas, porcentajes y fechas estimadas pueden estar sujetos a modificaciones de acuerdo con las condiciones técnicas, operativas y administrativas de cada proyecto. Las actualizaciones se realizarán conforme avance la ejecución y se valide la información correspondiente.</p></footer>
 <section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
       <div class="edit-head"><div><p class="eyebrow">MODO EDICIÓN</p><h2>Ajustes del mapa</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
@@ -105,7 +119,7 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-7"></script><script src="./js/animaciones.js"></script><script src="./js/mejoras.js?v=seguimiento-3"></script><script>
+  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-8"></script><script src="./js/animaciones.js"></script><script src="./js/mejoras.js?v=seguimiento-3"></script><script>
 (()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.toggle('is-active',x===t));document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
 
 const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const currentZoom=()=>Number(getComputedStyle(stage).getPropertyValue('--camera-scale'))||z;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,currentZoom()+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,currentZoom()-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};const infoPanel=document.getElementById('infoPanel'),infoHome=infoPanel.parentElement,infoNext=infoPanel.nextElementSibling;document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement===view){view.appendChild(infoPanel);infoPanel.style.position='fixed';infoPanel.style.zIndex='2147483000';infoPanel.style.right='24px';infoPanel.style.top='50%';}else{if(infoNext&&infoNext.parentElement===infoHome)infoHome.insertBefore(infoPanel,infoNext);else infoHome.appendChild(infoPanel);infoPanel.style.position='';infoPanel.style.zIndex='';infoPanel.style.right='';infoPanel.style.top='';}});
