@@ -130,6 +130,54 @@ function showPresentationPoint(){const id=PRESENTATION_ORDER[state.presentationI
 function updatePresentationProgress(){const n=PRESENTATION_ORDER.length;els.presentationCounter.textContent=Math.min(state.presentationIndex+1,n)+' / '+n;els.presentationProgressBar.style.width=((state.presentationIndex+1)/n)*100+'%';}
 function presentationKey(key){if(!state.presentation)return;if(key===' '){state.presentationPaused=!state.presentationPaused;if(state.presentationPaused)clearTimeout(state.presentationTimer);else showPresentationPoint();}else if(key==='ArrowRight'){state.presentationIndex=Math.min(PRESENTATION_ORDER.length-1,state.presentationIndex+1);showPresentationPoint();}else if(key==='ArrowLeft'){state.presentationIndex=Math.max(0,state.presentationIndex-1);showPresentationPoint();}else if(key==='Escape'){presentationStop();}}
 function recordingMode(){const p=new URLSearchParams(location.search),recording=p.get('grabacion')==='1',legend=p.get('leyenda')!=='0';document.body.classList.toggle('recording-mode',recording);els.recordingLegend.hidden=!(recording&&legend);if(recording&&p.get('presentar')==='1')setTimeout(presentationStart,500);let hideTimer;const reset=()=>{document.body.classList.remove('cursor-hidden');clearTimeout(hideTimer);if(recording)hideTimer=setTimeout(()=>document.body.classList.add('cursor-hidden'),2000);};window.addEventListener('mousemove',reset,{passive:true});reset();}
+
+const PRIORITY_STORAGE_KEY='plaza-mayor-lineas-inversion-v1';
+function initPriorityChart(){
+ const chart=$('#priorityDonut'),totalLabel=$('#priorityTotal'),inputs=$$('[data-priority]');
+ if(!chart||!totalLabel||inputs.length!==3)return;
+ const defaults={experience:45,technology:37,safety:15};
+ let saved={};
+ try{saved=JSON.parse(localStorage.getItem(PRIORITY_STORAGE_KEY)||'{}')||{};}catch(_){}
+ inputs.forEach(input=>{
+  const key=input.dataset.priority;
+  const value=Number(saved[key]);
+  input.value=Number.isFinite(value)?Math.max(0,Math.min(100,value)):defaults[key];
+ });
+ const colors={experience:'#ff9700',technology:'#42a5f5',safety:'#43c69b'};
+ function update(){
+  const values={};
+  inputs.forEach(input=>{
+   let value=Number(input.value);
+   if(!Number.isFinite(value))value=0;
+   value=Math.max(0,Math.min(100,Math.round(value)));
+   values[input.dataset.priority]=value;
+  });
+  const sum=values.experience+values.technology+values.safety;
+  const scale=sum>100?100/sum:1;
+  let cursor=0;
+  const stops=[];
+  ['experience','technology','safety'].forEach(key=>{
+   const next=cursor+values[key]*scale;
+   stops.push(colors[key]+' '+cursor.toFixed(2)+'% '+next.toFixed(2)+'%');
+   cursor=next;
+  });
+  if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor.toFixed(2)+'% 100%');
+  chart.style.background='conic-gradient('+stops.join(',')+')';
+  totalLabel.textContent=sum+'%';
+  chart.setAttribute('aria-label','Gráfica pastel: mejora de experiencias '+values.experience+'%, actualización tecnológica '+values.technology+'%, seguridad humana y mejora de operación '+values.safety+'%, total '+sum+'%');
+  try{localStorage.setItem(PRIORITY_STORAGE_KEY,JSON.stringify(values));}catch(_){}
+ }
+ inputs.forEach(input=>{
+  input.addEventListener('input',update);
+  input.addEventListener('change',()=>{
+   const n=Number(input.value);
+   input.value=Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):0;
+   update();
+  });
+ });
+ update();
+}
+
 function initSwipeClose(){els.infoPanel.addEventListener('touchstart',e=>{state.touchStartY=e.touches[0].clientY;},{passive:true});els.infoPanel.addEventListener('touchend',e=>{if(state.touchStartY==null)return;if(e.changedTouches[0].clientY-state.touchStartY>90)closePanel();state.touchStartY=null;},{passive:true});}
 els.panelClose.addEventListener('click',()=>closePanel());els.themeToggle.addEventListener('click',toggleTheme);els.editToggle.addEventListener('click',()=>toggleEdit());els.editClose.addEventListener('click',()=>toggleEdit(false));
 els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;const p=projectById(state.selectedId);if(p?.tipo==='especifico'){p.pabellon=els.pavilionSelect.value;renderAll();persistEdits();}});
