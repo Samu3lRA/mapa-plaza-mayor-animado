@@ -134,7 +134,7 @@ function recordingMode(){const p=new URLSearchParams(location.search),recording=
 
 const PRIORITY_STORAGE_KEY='plaza-mayor-lineas-inversion-v1';
 function initPriorityChart(){
- const chart=$('#priorityDonut'),totalLabel=$('#priorityTotal'),inputs=$('[data-priority]');
+ const chart=$('#priorityDonut'),totalLabel=$('#priorityTotal'),inputs=$$('[data-priority]');
  if(!chart||!totalLabel||inputs.length!==3)return;
  const defaults={experience:45,technology:37,safety:15};
  const colors={experience:'#ff9700',technology:'#42a5f5',safety:'#43c69b'};
