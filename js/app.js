@@ -16,6 +16,58 @@ function showToast(m){els.toast.textContent=m;els.toast.classList.add('is-visibl
 function renderLegend(){els.legendItems.innerHTML='';['amarillo','azul','rojo','blanco','verde','convenciones','sin','general'].forEach(k=>{const c=COLORES_PABELLON[k],i=document.createElement('span');i.className='legend-item';i.innerHTML='<i style="--legend-bg:'+c.fondo+';--legend-text:'+c.texto+'"></i><span>'+escapeHtml(c.nombre)+'</span>';els.legendItems.appendChild(i);});}
 function createPoint(p,index){const c=colorFor(p),b=document.createElement('button');b.type='button';b.className='map-point';b.dataset.id=p.id;b.style.left=p.x+'%';b.style.top=p.y+'%';b.style.setProperty('--point-bg',c.fondo);b.style.setProperty('--point-text',c.texto);b.style.setProperty('--entry-delay',(index*45)+'ms');b.setAttribute('aria-label',p.nombre);b.innerHTML='<span>'+(p.tipo==='general'?'TI':p.id.slice(1))+'</span><span class="point-tooltip" aria-hidden="true">'+escapeHtml(p.nombre)+'</span>';b.addEventListener('click',()=>selectProject(p.id,{open:true}));b.addEventListener('pointerdown',e=>{if(state.editing)beginDrag(e,b);});return b;}
 function renderPoints(){els.pointsLayer.innerHTML='';state.data.forEach((p,i)=>els.pointsLayer.appendChild(createPoint(p,i)));}
+
+const PLACE_MARKERS=[
+ {id:'amarillo',name:'Pabellón Amarillo',x:18,y:18,color:'#F2C200'},
+ {id:'rojo',name:'Pabellón Rojo',x:48,y:17,color:'#D93636'},
+ {id:'verde',name:'Pabellón Verde',x:78,y:22,color:'#2F9E50'},
+ {id:'azul',name:'Pabellón Azul',x:20,y:78,color:'#1D5FD6'},
+ {id:'blanco',name:'Pabellón Blanco',x:53,y:82,color:'#F6F6F6'},
+ {id:'convenciones',name:'Convenciones',x:82,y:75,color:'#8B5A2B'}
+];
+function renderPlaceMarkers(){
+ const layer=$('#placeMarkers');if(!layer)return;
+ layer.innerHTML=PLACE_MARKERS.map(p=>'<div class="place-marker" style="left:'+p.x+'%;top:'+p.y+'%;--place-color:'+p.color+'" title="'+p.name+'"><span class="place-pin" aria-hidden="true">⌖</span><span class="place-label">'+p.name+'</span></div>').join('');
+}
+function applyProjectFilters(){
+ const q=($('#projectSearch')?.value||'').trim().toLocaleLowerCase('es');
+ const status=$('#statusFilter')?.value||'',pavilion=$('#pavilionFilter')?.value||'';
+ const matches=p=>{
+  const pavilionName=p.tipo==='general'?'Toda la infraestructura':(COLORES_PABELLON[p.pabellon]?.nombre||'Sin asignar');
+  const haystack=[p.nombre,p.responsable,p.estado,p.fecha,p.valor,p.descripcion,p.notas,pavilionName,p.tipo].join(' ').toLocaleLowerCase('es');
+  const queryOk=!q||haystack.includes(q);
+  const statusOk=!status||p.estado===status;
+  const pavilionOk=!pavilion||(pavilion==='general'?p.tipo==='general':pavilion==='sin'?p.tipo==='especifico'&&(!p.pabellon||p.pabellon==='sin'):p.tipo==='especifico'&&p.pabellon===pavilion);
+  return queryOk&&statusOk&&pavilionOk;
+ };
+ const visible=new Set(state.data.filter(matches).map(p=>p.id));
+ $('.map-point').forEach(el=>{const show=visible.has(el.dataset.id);el.classList.toggle('is-filtered-out',!show);el.setAttribute('aria-hidden',String(!show));el.tabIndex=show?0:-1;});
+ $('.project-list-item').forEach(el=>{el.hidden=!visible.has(el.dataset.id);});
+ const specific=state.data.filter(p=>p.tipo==='especifico'&&visible.has(p.id)).length;
+ const general=state.data.filter(p=>p.tipo==='general'&&visible.has(p.id)).length;
+ const sc=$('#specificCount'),gc=$('#generalCount');
+ if(sc)sc.textContent='('+specific+')';if(gc)gc.textContent='('+general+')';
+ const mc=$('#mapProjectCount');if(mc)mc.textContent='▥ '+visible.size+' proyectos';
+ ['specific','general'].forEach(type=>{
+  const list=type==='specific'?$('#specificList'):$('#generalList');
+  if(!list)return;
+  let empty=list.querySelector('.filter-empty');
+  const count=type==='specific'?specific:general;
+  if(!count&&!empty){empty=document.createElement('p');empty.className='filter-empty';empty.textContent='No se encontraron proyectos.';list.appendChild(empty);}
+  if(count&&empty)empty.remove();
+ });
+}
+function initProjectFilters(){
+ ['projectSearch','statusFilter','pavilionFilter'].forEach(id=>{
+  const el=$('#'+id);if(!el)return;
+  el.addEventListener(el.tagName==='INPUT'?'input':'change',applyProjectFilters);
+ });
+ $('#clearFilters')?.addEventListener('click',()=>{
+  $('#projectSearch').value='';$('#statusFilter').value='';$('#pavilionFilter').value='';
+  applyProjectFilters();$('#projectSearch').focus();
+ });
+}
+
 function createListItem(p){const c=colorFor(p),i=document.createElement('button');i.type='button';i.className='project-list-item';i.dataset.id=p.id;i.innerHTML='<span class="list-marker" style="--point-bg:'+c.fondo+';--point-text:'+c.texto+'">'+(p.tipo==='general'?'TI':p.id.slice(1))+'</span><span class="list-copy"><strong>'+escapeHtml(p.nombre)+'</strong><span>'+escapeHtml(p.valor)+' · '+escapeHtml(p.fecha)+'</span></span><span class="list-status">'+escapeHtml(p.tipo === "general" ? "Toda la infraestructura" : (p.pabellon === "sin" ? "Sin asignar" : (COLORES_PABELLON[p.pabellon]?.nombre || "Sin asignar")))+'</span>';i.addEventListener('click',()=>selectProject(p.id,{open:true}));return i;}
 function renderLists(){els.generalList.innerHTML='';els.specificList.innerHTML='';state.data.filter(p=>p.tipo==='general').forEach(p=>els.generalList.appendChild(createListItem(p)));state.data.filter(p=>p.tipo==='especifico').forEach(p=>els.specificList.appendChild(createListItem(p)));}
 function clearSelected(){$$('.is-selected').forEach(e=>e.classList.remove('is-selected'));}
@@ -35,7 +87,7 @@ function persistEdits(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(stat
 function restoreEdits(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;const saved=JSON.parse(raw);if(!Array.isArray(saved)||saved.length!==state.data.length)return;state.data=state.data.map(p=>{const s=saved.find(x=>x.id===p.id);return s?{...p,x:s.x,y:s.y,pabellon:p.tipo==='especifico'?(s.pabellon||'sin'):undefined}:p;});}catch(_){}}
 function resetEdits(){try{localStorage.removeItem(STORAGE_KEY);}catch(_){}state.data=cloneProjects(PROYECTOS);renderAll();showToast('Puntos restablecidos a datos.js.');}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
-function renderAll(){renderPoints();renderLists();renderLegend();updateDataOutput();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
+function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
 window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
 function toggleEdit(force){state.editing=force??!state.editing;els.editToggle.setAttribute('aria-pressed',String(state.editing));els.editToggle.textContent=state.editing?'Cerrar edición':'Modo edición';els.editPanel.hidden=!state.editing;document.body.classList.toggle('editing',state.editing);if(state.editing)updateDataOutput();}
 function downloadJSON(){const data=state.data.map(p=>{const o={nombre:p.nombre,x:p.x,y:p.y};if(p.tipo==='especifico')o.pabellon=p.pabellon;return o;});const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='puntos.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
@@ -55,5 +107,5 @@ els.pavilionSelect.addEventListener('change',()=>{if(!state.selectedId)return;co
 els.copyData.addEventListener('click',copyData);els.downloadData.addEventListener('click',downloadJSON);els.resetData.addEventListener('click',resetEdits);els.presentToggle.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
-initTheme();restoreEdits();renderAll();initSwipeClose();recordingMode();
+initTheme();restoreEdits();renderAll();initProjectFilters();initSwipeClose();recordingMode();
 })();
