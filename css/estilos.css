@@ -767,3 +767,9 @@ html[data-theme="light"] .comparison-empty{background:rgba(0,62,153,.06);color:#
 .place-marker:nth-child(5) .place-pin{color:#172b45}
 @media(max-width:760px){.place-pin{width:23px;height:23px;font-size:14px}.place-label{font-size:8px;padding:5px 6px}}
 .filter-empty{padding:12px;color:#9fb1c7;font-size:11px;text-align:center}
+
+/* Edición de ubicaciones fijas desde el mismo modo de edición */
+body.editing .place-markers{pointer-events:auto}
+body.editing .place-marker{pointer-events:auto;cursor:grab;touch-action:none;user-select:none;outline:1px dashed rgba(255,151,0,.65);outline-offset:5px;border-radius:9px}
+body.editing .place-marker:active{cursor:grabbing;z-index:30;filter:drop-shadow(0 5px 14px #ff9700aa)}
+body.editing .place-marker::after{content:"Mover";position:absolute;left:50%;top:calc(100% + 5px);transform:translateX(-50%);padding:3px 6px;border-radius:5px;background:#ff9700;color:#14243a;font-size:8px;font-weight:900;opacity:.95}
