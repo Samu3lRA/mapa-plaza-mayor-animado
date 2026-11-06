@@ -178,7 +178,7 @@ function resetEdits(){
  state.data=cloneProjects(PROYECTOS);
  PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
  $('[data-priority]').forEach(input=>{const defaults={experience:45,technology:37,safety:15};input.value=defaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
- recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast('Mapa restablecido a los valores iniciales.');
+ recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
 }
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
 function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();updateDataQualityReport();renderEditHistory();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
@@ -233,7 +233,7 @@ function importBackup(file){
    if(priorities){
     $('[data-priority]').forEach(input=>{if(priorities[input.dataset.priority]!==undefined){input.value=Number(priorities[input.dataset.priority]);input.dispatchEvent(new Event('input',{bubbles:true}));}});
    }
-   recordChange('Respaldo importado','Se importaron posiciones, pabellones y porcentajes desde un archivo de respaldo.');renderAll();showToast('Respaldo importado correctamente.');
+   recordChange('Respaldo importado','Se importaron posiciones, pabellones y porcentajes desde un archivo de respaldo.');renderAll();showToast(storageWarningShown?'Respaldo cargado en esta sesión, pero no se pudo confirmar el guardado local. Descarga un respaldo.':'Respaldo importado correctamente.');
   }catch(error){showToast(error.message||'No se pudo importar el respaldo.');}
   if(els.importFile)els.importFile.value='';
  };
