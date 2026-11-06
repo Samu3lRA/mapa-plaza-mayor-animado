@@ -719,3 +719,33 @@ html[data-theme="light"] .comparison-empty{background:rgba(0,62,153,.06);color:#
   .map-section{width:100%}
   .map-viewport{width:100%}
 }
+
+
+/* Experiencia interactiva: estados de hover, selección, panel y navegación */
+.map-viewport{cursor:grab;touch-action:pan-y}
+.map-viewport.is-panning{cursor:grabbing;user-select:none}
+.map-viewport.is-panning .map-stage{transition:none!important}
+.map-viewport.is-panning .map-image{pointer-events:none}
+.map-point{transition:transform .24s cubic-bezier(.2,.8,.2,1),box-shadow .24s ease,filter .24s ease}
+.map-point::after{content:"";position:absolute;inset:-7px;border:2px solid var(--point-bg);border-radius:50%;opacity:0;transform:scale(.55);pointer-events:none}
+.map-point:hover::after,.map-point:focus-visible::after,.map-point.is-selected::after{animation:pointRipple 1.45s ease-out infinite}
+.map-point.is-selected{z-index:12;filter:brightness(1.12);box-shadow:0 0 0 4px #ffffff65,0 0 24px var(--point-bg),0 0 42px color-mix(in srgb,var(--point-bg) 45%,transparent)}
+.map-point.is-filtered-out{opacity:.12!important;filter:grayscale(1);pointer-events:none;transform:scale(.72)}
+.point-tooltip{transition:opacity .2s ease,transform .2s ease;box-shadow:0 8px 24px #0005;backdrop-filter:blur(12px)}
+.info-panel{background:linear-gradient(150deg,rgba(8,35,68,.96),rgba(0,28,65,.94));border:1px solid rgba(255,255,255,.22);box-shadow:0 24px 80px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.12);backdrop-filter:blur(22px)}
+.info-panel.is-open .panel-block{animation:panelContentIn .42s both}
+.info-panel.is-open .panel-block:nth-child(2){animation-delay:.04s}
+.info-panel.is-open .panel-block:nth-child(3){animation-delay:.08s}
+.info-panel.is-open .panel-block:nth-child(4){animation-delay:.12s}
+.info-panel.is-open .panel-block:nth-child(5){animation-delay:.16s}
+.info-panel.is-open .panel-block:nth-child(6){animation-delay:.20s}
+.panel-photo{transition:transform .65s cubic-bezier(.2,.8,.2,1),filter .4s ease}
+.info-panel.is-open .panel-photo{animation:photoReveal .65s both}
+.map-point:focus-visible,.icon-button:focus-visible,.button:focus-visible{outline:3px solid #ff9700;outline-offset:3px}
+@keyframes pointRipple{0%{opacity:.7;transform:scale(.65)}100%{opacity:0;transform:scale(1.65)}}
+@keyframes panelContentIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes photoReveal{from{transform:scale(1.06);filter:brightness(.7)}to{transform:scale(1);filter:brightness(1)}}
+@media(prefers-reduced-motion:reduce){
+ .map-point,.point-tooltip,.info-panel,.map-stage,.panel-photo{animation:none!important;transition:none!important}
+ .map-point::after{display:none}
+}
