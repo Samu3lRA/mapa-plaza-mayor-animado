@@ -459,3 +459,15 @@ body{background:radial-gradient(ellipse at 78% 0%,rgba(0,62,153,.32),transparent
     font-size:21px;
   }
 }
+
+
+/* Fondo general en azul institucional Plaza Mayor */
+html,body{
+  background:#003e99 !important;
+}
+body{
+  background:#003e99 !important;
+}
+.app-shell{
+  background:#003e99;
+}
