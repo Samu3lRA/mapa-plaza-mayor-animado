@@ -5,7 +5,8 @@ const COLORES_PABELLON = {
   azul:{nombre:'Azul',fondo:'#1D5FD6',texto:'#FFFFFF'},
   blanco:{nombre:'Blanco',fondo:'#F6F6F6',texto:'#14171C'},
   sin:{nombre:'Sin asignar',fondo:'#8B93A0',texto:'#14171C'},
-  general:{nombre:'General (G)',fondo:'#7B3FC6',texto:'#FFFFFF'}
+  convenciones:{nombre:'Convenciones',fondo:'#8B5A2B',texto:'#FFFFFF'},
+  general:{nombre:'Toda la infraestructura',fondo:'#7B3FC6',texto:'#FFFFFF'}
 };
 
 const PROYECTOS = [
