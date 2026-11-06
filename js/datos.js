@@ -34,3 +34,10 @@ const PROYECTOS = [
   {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:18,y:34,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
 ];
 const ORDEN_PRESENTACION=['e1','e2','e3','e4','e5','e6','e7','e8','e9','g1','g2','g3','g4','g5','g6','g7','g8','g9','g10','g11','g12','g13'];
+/* Datos de la línea de tiempo institucional. */
+const LINEA_TIEMPO = [
+ {year:2024,title:'Antecedentes',summary:'Inicio del horizonte de planificación y antecedentes que dan contexto al plan de inversión.',foto:'',detalle:'Etapa de referencia para entender el punto de partida del proceso de inversión.'},
+ {year:2025,title:'Planeación',summary:'Definición y priorización de necesidades para orientar las intervenciones del complejo.',foto:'',detalle:'Etapa de planeación y organización de las necesidades que posteriormente se convierten en proyectos.'},
+ {year:2026,title:'Contratación y estructuración',summary:'Seguimiento de proyectos, contratación y preparación de intervenciones.',foto:'',detalle:'Año en el que se concentran proyectos contratados y proyectos en estructuración dentro del tablero.'},
+ {year:2027,title:'Ejecución proyectada',summary:'Año con fechas previstas para contratación, ejecución y entrega de diferentes intervenciones.',foto:'',detalle:'Las fechas mostradas corresponden a la información registrada actualmente en cada proyecto y pueden actualizarse.'}
+];
