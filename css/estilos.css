@@ -757,3 +757,13 @@ html[data-theme="light"] .comparison-empty{background:rgba(0,62,153,.06);color:#
 
 /* Corrección: los estados hover/seleccionado deben conservar visible el marcador. */
 .map-point:hover,.map-point:focus-visible,.map-point.is-selected{opacity:1!important}
+
+/* Señalización fija de pabellones: independiente de los puntos de proyectos */
+.place-markers{position:absolute;inset:0;z-index:2;pointer-events:none}
+.place-marker{position:absolute;display:flex;align-items:center;gap:6px;transform:translate(-50%,-50%);white-space:nowrap;filter:drop-shadow(0 3px 8px #00142c99)}
+.place-pin{display:grid;place-items:center;width:27px;height:27px;border:2px solid #fff;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--place-color);color:#172b45;font-size:17px;font-weight:900;box-shadow:0 0 0 3px #003e994d}
+.place-pin::first-letter{transform:rotate(45deg)}
+.place-label{padding:6px 9px;border:1px solid #ffffff70;border-radius:8px;background:rgba(5,25,48,.82);color:#fff;font-size:10px;font-weight:800;letter-spacing:.02em;backdrop-filter:blur(10px)}
+.place-marker:nth-child(5) .place-pin{color:#172b45}
+@media(max-width:760px){.place-pin{width:23px;height:23px;font-size:14px}.place-label{font-size:8px;padding:5px 6px}}
+.filter-empty{padding:12px;color:#9fb1c7;font-size:11px;text-align:center}
