@@ -1168,3 +1168,28 @@ html[data-theme="light"] .timeline-detail-body h2,html[data-theme="light"] .time
 html[data-theme="light"] .timeline-detail-summary,html[data-theme="light"] .timeline-detail-description p,html[data-theme="light"] .timeline-project-card small,html[data-theme="light"] .timeline-no-projects{color:#64758b}
 html[data-theme="light"] .timeline-detail-stats>div,html[data-theme="light"] .timeline-project-card{background:rgba(0,62,153,.035);border-color:rgba(0,62,153,.1)}
 @media(max-width:760px){.timeline-global{grid-template-columns:repeat(4,minmax(100px,1fr));overflow-x:auto;padding:0 2px 6px}.timeline-global::before{left:48px;right:48px}.timeline-year-node{width:64px;height:64px}.timeline-year-copy{max-width:100px}.timeline-detail-overlay{padding:10px}.timeline-detail{max-height:92vh;border-radius:18px}.timeline-detail-body{padding:15px}}
+
+/* Acabado visual de la línea de tiempo: foto, año y llamada a la acción */
+.timeline-year{gap:11px}
+.timeline-year-node{width:88px;height:88px;border-width:3px;box-shadow:0 0 0 6px rgba(255,255,255,.055),0 9px 24px rgba(0,0,0,.22)}
+.timeline-year-photo{overflow:hidden;border-radius:50%;transition:transform .35s ease,filter .35s ease}
+.timeline-year-photo img{transition:transform .45s ease,filter .35s ease}
+.timeline-year-label{top:7px;bottom:auto;min-width:44px;padding:4px 8px;font-size:10px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.timeline-action-label{position:absolute;left:50%;bottom:9px;transform:translate(-50%,8px);z-index:3;padding:5px 9px;border:1px solid rgba(255,255,255,.42);border-radius:999px;background:rgba(0,24,55,.86);color:#fff;font-size:9px;font-weight:800;letter-spacing:.02em;white-space:nowrap;opacity:0;transition:opacity .22s ease,transform .22s ease;backdrop-filter:blur(7px)}
+.timeline-year:hover .timeline-year-node,.timeline-year:focus-visible .timeline-year-node{transform:translateY(-5px) scale(1.045);box-shadow:0 0 0 7px rgba(255,151,0,.18),0 14px 30px rgba(0,0,0,.3)}
+.timeline-year:hover .timeline-year-photo img,.timeline-year:focus-visible .timeline-year-photo img{transform:scale(1.12);filter:brightness(.55)}
+.timeline-year:hover .timeline-action-label,.timeline-year:focus-visible .timeline-action-label{opacity:1;transform:translate(-50%,0)}
+.timeline-year-copy{max-width:230px}
+.timeline-year-copy strong{font-size:12px}
+.timeline-year-copy span{font-size:9px}
+.timeline-year:focus-visible .timeline-year-node{outline:2px solid #fff;outline-offset:5px}
+@media(hover:none){
+ .timeline-action-label{opacity:1;transform:translate(-50%,0);bottom:8px}
+ .timeline-year-photo{filter:brightness(.88)}
+}
+@media(max-width:760px){
+ .timeline-year-node{width:76px;height:76px}
+ .timeline-year-label{top:5px;font-size:9px}
+ .timeline-action-label{font-size:8px;padding:4px 7px;bottom:7px}
+ .timeline-year-copy{max-width:108px}
+}
