@@ -1197,7 +1197,7 @@ html[data-theme="light"] .timeline-detail-stats>div,html[data-theme="light"] .ti
 /* Capas y visibilidad: los marcadores siempre deben quedar sobre el plano */
 .map-stage{isolation:isolate}
 .map-picture{position:absolute;inset:0;z-index:0}
-.place-markers{position:absolute;inset:0;z-index:1;pointer-events:none}
+.place-markers{position:absolute;inset:0;z-index:1;pointer-events:none}.place-markers .place-marker{pointer-events:auto}
 .points-layer{position:absolute;inset:0;z-index:3;pointer-events:none}
 .points-layer .map-point{pointer-events:auto;opacity:1}
 .timeline-detail-overlay{z-index:1000}
