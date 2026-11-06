@@ -1193,3 +1193,12 @@ html[data-theme="light"] .timeline-detail-stats>div,html[data-theme="light"] .ti
  .timeline-action-label{font-size:8px;padding:4px 7px;bottom:7px}
  .timeline-year-copy{max-width:108px}
 }
+
+/* Capas y visibilidad: los marcadores siempre deben quedar sobre el plano */
+.map-stage{isolation:isolate}
+.map-picture{position:absolute;inset:0;z-index:0}
+.place-markers{position:absolute;inset:0;z-index:1;pointer-events:none}
+.points-layer{position:absolute;inset:0;z-index:3;pointer-events:none}
+.points-layer .map-point{pointer-events:auto;opacity:1}
+.timeline-detail-overlay{z-index:1000}
+.timeline-detail{z-index:1001}
