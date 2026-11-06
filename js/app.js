@@ -59,19 +59,20 @@ function restorePlaceEdits(){
  }catch(_){}
 }
 function applyProjectFilters(){
- const q=($('#projectSearch')?.value||'').trim().toLocaleLowerCase('es');
+ const normalize=s=>String(s??'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('es');
+  const q=normalize($('#projectSearch')?.value||'');
  const status=$('#statusFilter')?.value||'',pavilion=$('#pavilionFilter')?.value||'';
  const matches=p=>{
   const pavilionName=p.tipo==='general'?'Toda la infraestructura':(COLORES_PABELLON[p.pabellon]?.nombre||'Sin asignar');
-  const haystack=[p.nombre,p.responsable,p.estado,p.fecha,p.valor,p.descripcion,p.notas,pavilionName,p.tipo].join(' ').toLocaleLowerCase('es');
+  const haystack=normalize([p.nombre,p.responsable,p.estado,p.fecha,p.valor,p.descripcion,p.notas,pavilionName,p.tipo,p.pabellon].join(' '));
   const queryOk=!q||haystack.includes(q);
-  const statusOk=!status||p.estado===status;
+  const statusOk=!status||normalize(p.estado)===normalize(status);
   const pavilionOk=!pavilion||(pavilion==='general'?p.tipo==='general':pavilion==='sin'?p.tipo==='especifico'&&(!p.pabellon||p.pabellon==='sin'):p.tipo==='especifico'&&p.pabellon===pavilion);
   return queryOk&&statusOk&&pavilionOk;
  };
  const visible=new Set(state.data.filter(matches).map(p=>p.id));
- $('.map-point').forEach(el=>{const show=visible.has(el.dataset.id);el.classList.toggle('is-filtered-out',!show);el.setAttribute('aria-hidden',String(!show));el.tabIndex=show?0:-1;});
- $('.project-list-item').forEach(el=>{el.hidden=!visible.has(el.dataset.id);});
+ $$('.map-point').forEach(el=>{const show=visible.has(el.dataset.id);el.classList.toggle('is-filtered-out',!show);el.setAttribute('aria-hidden',String(!show));el.tabIndex=show?0:-1;});
+ $$('.project-list-item').forEach(el=>{el.hidden=!visible.has(el.dataset.id);});
  const specific=state.data.filter(p=>p.tipo==='especifico'&&visible.has(p.id)).length;
  const general=state.data.filter(p=>p.tipo==='general'&&visible.has(p.id)).length;
  const sc=$('#specificCount'),gc=$('#generalCount');
