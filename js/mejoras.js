@@ -84,9 +84,16 @@ function bind(){
  pointLayer?.addEventListener('click',e=>{const point=e.target.closest('.map-point');if(!point)return;const p=getProjects().find(x=>x.id===point.dataset.id);if(!p)return;setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);});
  document.querySelectorAll('.project-list-item').forEach(el=>el.addEventListener('click',()=>{const p=getProjects().find(x=>x.id===el.dataset.id);if(p)setTimeout(()=>{gallery(p);chronology(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);}));
 }
-function renderFinancials(){const ps=getProjects(),fmt=n=>new Intl.NumberFormat('es-CO').format(n),money=p=>Number(String(p.valor||'').replace(/[^0-9]/g,''))||0;const groups=[['Contratado','#2F9E50'],['Estructuración','#ff9700'],['En ejecución','#1D5FD6'],['Finalizado','#7B3FC6']];const target=$('#financialTotals'),summary=$('#financialSummary');const cards=groups.map(([name,color])=>{const list=ps.filter(p=>p.estado===name),sum=list.reduce((a,p)=>a+money(p),0);return '<div><span class="status-dot" style="background:'+color+'"></span><span class="total-label">'+name+'</span><strong>'+list.length+'</strong><small>Valor registrado: 
-})();+fmt(sum)+'</small></div>';}).join('');if(target)target.innerHTML=cards;if(summary)summary.innerHTML=groups.slice(0,2).map(([name,color])=>{const list=ps.filter(p=>p.estado===name),sum=list.reduce((a,p)=>a+money(p),0);return '<div class="summary-card"><span>'+name+'</span><strong>'+list.length+' proyectos</strong><small>Valor registrado: 
-})();+fmt(sum)+'</small></div>';}).join('');const specific=ps.filter(p=>p.tipo==='especifico').length,general=ps.filter(p=>p.tipo==='general').length;[['specificCount',specific],['specificFullCount',specific],['generalCount',general],['generalFullCount',general]].forEach(([id,n])=>{const el=document.getElementById(id);if(el)el.textContent=id.includes('Full')?n+' proyectos':'('+n+')';});}
+function renderFinancials(){
+ const ps=getProjects(),fmt=n=>new Intl.NumberFormat('es-CO').format(n),money=p=>Number(String(p.valor||'').replace(/[^0-9]/g,''))||0;
+ const groups=[['Contratado','#2F9E50'],['Estructuración','#ff9700'],['En ejecución','#1D5FD6'],['Finalizado','#7B3FC6']];
+ const target=$('#financialTotals'),summary=$('#financialSummary');
+ const cards=groups.map(([name,color])=>{const list=ps.filter(p=>p.estado===name),sum=list.reduce((a,p)=>a+money(p),0);return '<div><span class="status-dot" style="background:'+color+'"></span><span class="total-label">'+name+'</span><strong>'+list.length+'</strong><small>Valor registrado: $'+fmt(sum)+'</small></div>';}).join('');
+ if(target)target.innerHTML=cards;
+ if(summary)summary.innerHTML=groups.slice(0,2).map(([name])=>{const list=ps.filter(p=>p.estado===name),sum=list.reduce((a,p)=>a+money(p),0);return '<div class="summary-card"><span>'+name+'</span><strong>'+list.length+' proyectos</strong><small>Valor registrado: $'+fmt(sum)+'</small></div>';}).join('');
+ const specific=ps.filter(p=>p.tipo==='especifico').length,general=ps.filter(p=>p.tipo==='general').length;
+ [['specificCount',specific],['specificFullCount',specific],['generalCount',general],['generalFullCount',general]].forEach(([id,n])=>{const el=document.getElementById(id);if(el)el.textContent=id.includes('Full')?n+' proyectos':'('+n+')';});
+}
 function refreshAll(){dashboard();filter();renderFinancials();}
 window.addEventListener('plaza:datachange',refreshAll);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{bind();refreshAll();});else{bind();refreshAll();}
