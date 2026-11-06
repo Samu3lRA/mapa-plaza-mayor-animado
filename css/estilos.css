@@ -1202,3 +1202,16 @@ html[data-theme="light"] .timeline-detail-stats>div,html[data-theme="light"] .ti
 .points-layer .map-point{pointer-events:auto;opacity:1}
 .timeline-detail-overlay{z-index:1000}
 .timeline-detail{z-index:1001}
+
+/* Herramientas de respaldo y diagnóstico de datos */
+.edit-quality-details{margin-top:10px;padding:9px 10px;border:1px solid rgba(255,151,0,.28);border-radius:10px;background:rgba(255,151,0,.06);font-size:11px;color:var(--text)}
+.edit-quality-details summary{cursor:pointer;font-weight:750;color:var(--orange);user-select:none}
+.data-quality-report{display:grid;gap:6px;margin-top:10px}
+.quality-intro{margin:0 0 4px;color:var(--muted);font-size:10px;line-height:1.45}
+.quality-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--line);font-size:10px}
+.quality-row strong{font-variant-numeric:tabular-nums;color:var(--text)}
+.edit-actions .button{min-height:34px}
+@media(max-width:760px){
+ .edit-panel{max-height:min(68dvh,520px);overflow:auto}
+ .edit-actions .button{flex:1 1 calc(50% - 6px)}
+}
