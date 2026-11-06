@@ -133,21 +133,22 @@ function recordingMode(){const p=new URLSearchParams(location.search),recording=
 
 const PRIORITY_STORAGE_KEY='plaza-mayor-lineas-inversion-v1';
 function initPriorityChart(){
- const chart=$('#priorityDonut'),totalLabel=$('#priorityTotal'),inputs=$$('[data-priority]');
+ const chart=$('#priorityDonut'),totalLabel=$('#priorityTotal'),inputs=$('[data-priority]');
  if(!chart||!totalLabel||inputs.length!==3)return;
  const defaults={experience:45,technology:37,safety:15};
+ const colors={experience:'#ff9700',technology:'#42a5f5',safety:'#43c69b'};
  let saved={};
  try{saved=JSON.parse(localStorage.getItem(PRIORITY_STORAGE_KEY)||'{}')||{};}catch(_){}
  inputs.forEach(input=>{
   const key=input.dataset.priority;
-  const value=Number(saved[key]);
-  input.value=Number.isFinite(value)?Math.max(0,Math.min(100,value)):defaults[key];
+  const stored=Number(saved[key]);
+  input.value=Object.prototype.hasOwnProperty.call(saved,key)&&Number.isFinite(stored)?Math.max(0,Math.min(100,stored)):defaults[key];
  });
- const colors={experience:'#ff9700',technology:'#42a5f5',safety:'#43c69b'};
  function update(){
   const values={};
   inputs.forEach(input=>{
-   let value=Number(input.value);
+   const raw=input.value.trim();
+   let value=raw===''?0:Number(raw);
    if(!Number.isFinite(value))value=0;
    value=Math.max(0,Math.min(100,Math.round(value)));
    values[input.dataset.priority]=value;
@@ -158,11 +159,12 @@ function initPriorityChart(){
   const stops=[];
   ['experience','technology','safety'].forEach(key=>{
    const next=cursor+values[key]*scale;
-   stops.push(colors[key]+' '+cursor.toFixed(2)+'% '+next.toFixed(2)+'%');
+   stops.push(colors[key]+' '+cursor+'% '+next+'%');
    cursor=next;
   });
-  if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor.toFixed(2)+'% 100%');
-  chart.style.background='conic-gradient('+stops.join(',')+')';
+  if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor+'% 100%');
+  chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';
+  chart.style.setProperty('--priority-total',sum+'%');
   totalLabel.textContent=sum+'%';
   chart.setAttribute('aria-label','Gráfica pastel: mejora de experiencias '+values.experience+'%, actualización tecnológica '+values.technology+'%, seguridad humana y mejora de operación '+values.safety+'%, total '+sum+'%');
   try{localStorage.setItem(PRIORITY_STORAGE_KEY,JSON.stringify(values));}catch(_){}
@@ -174,8 +176,15 @@ function initPriorityChart(){
    input.value=Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):0;
    update();
   });
+  input.addEventListener('keyup',update);
  });
  update();
+}
+function initUpdateDate(){
+ const target=$('#updateDate');
+ if(!target)return;
+ const now=new Date();
+ target.textContent=[now.getDate(),now.getMonth()+1,now.getFullYear()].map((n,i)=>i<2?String(n).padStart(2,'0'):String(n)).join('/');
 }
 
 function initSwipeClose(){els.infoPanel.addEventListener('touchstart',e=>{state.touchStartY=e.touches[0].clientY;},{passive:true});els.infoPanel.addEventListener('touchend',e=>{if(state.touchStartY==null)return;if(e.changedTouches[0].clientY-state.touchStartY>90)closePanel();state.touchStartY=null;},{passive:true});}
