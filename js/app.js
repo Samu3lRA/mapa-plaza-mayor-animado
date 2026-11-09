@@ -4,6 +4,9 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)'), STORAGE_KEY='plaza-mayor-mapa-edicion-v1', PLACE_STORAGE_KEY='plaza-mayor-ubicaciones-v1', AUDIT_STORAGE_KEY='plaza-mayor-historial-v1', BACKUP_STATUS_KEY='plaza-mayor-respaldo-fecha-v1', PRESENTATION_MS=6000;
 const PRESENTATION_ORDER=Array.isArray(ORDEN_PRESENTACION)?ORDEN_PRESENTACION:PROYECTOS.map(p=>p.id);
+const cloneTimeline=()=>Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO.map(item=>({...item,color:item.color||'#ff9700',status:item.status||'auto'})):[];
+let timelineConfig=cloneTimeline();
+const TIMELINE_STORAGE_KEY='plaza-mayor-linea-tiempo-v1';
 let auditEntries=[];
 let storageWarningShown=false;
 const state={selectedId:null,previousFocus:null,panelOpen:false,editing:false,presentation:false,presentationPaused:false,presentationIndex:0,presentationTimer:null,touchStartY:null,data:cloneProjects(PROYECTOS)};
@@ -201,7 +204,7 @@ function restoreEdits(){
 }
 function resetEdits(){
  if(!window.confirm('¿Restablecer las posiciones, pabellones y porcentajes a los valores iniciales? Esta acción no se puede deshacer en este navegador.'))return;
- removeLocal(STORAGE_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');
+ removeLocal(STORAGE_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');removeLocal(TIMELINE_STORAGE_KEY);timelineConfig=cloneTimeline();window.PlazaMayorTimeline?.refresh();
  state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
  const priorityDefaults={experience:45,technology:37,safety:15};
  $$('[data-priority]').forEach(input=>{input.value=priorityDefaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
@@ -218,7 +221,7 @@ function toggleEdit(force){state.editing=force??!state.editing;els.editToggle.se
 function downloadJSON(){
  const priority={};$('[data-priority]').forEach(input=>priority[input.dataset.priority]=Number(input.value)||0);
  const miniCharts={};$('[data-mini-chart]').forEach(input=>miniCharts[input.dataset.miniChart]=Number(input.value)||0);
- const backup={format:'plaza-mayor-map-backup',version:1,exportedAt:new Date().toISOString(),projects:state.data.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]})),locations:placeState.map(p=>({...p})),priority,miniCharts};
+ const backup={format:'plaza-mayor-map-backup',version:1,exportedAt:new Date().toISOString(),timeline:timelineConfig.map(item=>({...item})),projects:state.data.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]})),locations:placeState.map(p=>({...p})),priority,miniCharts};
  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='respaldo-mapa-plaza-mayor.json';a.click();
@@ -236,6 +239,12 @@ function importBackup(file){
    const currentIds=state.data.map(p=>p.id).sort(),incomingIds=backup.projects.map(p=>p.id).sort();
    if(currentIds.length!==incomingIds.length||currentIds.some((id,i)=>id!==incomingIds[i]))throw new Error('El respaldo pertenece a otra versión del mapa.');
    const pavilionKeys=new Set(Object.keys(COLORES_PABELLON).filter(k=>k!=='general'));
+   let importedTimeline=null;
+   if(Array.isArray(backup.timeline)){
+    const years=new Set((Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[]).map(x=>x.year));
+    if(backup.timeline.length!==years.size||backup.timeline.some(item=>!years.has(Number(item.year))||['title','summary','detalle','foto'].some(k=>typeof item[k]!=='string')||(item.color&&!/^#[0-9a-f]{6}$/i.test(item.color))))throw new Error('La personalización de la línea de tiempo no es válida.');
+    importedTimeline=backup.timeline.map(item=>({...item,year:Number(item.year),color:item.color||'#ff9700',status:item.status||'auto'}));
+   }
    const nextProjects=state.data.map(p=>{
     const incoming=backup.projects.find(x=>x.id===p.id);
     const x=Number(incoming.x),y=Number(incoming.y);
@@ -271,6 +280,7 @@ const miniCharts=backup.miniCharts&&typeof backup.miniCharts==='object'?backup.m
     }
    }
    state.data=nextProjects;
+   if(importedTimeline){timelineConfig=importedTimeline;persistLocal(TIMELINE_STORAGE_KEY,JSON.stringify(timelineConfig));window.PlazaMayorTimeline?.refresh();}
    nextLocations.forEach((p,i)=>Object.assign(placeState[i],p));
    persistEdits();persistPlaceEdits();
    if(priorities){
@@ -432,11 +442,11 @@ function initMiniCharts(){
 function initInteractiveTimeline(){
  const root=$('#globalTimeline'),overlay=$('#timelineDetailOverlay'),closeBtn=$('#timelineDetailClose'),photoBox=$('#timelineDetailPhoto'),title=$('#timelineDetailTitle'),eyebrow=$('#timelineDetailEyebrow'),summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsBox=$('#timelineDetailProjects');
  if(!root||!overlay||!closeBtn||!photoBox||!title||!eyebrow||!summary||!stats||!projectsBox)return;
- const events=Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[],monthNames=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],currentYear=new Date().getFullYear();
+ let events=timelineConfig;const monthNames=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],currentYear=new Date().getFullYear();
  const getYear=p=>{const m=String(p.fecha||'').match(/20\\d{2}/);return m?Number(m[0]):null;};
  const getMonth=p=>monthNames.findIndex(m=>String(p.fecha||'').toLocaleLowerCase('es').includes(m));
  const getPhoto=(event,projects)=>{if(event.foto)return event.foto;const related=projects.find(p=>getYear(p)===event.year&&Array.isArray(p.fotos)&&p.fotos.length);return related?related.fotos[0]:'';};
- const renderYearMetrics=()=>events.forEach(event=>{const node=root.querySelector('[data-timeline-metrics="'+event.year+'"]');if(!node)return;const projects=state.data.filter(p=>getYear(p)===event.year),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('contrat')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;node.textContent=projects.length?projects.length+' proyectos · '+contracted+' contratados · '+structured+' estructuración':'Sin proyectos registrados';const button=root.querySelector('[data-timeline-year="'+event.year+'"]');if(button){button.classList.remove('is-past','is-current','is-future');button.classList.add(event.year<currentYear?'is-past':event.year===currentYear?'is-current':'is-future');}});
+ const renderYearMetrics=()=>events.forEach(event=>{const node=root.querySelector('[data-timeline-metrics="'+event.year+'"]');if(!node)return;const projects=state.data.filter(p=>getYear(p)===event.year),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('contrat')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;node.textContent=projects.length?projects.length+' proyectos · '+contracted+' contratados · '+structured+' estructuración':'Sin proyectos registrados';const button=root.querySelector('[data-timeline-year="'+event.year+'"]');if(button){const copy=button.querySelector('.timeline-year-copy');if(copy){copy.querySelector('strong').textContent=event.title;copy.querySelector('span').textContent=event.summary;}button.setAttribute('aria-label','Ver información de '+event.year+': '+event.title);button.style.setProperty('--timeline-accent',event.color||'#ff9700');button.classList.remove('is-past','is-current','is-future');button.classList.add(event.year<currentYear?'is-past':event.year===currentYear?'is-current':'is-future');}});
  const renderPhotos=()=>events.forEach(event=>{const node=root.querySelector('[data-timeline-year="'+event.year+'"] .timeline-year-photo');if(!node)return;const src=getPhoto(event,state.data);node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';});
  const highlightYear=year=>{$$('.map-point').forEach(point=>point.classList.toggle('timeline-highlight',getYear(projectById(point.dataset.id)||{})===year));document.body.classList.add('timeline-year-focused');};
  const clearHighlight=()=>{$$('.map-point').forEach(point=>point.classList.remove('timeline-highlight'));document.body.classList.remove('timeline-year-focused');};
@@ -459,7 +469,16 @@ function initInteractiveTimeline(){
  root.addEventListener('click',event=>{const button=event.target.closest('[data-timeline-year]');if(button)openYear(Number(button.dataset.timelineYear));});
  projectsBox.addEventListener('click',event=>{if(event.target.closest('[data-timeline-show-all]')){close();return;}const button=event.target.closest('[data-timeline-project]');if(!button)return;const project=projectById(button.dataset.timelineProject);if(!project)return;close();window.setTimeout(()=>selectProject(project.id,{open:true}),230);});
  closeBtn.addEventListener('click',close);overlay.addEventListener('click',event=>{if(event.target===overlay)close();});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)close();});
- renderPhotos();renderYearMetrics();window.addEventListener('plaza:datachange',()=>{renderPhotos();renderYearMetrics();});
+ const editor=$('#timelineEditor'),yearSelect=$('#timelineEditYear'),fields={title:$('#timelineEditTitle'),summary:$('#timelineEditSummary'),detalle:$('#timelineEditDetail'),foto:$('#timelineEditPhoto'),color:$('#timelineEditColor'),status:$('#timelineEditStatus')};
+ const loadTimeline=()=>{try{const saved=JSON.parse(localStorage.getItem(TIMELINE_STORAGE_KEY)||'null');if(Array.isArray(saved)){const valid=new Set(events.map(x=>x.year));timelineConfig=events.map(base=>{const custom=saved.find(x=>Number(x.year)===base.year);return custom?{...base,...custom}:base;});events=timelineConfig;}}catch(_){events=timelineConfig;}};
+ const fillEditor=()=>{const item=events.find(x=>x.year===Number(yearSelect?.value))||events[0];if(!item)return;Object.keys(fields).forEach(key=>{if(fields[key])fields[key].value=item[key]??(key==='color'?'#ff9700':key==='status'?'auto':'');});};
+ const refresh=()=>{events=timelineConfig;renderPhotos();renderYearMetrics();if(yearSelect)fillEditor();};
+ loadTimeline();events=timelineConfig;
+ if(yearSelect){yearSelect.innerHTML=events.map(x=>'<option value="'+x.year+'">'+x.year+'</option>').join('');yearSelect.addEventListener('change',fillEditor);fillEditor();}
+ $('#saveTimelineEdit')?.addEventListener('click',()=>{const item=events.find(x=>x.year===Number(yearSelect?.value));if(!item)return;item.title=fields.title.value.trim()||String(item.year);item.summary=fields.summary.value.trim();item.detalle=fields.detalle.value.trim();item.foto=fields.foto.value.trim();item.color=/^#[0-9a-f]{6}$/i.test(fields.color.value)?fields.color.value:'#ff9700';item.status=fields.status.value;timelineConfig=events.map(x=>({...x}));if(!persistLocal(TIMELINE_STORAGE_KEY,JSON.stringify(timelineConfig)))return;refresh();recordChange('Línea de tiempo personalizada','Se actualizaron los datos visuales de '+item.year+'.');showToast('Etapa '+item.year+' actualizada.');});
+ $('#resetTimelineEdit')?.addEventListener('click',()=>{if(!window.confirm('¿Restaurar los textos, colores y fotografías originales de la línea de tiempo?'))return;removeLocal(TIMELINE_STORAGE_KEY);timelineConfig=cloneTimeline();events=timelineConfig;refresh();recordChange('Línea de tiempo restablecida','Se restauró la configuración original de las etapas.');showToast('Línea de tiempo restaurada.');});
+ window.PlazaMayorTimeline={refresh};
+ refresh();window.addEventListener('plaza:datachange',()=>{renderPhotos();renderYearMetrics();});
 }
 
 function initUpdateDate(){const target=$('#updateDate');if(!target)return;const current=target.textContent.trim();target.textContent=current&&current!=='--/--/----'?current:'06/11/2026';}
