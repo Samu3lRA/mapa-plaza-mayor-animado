@@ -7,7 +7,7 @@ const PRESENTATION_ORDER=Array.isArray(ORDEN_PRESENTACION)?ORDEN_PRESENTACION:PR
 let auditEntries=[];
 let storageWarningShown=false;
 const state={selectedId:null,previousFocus:null,panelOpen:false,editing:false,presentation:false,presentationPaused:false,presentationIndex:0,presentationTimer:null,touchStartY:null,data:cloneProjects(PROYECTOS)};
-const els={appShell:$('#appShell'),mapViewport:$('#mapViewport'),mapStage:$('#mapStage'),pointsLayer:$('#pointsLayer'),generalList:$('#generalList'),specificList:$('#specificList'),legendItems:$('#legendItems'),themeToggle:$('#themeToggle'),editToggle:$('#editToggle'),presentToggle:$('#presentToggle'),infoPanel:$('#infoPanel'),panelScroll:$('#panelScroll'),panelClose:$('#panelClose'),panelPhotoWrap:$('#panelPhotoWrap'),panelStatus:$('#panelStatus'),panelTitle:$('#panelTitle'),panelValue:$('#panelValue'),panelDate:$('#panelDate'),panelLocation:$('#panelLocation'),panelDescription:$('#panelDescription'),panelScope:$('#panelScope'),panelProgressText:$('#panelProgressText'),panelProgressBar:$('#panelProgressBar'),panelResponsible:$('#panelResponsible'),panelNotes:$('#panelNotes'),descriptionBlock:$('#descriptionBlock'),scopeBlock:$('#scopeBlock'),progressBlock:$('#progressBlock'),responsibleBlock:$('#responsibleBlock'),notesBlock:$('#notesBlock'),editPanel:$('#editPanel'),editClose:$('#editClose'),pavilionSelect:$('#pavilionSelect'),copyData:$('#copyData'),downloadData:$('#downloadData'),resetData:$('#resetData'),dataOutput:$('#dataOutput'),presentationControls:$('#presentationControls'),presentationProgressBar:$('#presentationProgressBar'),presentationCounter:$('#presentationCounter'),toast:$('#toast'),recordingLegend:$('#recordingLegend'),editHistoryList:$('#editHistoryList'),dataQualityReport:$('#dataQualityReport'),importData:$('#importData'),importFile:$('#importFile')};
+const els={appShell:$('#appShell'),mapViewport:$('#mapViewport'),mapStage:$('#mapStage'),pointsLayer:$('#pointsLayer'),generalList:$('#generalList'),specificList:$('#specificList'),legendItems:$('#legendItems'),themeToggle:$('#themeToggle'),editToggle:$('#editToggle'),presentToggle:$('#presentToggle'),infoPanel:$('#infoPanel'),panelScroll:$('#panelScroll'),panelClose:$('#panelClose'),panelPhotoWrap:$('#panelPhotoWrap'),panelStatus:$('#panelStatus'),panelTitle:$('#panelTitle'),panelValue:$('#panelValue'),panelDate:$('#panelDate'),panelLocation:$('#panelLocation'),panelDescription:$('#panelDescription'),panelScope:$('#panelScope'),panelProgressText:$('#panelProgressText'),panelProgressBar:$('#panelProgressBar'),panelResponsible:$('#panelResponsible'),panelNotes:$('#panelNotes'),descriptionBlock:$('#descriptionBlock'),scopeBlock:$('#scopeBlock'),progressBlock:$('#progressBlock'),responsibleBlock:$('#responsibleBlock'),notesBlock:$('#notesBlock'),editPanel:$('#editPanel'),editClose:$('#editClose'),projectEditor:$('#projectEditor'),editProjectName:$('#editProjectName'),editProjectType:$('#editProjectType'),editProjectTitle:$('#editProjectTitle'),editProjectValue:$('#editProjectValue'),editProjectDate:$('#editProjectDate'),editProjectStatus:$('#editProjectStatus'),editProjectResponsible:$('#editProjectResponsible'),editProjectProgress:$('#editProjectProgress'),editProjectDescription:$('#editProjectDescription'),editProjectScope:$('#editProjectScope'),editProjectPhotos:$('#editProjectPhotos'),editProjectNotes:$('#editProjectNotes'),saveProjectEdits:$('#saveProjectEdits'),cancelProjectEdits:$('#cancelProjectEdits'),pavilionSelect:$('#pavilionSelect'),copyData:$('#copyData'),downloadData:$('#downloadData'),resetData:$('#resetData'),dataOutput:$('#dataOutput'),presentationControls:$('#presentationControls'),presentationProgressBar:$('#presentationProgressBar'),presentationCounter:$('#presentationCounter'),toast:$('#toast'),recordingLegend:$('#recordingLegend'),editHistoryList:$('#editHistoryList'),dataQualityReport:$('#dataQualityReport'),importData:$('#importData'),importFile:$('#importFile')};
 function cloneProjects(ps){return ps.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]}));}
 function projectById(id){return state.data.find(p=>p.id===id);}
 function colorFor(p){return p.tipo==='general'?COLORES_PABELLON.general:(COLORES_PABELLON[p.pabellon]||COLORES_PABELLON.sin);}
@@ -115,7 +115,7 @@ function renderPanel(p){renderPhoto(p);els.panelStatus.textContent=p.estado;els.
 function animateValue(p){const target=parseMoney(p.valor);if(REDUCED.matches){els.panelValue.textContent='$'+formatNumber(target);return;}const start=performance.now();function frame(now){const t=Math.min(1,(now-start)/900),eased=1-Math.pow(1-t,3);els.panelValue.textContent='$'+formatNumber(target*eased);if(t<1)requestAnimationFrame(frame);}requestAnimationFrame(frame);}
 function openPanel(p,trigger){state.previousFocus=trigger||document.activeElement;state.panelOpen=true;els.infoPanel.setAttribute('aria-hidden','false');els.infoPanel.classList.add('is-open');renderPanel(p);markSelected(p.id);applyCamera(cameraForPoint(p));els.panelScroll.scrollTop=0;requestAnimationFrame(()=>els.panelClose.focus());}
 function closePanel({returnFocus=true}={}){state.panelOpen=false;els.infoPanel.classList.remove('is-open');els.infoPanel.setAttribute('aria-hidden','true');applyCamera({scale:1,x:0,y:0});clearSelected();if(returnFocus&&state.previousFocus&&document.contains(state.previousFocus))state.previousFocus.focus();state.previousFocus=null;}
-function selectProject(id,{open=true,fromPresentation=false}={}){const p=projectById(id);if(!p)return;if(state.panelOpen&&state.selectedId!==id){els.infoPanel.classList.add('is-crossfade');setTimeout(()=>els.infoPanel.classList.remove('is-crossfade'),REDUCED.matches?80:200);}state.selectedId=id;markSelected(id);if(open)openPanel(p,document.querySelector('.map-point[data-id="'+CSS.escape(id)+'"]'));else renderPanel(p);if(fromPresentation)updatePresentationProgress();}
+function selectProject(id,{open=true,fromPresentation=false}={}){const p=projectById(id);if(!p)return;if(state.panelOpen&&state.selectedId!==id){els.infoPanel.classList.add('is-crossfade');setTimeout(()=>els.infoPanel.classList.remove('is-crossfade'),REDUCED.matches?80:200);}state.selectedId=id;markSelected(id);if(state.editing)openProjectEditor(p);if(open)openPanel(p,document.querySelector('.map-point[data-id="'+CSS.escape(id)+'"]'));else renderPanel(p);if(fromPresentation)updatePresentationProgress();}
 function beginDrag(event,b){event.preventDefault();b.setPointerCapture?.(event.pointerId);const p=projectById(b.dataset.id),before={x:p.x,y:p.y};const move=e=>{const r=els.mapStage.getBoundingClientRect(),x=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100)),y=Math.max(0,Math.min(100,((e.clientY-r.top)/r.height)*100));p.x=Number(x.toFixed(1));p.y=Number(y.toFixed(1));b.style.left=p.x+'%';b.style.top=p.y+'%';updateDataOutput();persistEdits();notifyDataChanged();};const end=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',end);if(p.x!==before.x||p.y!==before.y)recordChange('Marcador reubicado',p.nombre+': ('+before.x+', '+before.y+') → ('+p.x+', '+p.y+')');};window.addEventListener('pointermove',move);window.addEventListener('pointerup',end,{once:true});}
 function renderEditHistory(){
  const root=els.editHistoryList;if(!root)return;
@@ -132,7 +132,30 @@ function restoreEditHistory(){
  try{const saved=JSON.parse(localStorage.getItem(AUDIT_STORAGE_KEY)||'[]');if(Array.isArray(saved))auditEntries=saved.filter(x=>x&&typeof x.action==='string'&&typeof x.detail==='string').slice(0,100);}catch(_){auditEntries=[];}
  renderEditHistory();
 }
-function updateDataOutput(){els.dataOutput.value=JSON.stringify({proyectos:state.data.map(p=>{const o={id:p.id,nombre:p.nombre,x:p.x,y:p.y};if(p.tipo==='especifico')o.pabellon=p.pabellon;return o;}),ubicaciones:placeState.map(p=>({id:p.id,nombre:p.name,x:p.x,y:p.y}))},null,2);}
+function updateDataOutput(){els.dataOutput.value=JSON.stringify({proyectos:state.data.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]})),ubicaciones:placeState.map(p=>({id:p.id,nombre:p.name,x:p.x,y:p.y}))},null,2);}
+function openProjectEditor(p){
+ if(!els.projectEditor)return;
+ els.projectEditor.hidden=false;
+ els.editProjectName.textContent=p.nombre||'Proyecto seleccionado';
+ els.editProjectType.textContent=p.tipo==='general'?'Toda la infraestructura':'Proyecto específico';
+ els.editProjectTitle.value=p.nombre||'';els.editProjectValue.value=p.valor||'';els.editProjectDate.value=p.fecha||'';
+ els.editProjectStatus.value=p.estado||'Estructuración';els.editProjectResponsible.value=p.responsable||'';
+ els.editProjectProgress.value=Number.isFinite(Number(p.avance))?p.avance:'';
+ els.editProjectDescription.value=p.descripcion||'';els.editProjectScope.value=Array.isArray(p.alcance)?p.alcance.join('\n'):'';
+ els.editProjectPhotos.value=Array.isArray(p.fotos)?p.fotos.join('\n'):'';els.editProjectNotes.value=p.notas||'';
+ els.pavilionSelect.value=p.tipo==='especifico'?(p.pabellon||'sin'):'sin';els.pavilionSelect.disabled=p.tipo!=='especifico';
+}
+function closeProjectEditor(){if(els.projectEditor)els.projectEditor.hidden=true;}
+function saveProjectEditor(){
+ if(!state.selectedId)return;const p=projectById(state.selectedId);if(!p)return;
+ const previous={...p,alcance:[...(p.alcance||[])],fotos:[...(p.fotos||[])]},rawProgress=els.editProjectProgress.value.trim(),progress=rawProgress===''?null:Number(rawProgress);
+ if(progress!==null&&(!Number.isFinite(progress)||progress<0||progress>100)){showToast('El avance debe estar entre 0 y 100%.');return;}
+ Object.assign(p,{nombre:els.editProjectTitle.value.trim()||p.nombre,valor:els.editProjectValue.value.trim()||p.valor,fecha:els.editProjectDate.value.trim()||p.fecha,estado:els.editProjectStatus.value,responsable:els.editProjectResponsible.value.trim(),avance:progress,descripcion:els.editProjectDescription.value.trim(),alcance:els.editProjectScope.value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean).slice(0,30),fotos:els.editProjectPhotos.value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean).slice(0,20),notas:els.editProjectNotes.value.trim()});
+ const changes=[];[['nombre','Nombre'],['valor','Valor'],['fecha','Fecha'],['estado','Estado'],['responsable','Responsable'],['descripcion','Descripción'],['notas','Notas']].forEach(([k,l])=>{if(String(previous[k]??'')!==String(p[k]??''))changes.push(l);});
+ if(JSON.stringify(previous.alcance)!==JSON.stringify(p.alcance))changes.push('Alcance');if(JSON.stringify(previous.fotos)!==JSON.stringify(p.fotos))changes.push('Fotos');if(Number(previous.avance??-1)!==Number(p.avance??-1))changes.push('Avance');
+ persistEdits();renderAll();if(changes.length)recordChange('Proyecto actualizado',p.nombre+': '+changes.join(', '));openProjectEditor(p);renderPanel(p);showToast(changes.length?'Proyecto actualizado y guardado.':'No hubo cambios que guardar.');
+}
+function cancelProjectEditor(){if(state.selectedId){const p=projectById(state.selectedId);if(p)openProjectEditor(p);}else closeProjectEditor();}
 function updateDataQualityReport(){
  const root=els.dataQualityReport;if(!root)return;
  const total=state.data.length;
@@ -161,25 +184,28 @@ function restoreEdits(){
   const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;
   const saved=JSON.parse(raw);if(!Array.isArray(saved))return;
   const validPavilions=new Set(Object.keys(COLORES_PABELLON).filter(k=>k!=='general'));
+  const textFields=['nombre','valor','fecha','estado','descripcion','responsable','notas'];
   state.data=state.data.map(p=>{
    const s=saved.find(x=>x.id===p.id);if(!s)return p;
-   const x=Number(s.x),y=Number(s.y);
-   const next={...p};
+   const x=Number(s.x),y=Number(s.y),next={...p};
    if(Number.isFinite(x)&&x>=0&&x<=100)next.x=x;
    if(Number.isFinite(y)&&y>=0&&y<=100)next.y=y;
    if(p.tipo==='especifico'&&validPavilions.has(s.pabellon))next.pabellon=s.pabellon;
+   textFields.forEach(key=>{if(typeof s[key]==='string')next[key]=s[key];});
+   if(Array.isArray(s.alcance))next.alcance=s.alcance.filter(v=>typeof v==='string').slice(0,30);
+   if(Array.isArray(s.fotos))next.fotos=s.fotos.filter(v=>typeof v==='string'&&v.trim()).slice(0,20);
+   if(s.avance===null||Number.isFinite(Number(s.avance)))next.avance=s.avance===null?null:Math.max(0,Math.min(100,Number(s.avance)));
    return next;
   });
  }catch(_){}
 }
 function resetEdits(){
  if(!window.confirm('¿Restablecer las posiciones, pabellones y porcentajes a los valores iniciales? Esta acción no se puede deshacer en este navegador.'))return;
- removeLocal(STORAGE_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);
- state.data=cloneProjects(PROYECTOS);
- PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
- $('[data-priority]').forEach(input=>{const defaults={experience:45,technology:37,safety:15};input.value=defaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));
-  $('[data-mini-chart]').forEach(input=>{const defaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};input.value=defaults[input.dataset.miniChart];input.dispatchEvent(new Event('input',{bubbles:true}));});});
- recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
+ removeLocal(STORAGE_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');
+ state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
+ const priorityDefaults={experience:45,technology:37,safety:15};$$('[data-priority]').forEach(input=>{input.value=priorityDefaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true));});
+ const miniDefaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};$$('[data-mini-chart]').forEach(input=>{input.value=miniDefaults[input.dataset.miniChart];input.dispatchEvent(new Event('input',{bubbles:true));});
+ closeProjectEditor();recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
 }
 function updateBackupStatus(){const node=$('#backupStatus');if(!node)return;try{const saved=localStorage.getItem(BACKUP_STATUS_KEY);node.textContent=saved?'Último respaldo descargado en este navegador: '+new Date(saved).toLocaleString('es-CO'):'Aún no has descargado un respaldo en este navegador.';}catch(_){node.textContent='No se pudo consultar el estado del respaldo en este navegador.';}}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
@@ -212,6 +238,10 @@ function importBackup(file){
     const x=Number(incoming.x),y=Number(incoming.y);
     if(!Number.isFinite(x)||x<0||x>100||!Number.isFinite(y)||y<0||y>100)throw new Error('Hay coordenadas inválidas en el respaldo.');
     const next={...p,x,y};
+    ['nombre','valor','fecha','estado','descripcion','responsable','notas'].forEach(key=>{if(typeof incoming[key]==='string')next[key]=incoming[key];});
+    if(Array.isArray(incoming.alcance))next.alcance=incoming.alcance.filter(v=>typeof v==='string').slice(0,30);
+    if(Array.isArray(incoming.fotos))next.fotos=incoming.fotos.filter(v=>typeof v==='string'&&v.trim()).slice(0,20);
+    if(incoming.avance===null||Number.isFinite(Number(incoming.avance)))next.avance=incoming.avance===null?null:Math.max(0,Math.min(100,Number(incoming.avance)));
     if(p.tipo==='especifico'){
      if(!pavilionKeys.has(incoming.pabellon))throw new Error('Hay un pabellón no válido en el respaldo.');
      next.pabellon=incoming.pabellon;
@@ -397,105 +427,41 @@ function initMiniCharts(){
 }
 
 function initInteractiveTimeline(){
- const root=$('#globalTimeline');
- const overlay=$('#timelineDetailOverlay');
- const closeBtn=$('#timelineDetailClose');
- const photoBox=$('#timelineDetailPhoto');
- const title=$('#timelineDetailTitle');
- const eyebrow=$('#timelineDetailEyebrow');
- const summary=$('#timelineDetailSummary');
- const stats=$('#timelineDetailStats');
- const projectsBox=$('#timelineDetailProjects');
+ const root=$('#globalTimeline'),overlay=$('#timelineDetailOverlay'),closeBtn=$('#timelineDetailClose'),photoBox=$('#timelineDetailPhoto'),title=$('#timelineDetailTitle'),eyebrow=$('#timelineDetailEyebrow'),summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsBox=$('#timelineDetailProjects');
  if(!root||!overlay||!closeBtn||!photoBox||!title||!eyebrow||!summary||!stats||!projectsBox)return;
- const events=Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[];
- const getYear=p=>{
-  const match=String(p.fecha||'').match(/20\d{2}/);
-  return match?Number(match[0]):null;
- };
- const getPhoto=(event,projects)=>{
-  if(event.foto)return event.foto;
-  const related=projects.find(p=>getYear(p)===event.year&&Array.isArray(p.fotos)&&p.fotos.length);
-  return related?related.fotos[0]:'';
- };
- function renderPhotos(){
-  events.forEach(event=>{
-   const node=root.querySelector('[data-timeline-year="'+event.year+'"] .timeline-year-photo');
-   if(!node)return;
-   const src=getPhoto(event,state.data);
-   node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';
-  });
- }
+ const events=Array.isArray(LINEA_TIEMPO)?LINEA_TIEMPO:[],monthNames=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],currentYear=new Date().getFullYear();
+ const getYear=p=>{const m=String(p.fecha||'').match(/20\\d{2}/);return m?Number(m[0]):null;};
+ const getMonth=p=>monthNames.findIndex(m=>String(p.fecha||'').toLocaleLowerCase('es').includes(m));
+ const getPhoto=(event,projects)=>{if(event.foto)return event.foto;const related=projects.find(p=>getYear(p)===event.year&&Array.isArray(p.fotos)&&p.fotos.length);return related?related.fotos[0]:'';};
+ const renderYearMetrics=()=>events.forEach(event=>{const node=root.querySelector('[data-timeline-metrics="'+event.year+'"]');if(!node)return;const projects=state.data.filter(p=>getYear(p)===event.year),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('contrat')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;node.textContent=projects.length?projects.length+' proyectos · '+contracted+' contratados · '+structured+' estructuración':'Sin proyectos registrados';const button=root.querySelector('[data-timeline-year="'+event.year+'"]');if(button)button.classList.toggle('is-current',event.year===currentYear);});
+ const renderPhotos=()=>events.forEach(event=>{const node=root.querySelector('[data-timeline-year="'+event.year+'"] .timeline-year-photo');if(!node)return;const src=getPhoto(event,state.data);node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';});
+ const highlightYear=year=>{$$('.map-point').forEach(point=>point.classList.toggle('timeline-highlight',getYear(projectById(point.dataset.id)||{})===year));document.body.classList.add('timeline-year-focused');};
+ const clearHighlight=()=>{$$('.map-point').forEach(point=>point.classList.remove('timeline-highlight'));document.body.classList.remove('timeline-year-focused');};
+ const monthLabel=index=>index>=0?monthNames[index].replace(/^./,m=>m.toUpperCase()):'Fecha por definir';
  function openYear(year){
-  const event=events.find(item=>item.year===year);
-  if(!event)return;
-  const projects=state.data.filter(p=>getYear(p)===year);
-  const photo=getPhoto(event,projects);
-  const amount=projects.reduce((sum,p)=>sum+parseMoney(p.valor),0);
-  eyebrow.textContent='LÍNEA DE TIEMPO · '+year;
-  title.textContent=event.title;
-  summary.textContent=event.summary;
-  photoBox.innerHTML=photo
-   ?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(event.title)+'" loading="lazy">'
-   :'<div class="timeline-detail-photo-placeholder"><span>⌂</span><strong>Foto pendiente</strong><small>La fotografía de esta etapa aún no está cargada.</small></div>';
-  stats.innerHTML=
-   '<div><span>Año</span><strong>'+year+'</strong></div>'+
-   '<div><span>Proyectos asociados</span><strong>'+projects.length+'</strong></div>'+
-   '<div><span>Valor registrado</span><strong>$'+formatNumber(amount)+'</strong></div>';
-  const cards=projects.map(p=>{
-   const image=p.fotos&&p.fotos.length
-    ?'<img src="'+escapeHtml(p.fotos[0])+'" alt="">'
-    :'<span class="timeline-project-thumb" aria-hidden="true">⌂</span>';
-   return '<button type="button" class="timeline-project-card" data-timeline-project="'+escapeHtml(p.id)+'">'+image+
-    '<span><strong>'+escapeHtml(p.nombre)+'</strong><small>'+escapeHtml(p.estado)+' · '+escapeHtml(p.fecha)+'</small></span><b aria-hidden="true">›</b></button>';
-  }).join('');
-  projectsBox.innerHTML=
-   '<div class="timeline-detail-description"><h3>Sobre esta etapa</h3><p>'+escapeHtml(event.detalle||event.summary)+'</p></div>'+
-   (projects.length
-    ?'<div><h3>Proyectos relacionados</h3>'+cards+'</div>'
-    :'<div class="timeline-no-projects">No hay proyectos con fecha registrada en '+year+'.</div>');
-  overlay.hidden=false;
-  overlay.setAttribute('aria-hidden','false');
-  document.body.classList.add('timeline-modal-open');
-  requestAnimationFrame(()=>overlay.classList.add('is-open'));
-  closeBtn.focus();
+  const event=events.find(item=>item.year===year);if(!event)return;
+  const projects=state.data.filter(p=>getYear(p)===year).sort((a,b)=>{const ma=getMonth(a),mb=getMonth(b);return (ma<0?99:ma)-(mb<0?99:mb)||a.nombre.localeCompare(b.nombre,'es');});
+  const photo=getPhoto(event,projects),amount=projects.reduce((sum,p)=>sum+parseMoney(p.valor),0),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('contrat')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;
+  const nextProject=projects.find(p=>getMonth(p)>=0&&year>=currentYear);
+  eyebrow.textContent='LÍNEA DE TIEMPO · '+year;title.textContent=event.title;summary.textContent=event.summary;
+  photoBox.innerHTML=photo?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(event.title)+'" loading="lazy">':'<div class="timeline-detail-photo-placeholder"><span>⌂</span><strong>Foto pendiente</strong><small>La fotografía de esta etapa aún no está cargada.</small></div>';
+  stats.innerHTML='<div><span>Proyectos</span><strong>'+projects.length+'</strong></div><div><span>Contratados</span><strong>'+contracted+'</strong></div><div><span>Estructuración</span><strong>'+structured+'</strong></div><div><span>Valor registrado</span><strong>$'+formatNumber(amount)+'</strong></div>';
+  const grouped=[];projects.forEach(p=>{const key=getMonth(p);let g=grouped.find(x=>x.key===key);if(!g){g={key,items:[]};grouped.push(g);}g.items.push(p);});
+  const sections=grouped.map(g=>'<section class="timeline-month-group"><div class="timeline-month-heading"><span>'+monthLabel(g.key)+'</span><small>'+g.items.length+' proyecto'+(g.items.length===1?'':'s')+'</small></div>'+g.items.map(p=>{const image=p.fotos&&p.fotos.length?'<img src="'+escapeHtml(p.fotos[0])+'" alt="" loading="lazy">':'<span class="timeline-project-thumb" aria-hidden="true">⌂</span>';return '<button type="button" class="timeline-project-card" data-timeline-project="'+escapeHtml(p.id)+'">'+image+'<span><strong>'+escapeHtml(p.nombre)+'</strong><small>'+escapeHtml(p.estado)+' · '+escapeHtml(p.fecha)+'</small></span><b aria-hidden="true">›</b></button>';}).join('')+'</section>').join('');
+  projectsBox.innerHTML='<div class="timeline-detail-description"><h3>Sobre esta etapa</h3><p>'+escapeHtml(event.detalle||event.summary)+'</p></div>'+(nextProject&&year>=currentYear?'<div class="timeline-next-hito"><span>PRÓXIMO HITO REGISTRADO</span><strong>'+escapeHtml(nextProject.nombre)+'</strong><small>'+escapeHtml(nextProject.fecha)+' · '+escapeHtml(nextProject.estado)+'</small></div>':'')+(projects.length?'<div><div class="timeline-projects-head"><h3>Proyectos relacionados</h3><button type="button" class="timeline-show-all" data-timeline-show-all>Ver todos en el mapa</button></div>'+sections+'</div>':'<div class="timeline-no-projects">No hay proyectos con fecha registrada en '+year+'.</div>');
+  highlightYear(year);overlay.hidden=false;overlay.setAttribute('aria-hidden','false');document.body.classList.add('timeline-modal-open');requestAnimationFrame(()=>overlay.classList.add('is-open'));closeBtn.focus();
  }
- function close(){
-  overlay.classList.remove('is-open');
-  overlay.setAttribute('aria-hidden','true');
-  window.setTimeout(()=>{
-   overlay.hidden=true;
-   document.body.classList.remove('timeline-modal-open');
-  },220);
- }
- root.addEventListener('click',event=>{
-  const button=event.target.closest('[data-timeline-year]');
-  if(button)openYear(Number(button.dataset.timelineYear));
- });
- projectsBox.addEventListener('click',event=>{
-  const button=event.target.closest('[data-timeline-project]');
-  if(!button)return;
-  const project=projectById(button.dataset.timelineProject);
-  if(!project)return;
-  close();
-  window.setTimeout(()=>selectProject(project.id,{open:true}),230);
- });
- closeBtn.addEventListener('click',close);
- overlay.addEventListener('click',event=>{if(event.target===overlay)close();});
- document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)close();});
- renderPhotos();
- window.addEventListener('plaza:datachange',renderPhotos);
+ function close(){overlay.classList.remove('is-open');overlay.setAttribute('aria-hidden','true');clearHighlight();window.setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('timeline-modal-open');},220);}
+ root.addEventListener('click',event=>{const button=event.target.closest('[data-timeline-year]');if(button)openYear(Number(button.dataset.timelineYear));});
+ projectsBox.addEventListener('click',event=>{if(event.target.closest('[data-timeline-show-all]')){close();return;}const button=event.target.closest('[data-timeline-project]');if(!button)return;const project=projectById(button.dataset.timelineProject);if(!project)return;close();window.setTimeout(()=>selectProject(project.id,{open:true}),230);});
+ closeBtn.addEventListener('click',close);overlay.addEventListener('click',event=>{if(event.target===overlay)close();});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)close();});
+ renderPhotos();renderYearMetrics();window.addEventListener('plaza:datachange',()=>{renderPhotos();renderYearMetrics();});
 }
 
-function initUpdateDate(){
- const target=$('#updateDate');
- if(!target)return;
- const now=new Date();
- target.textContent=[now.getDate(),now.getMonth()+1,now.getFullYear()].map((n,i)=>i<2?String(n).padStart(2,'0'):String(n)).join('/');
-}
-
+function initUpdateDate(){const target=$('#updateDate');if(!target)return;const current=target.textContent.trim();target.textContent=current&&current!=='--/--/----'?current:'06/11/2026';}
 function initSwipeClose(){els.infoPanel.addEventListener('touchstart',e=>{state.touchStartY=e.touches[0].clientY;},{passive:true});els.infoPanel.addEventListener('touchend',e=>{if(state.touchStartY==null)return;if(e.changedTouches[0].clientY-state.touchStartY>90)closePanel();state.touchStartY=null;},{passive:true});}
 els.panelClose?.addEventListener('click',()=>closePanel());els.themeToggle?.addEventListener('click',toggleTheme);els.editToggle?.addEventListener('click',()=>toggleEdit());els.editClose?.addEventListener('click',()=>toggleEdit(false));
-els.pavilionSelect?.addEventListener('change',()=>{if(!state.selectedId)return;const p=projectById(state.selectedId);if(p?.tipo==='especifico'){const previous=p.pabellon||'sin',next=els.pavilionSelect.value;if(previous===next)return;p.pabellon=next;recordChange('Pabellón actualizado',p.nombre+': '+(COLORES_PABELLON[previous]?.nombre||previous)+' → '+(COLORES_PABELLON[next]?.nombre||next));renderAll();persistEdits();}});
+els.pavilionSelect?.addEventListener('change',()=>{if(!state.selectedId)return;const p=projectById(state.selectedId);if(p?.tipo==='especifico'){const previous=p.pabellon||'sin',next=els.pavilionSelect.value;if(previous===next)return;p.pabellon=next;recordChange('Pabellón actualizado',p.nombre+': '+(COLORES_PABELLON[previous]?.nombre||previous)+' → '+(COLORES_PABELLON[next]?.nombre||next));renderAll();persistEdits();}});els.saveProjectEdits?.addEventListener('click',saveProjectEditor);els.cancelProjectEdits?.addEventListener('click',()=>{if(state.selectedId){const p=projectById(state.selectedId);if(p)openProjectEditor(p);}});
 els.copyData?.addEventListener('click',copyData);els.downloadData?.addEventListener('click',downloadJSON);els.importData?.addEventListener('click',()=>els.importFile?.click());els.importFile?.addEventListener('change',e=>importBackup(e.target.files?.[0]));els.resetData?.addEventListener('click',resetEdits);els.presentToggle?.addEventListener('click',()=>state.presentation?presentationStop():presentationStart());
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.presentation){presentationStop();return;}if(e.key==='Escape'&&state.panelOpen){closePanel();return;}if(state.presentation){presentationKey(e.key);return;}});
 window.addEventListener('resize',()=>{if(state.panelOpen&&state.selectedId)applyCamera(cameraForPoint(projectById(state.selectedId)));});
