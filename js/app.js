@@ -324,34 +324,75 @@ function initMiniCharts(){
   const statusChart=$('#statusMiniChart'),typeChart=$('#typeMiniChart');
   const statusLegend=$('#statusPieLegend'),typeLegend=$('#typePieLegend');
   const statusTotal=$('#statusChartTotal'),typeTotal=$('#typeChartTotal');
-  const inputs=$$('[data-mini-chart]');
-  if(!statusChart||!typeChart||!statusLegend||!typeLegend||inputs.length!==5)return;
+  if(!statusChart||!typeChart||!statusLegend||!typeLegend)return;
+
   const defaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};
   const colors={statusA:'#ff9700',statusB:'#003e99',typeA:'#f3c51b',typeB:'#6aad2d',typeC:'#5dff00'};
   const labels={statusA:'Puesta a Punto y Estabilización',statusB:'Mejora y Evolución',typeA:'Estructuración',typeB:'En ejecución',typeC:'Ejecutado'};
+  const storageKey='plaza-mayor-mini-charts-v1';
   let saved={};
-  try{saved=JSON.parse(localStorage.getItem('plaza-mayor-mini-charts-v1')||'{}')||{};}catch(_){}
-  inputs.forEach(input=>{const key=input.dataset.miniChart,stored=Number(saved[key]);input.value=Object.prototype.hasOwnProperty.call(saved,key)&&Number.isFinite(stored)?Math.max(0,Math.min(100,stored)):defaults[key];});
-  const render=(chart,legend,keys)=>{
-    let cursor=0;
-    const values=keys.map(key=>Math.max(0,Math.min(100,Number($('[data-mini-chart="'+key+'"]')?.value)||0)));
-    const sum=values.reduce((a,b)=>a+b,0),scale=sum>0?100/sum:0,stops=[];
-    keys.forEach((key,i)=>{const next=cursor+values[i]*scale;stops.push(colors[key]+' '+cursor+'% '+next+'%');cursor=next;});
-    if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor+'% 100%');
-    chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';chart.setAttribute('data-total','100%');
-    legend.innerHTML=keys.map(key=>'<label class="mini-pie-item"><i style="--pie-color:'+colors[key]+'"></i><span>'+escapeHtml(labels[key])+'</span><span class="mini-input-wrap"><input type="number" min="0" max="100" step="1" value="'+Math.round(Number($('[data-mini-chart="'+key+'"]')?.value)||0)+'" data-mini-chart="'+key+'" aria-label="Porcentaje de '+escapeHtml(labels[key])+'">%</span></label>').join('');
-    legend.querySelectorAll('[data-mini-chart]').forEach(input=>{const original=inputs.find(x=>x.dataset.miniChart===input.dataset.miniChart);input.addEventListener('input',()=>{if(original){original.value=input.value;update();}});});
+  try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')||{};}catch(_){}
+
+  const getValue=key=>{
+    const input=$('[data-mini-chart="'+key+'"]');
+    const n=Number(input?.value);
+    return Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):0;
   };
+  const getValues=()=>Object.fromEntries(Object.keys(defaults).map(key=>[key,getValue(key)]));
+
+  const renderChart=(chart,keys,values)=>{
+    let cursor=0;
+    const sum=keys.reduce((total,key)=>total+values[key],0);
+    const scale=sum>0?100/sum:0;
+    const stops=[];
+    keys.forEach(key=>{
+      const next=cursor+values[key]*scale;
+      stops.push(colors[key]+' '+cursor+'% '+next+'%');
+      cursor=next;
+    });
+    if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor+'% 100%');
+    chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';
+    chart.setAttribute('data-total','100%');
+  };
+
+  const renderLegend=(legend,keys,values)=>{
+    legend.innerHTML=keys.map(key=>'<label class="mini-pie-item"><i style="--pie-color:'+colors[key]+'"></i><span>'+escapeHtml(labels[key])+'</span><span class="mini-input-wrap"><input type="number" min="0" max="100" step="1" value="'+values[key]+'" data-mini-chart="'+key+'" aria-label="Porcentaje de '+escapeHtml(labels[key])+'">%</span></label>').join('');
+  };
+
+  const savedValues=Object.keys(defaults).reduce((out,key)=>{
+    const n=Number(saved[key]);
+    out[key]=Object.prototype.hasOwnProperty.call(saved,key)&&Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):defaults[key];
+    return out;
+  },{});
+
+  renderLegend(statusLegend,['statusA','statusB'],savedValues);
+  renderLegend(typeLegend,['typeA','typeB','typeC'],savedValues);
+
   function update(){
-    const values={};
-    inputs.forEach(input=>{let value=Number(input.value);if(!Number.isFinite(value))value=0;values[input.dataset.miniChart]=Math.max(0,Math.min(100,Math.round(value)));input.value=values[input.dataset.miniChart];});
-    persistLocal('plaza-mayor-mini-charts-v1',JSON.stringify(values));
-    render(statusChart,statusLegend,['statusA','statusB']);render(typeChart,typeLegend,['typeA','typeB','typeC']);
-    if(statusTotal)statusTotal.textContent='100%';if(typeTotal)typeTotal.textContent='100%';
-    statusChart.setAttribute('aria-label','Puesta a Punto y Estabilización '+values.statusA+'%, Mejora y Evolución '+values.statusB+'%');
-    typeChart.setAttribute('aria-label','Estructuración '+values.typeA+'%, En ejecución '+values.typeB+'%, Ejecutado '+values.typeC+'%');
+    const values=getValues();
+    Object.values(values).forEach(v=>{});
+    $$('[data-mini-chart]').forEach(input=>{input.value=values[input.dataset.miniChart];});
+    persistLocal(storageKey,JSON.stringify(values));
+    renderChart(statusChart,['statusA','statusB'],values);
+    renderChart(typeChart,['typeA','typeB','typeC'],values);
+    if(statusTotal)statusTotal.textContent='100%';
+    if(typeTotal)typeTotal.textContent='100%';
+    statusChart.setAttribute('aria-label','Puesta a Punto y Estabilización '+values.statusA+'%, Mejora y Evolución '+values.statusB+'%, total 100%');
+    typeChart.setAttribute('aria-label','Estructuración '+values.typeA+'%, En ejecución '+values.typeB+'%, Ejecutado '+values.typeC+'%, total 100%');
   }
-  inputs.forEach(input=>{input.dataset.lastCommitted=String(Number(input.value)||0);input.addEventListener('input',update);input.addEventListener('change',()=>{const before=Number(input.dataset.lastCommitted??input.value);input.value=Math.max(0,Math.min(100,Math.round(Number(input.value)||0)));update();const current=Number(input.value);if(current!==before)recordChange('Gráfica actualizada',labels[input.dataset.miniChart]+': '+before+'% → '+current+'%');input.dataset.lastCommitted=String(current);});});
+
+  $$('[data-mini-chart]').forEach(input=>{
+    input.dataset.lastCommitted=String(Number(input.value)||0);
+    input.addEventListener('input',update);
+    input.addEventListener('change',()=>{
+      const before=Number(input.dataset.lastCommitted??input.value);
+      input.value=Math.max(0,Math.min(100,Math.round(Number(input.value)||0)));
+      update();
+      const current=Number(input.value);
+      if(current!==before)recordChange('Gráfica actualizada',labels[input.dataset.miniChart]+': '+before+'% → '+current+'%');
+      input.dataset.lastCommitted=String(current);
+    });
+  });
   update();
 }
 
