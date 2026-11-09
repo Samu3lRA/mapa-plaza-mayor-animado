@@ -203,9 +203,12 @@ function resetEdits(){
  if(!window.confirm('¿Restablecer las posiciones, pabellones y porcentajes a los valores iniciales? Esta acción no se puede deshacer en este navegador.'))return;
  removeLocal(STORAGE_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');
  state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
- const priorityDefaults={experience:45,technology:37,safety:15};$$('[data-priority]').forEach(input=>{input.value=priorityDefaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true));});
- const miniDefaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};$$('[data-mini-chart]').forEach(input=>{input.value=miniDefaults[input.dataset.miniChart];input.dispatchEvent(new Event('input',{bubbles:true));});
- closeProjectEditor();recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
+ const priorityDefaults={experience:45,technology:37,safety:15};
+ $$('[data-priority]').forEach(input=>{input.value=priorityDefaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
+ const miniDefaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};
+ $$('[data-mini-chart]').forEach(input=>{input.value=miniDefaults[input.dataset.miniChart];input.dispatchEvent(new Event('input',{bubbles:true}));});
+ closeProjectEditor();recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();
+ showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
 }
 function updateBackupStatus(){const node=$('#backupStatus');if(!node)return;try{const saved=localStorage.getItem(BACKUP_STATUS_KEY);node.textContent=saved?'Último respaldo descargado en este navegador: '+new Date(saved).toLocaleString('es-CO'):'Aún no has descargado un respaldo en este navegador.';}catch(_){node.textContent='No se pudo consultar el estado del respaldo en este navegador.';}}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
