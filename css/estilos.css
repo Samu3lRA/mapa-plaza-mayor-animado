@@ -1745,3 +1745,33 @@ html[data-theme="light"] .timeline-year.is-current .timeline-year-copy strong{co
  .timeline-year-label{font-size:24px!important}
 }
 @media(prefers-reduced-motion:reduce){.timeline-year-photo img{transition:none!important}}
+
+
+/* Navegación inmersiva entre etapas del detalle de la línea de tiempo */
+.timeline-detail-nav{
+ display:flex;align-items:center;justify-content:space-between;gap:14px;
+ padding:12px 20px;border-bottom:1px solid rgba(157,180,207,.18);
+ background:rgba(255,255,255,.025);
+}
+.timeline-nav-arrow{
+ width:36px;height:36px;flex:0 0 auto;border:1px solid rgba(255,255,255,.2);
+ border-radius:50%;background:rgba(255,255,255,.06);color:#f4f7fc;
+ font-size:20px;line-height:1;cursor:pointer;transition:background .2s,border-color .2s,transform .2s;
+}
+.timeline-nav-arrow:hover:not(:disabled){transform:translateY(-2px);border-color:#ff9700;background:rgba(255,151,0,.14)}
+.timeline-nav-arrow:disabled{opacity:.28;cursor:not-allowed}
+.timeline-nav-center{display:grid;gap:7px;width:min(260px,65%);text-align:center}
+.timeline-nav-center span{font-size:8px;font-weight:800;letter-spacing:.17em;color:#aebed1}
+.timeline-nav-track{height:3px;overflow:hidden;border-radius:9px;background:rgba(255,255,255,.13)}
+.timeline-nav-track i{display:block;width:25%;height:100%;border-radius:inherit;background:#ff9700;transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.timeline-detail-photo{position:relative}
+.timeline-detail-photo::after{content:"";position:absolute;inset:35% 0 0;pointer-events:none;background:linear-gradient(transparent,rgba(3,16,34,.25))}
+html[data-theme="light"] .timeline-detail-nav{background:rgba(0,62,153,.025);border-color:rgba(0,62,153,.12)}
+html[data-theme="light"] .timeline-nav-arrow{color:#17345b;border-color:rgba(0,62,153,.18);background:rgba(0,62,153,.04)}
+html[data-theme="light"] .timeline-nav-center span{color:#64758b}
+@media(max-width:520px){
+ .timeline-detail-nav{padding:10px 14px}
+ .timeline-nav-arrow{width:33px;height:33px}
+ .timeline-nav-center{width:62%}
+}
+@media(prefers-reduced-motion:reduce){.timeline-nav-track i,.timeline-nav-arrow{transition:none}}
