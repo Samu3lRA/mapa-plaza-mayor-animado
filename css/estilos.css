@@ -1305,3 +1305,12 @@ html[data-theme="light"] .timeline-year{background:linear-gradient(160deg,#fff,#
 html[data-theme="light"] .timeline-editor-fields input,html[data-theme="light"] .timeline-editor-fields textarea,html[data-theme="light"] .timeline-editor-fields select{background:#fff;color:#172b45;border-color:rgba(0,62,153,.2)}
 @media(max-width:760px){.timeline-global{grid-template-columns:repeat(4,minmax(155px,1fr));gap:8px}.timeline-global::before{top:50px;left:70px;right:70px}.timeline-year{padding:10px 6px}.timeline-year-copy span{min-height:0}.timeline-year-metrics{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.timeline-year{transition:none!important}}
+
+
+/* Corrección definitiva: las tres gráficas comparten exactamente la misma escala */
+:root{--dashboard-donut-size:156px;--dashboard-donut-hole:27px;}
+.priority-content{display:grid!important;grid-template-columns:var(--dashboard-donut-size) minmax(0,1fr)!important;align-items:center!important;justify-items:stretch!important;gap:16px!important;}
+.priority-donut,.mini-donut{width:var(--dashboard-donut-size)!important;height:var(--dashboard-donut-size)!important;min-width:var(--dashboard-donut-size)!important;min-height:var(--dashboard-donut-size)!important;max-width:var(--dashboard-donut-size)!important;max-height:var(--dashboard-donut-size)!important;box-sizing:border-box!important;flex:0 0 var(--dashboard-donut-size)!important;aspect-ratio:1/1!important;}
+.mini-donut::after{inset:var(--dashboard-donut-hole)!important;}
+.pie-chart-row{grid-template-columns:var(--dashboard-donut-size) minmax(0,1fr)!important;gap:16px!important;}
+@media(max-width:760px){:root{--dashboard-donut-size:132px;--dashboard-donut-hole:23px}.priority-content,.pie-chart-row{grid-template-columns:var(--dashboard-donut-size) minmax(0,1fr)!important;gap:12px!important}.priority-donut,.mini-donut{width:var(--dashboard-donut-size)!important;height:var(--dashboard-donut-size)!important;min-width:var(--dashboard-donut-size)!important;min-height:var(--dashboard-donut-size)!important;max-width:var(--dashboard-donut-size)!important;max-height:var(--dashboard-donut-size)!important;}}
