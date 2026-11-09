@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-19">
+  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-20">
 </head>
 <body>
   <div class="app-shell" id="appShell">
@@ -77,10 +77,10 @@
     <span>Hitos del proceso de inversión</span>
   </div>
   <div class="timeline-global" id="globalTimeline">
-    <button class="timeline-year is-past" type="button" data-timeline-year="2024" aria-label="Ver información de 2024"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2024</span><span class="timeline-action-label">Ver etapa</span></span><span class="timeline-year-copy"><strong>Antecedentes</strong><span>Inicio del horizonte de planificación.</span></span></button>
-    <button class="timeline-year is-past" type="button" data-timeline-year="2025" aria-label="Ver información de 2025"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2025</span><span class="timeline-action-label">Ver etapa</span></span><span class="timeline-year-copy"><strong>Planeación</strong><span>Definición y priorización de necesidades.</span></span></button>
-    <button class="timeline-year is-current" type="button" data-timeline-year="2026" aria-label="Ver información de 2026"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2026</span><span class="timeline-action-label">Ver etapa</span></span><span class="timeline-year-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></span></button>
-    <button class="timeline-year is-future" type="button" data-timeline-year="2027" aria-label="Ver información de 2027"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2027</span><span class="timeline-action-label">Ver etapa</span></span><span class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></span></button>
+    <button class="timeline-year is-past" type="button" data-timeline-year="2024" aria-label="Ver información de 2024"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2024</span><span class="timeline-action-label">Ver etapa</span><span class="timeline-year-metrics" data-timeline-metrics="2024"></span></span><span class="timeline-year-copy"><strong>Antecedentes</strong><span>Inicio del horizonte de planificación.</span></span></button>
+    <button class="timeline-year is-past" type="button" data-timeline-year="2025" aria-label="Ver información de 2025"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2025</span><span class="timeline-action-label">Ver etapa</span><span class="timeline-year-metrics" data-timeline-metrics="2025"></span></span><span class="timeline-year-copy"><strong>Planeación</strong><span>Definición y priorización de necesidades.</span></span></button>
+    <button class="timeline-year is-current" type="button" data-timeline-year="2026" aria-label="Ver información de 2026"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2026</span><span class="timeline-action-label">Ver etapa</span><span class="timeline-year-metrics" data-timeline-metrics="2026"></span></span><span class="timeline-year-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></span></button>
+    <button class="timeline-year is-future" type="button" data-timeline-year="2027" aria-label="Ver información de 2027"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2027</span><span class="timeline-action-label">Ver etapa</span><span class="timeline-year-metrics" data-timeline-metrics="2027"></span></span><span class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></span></button>
   </div>
 </section>
 
@@ -104,7 +104,23 @@
       <p class="backup-status" id="backupStatus" aria-live="polite">Consultando el estado del respaldo…</p>
       <details class="edit-quality-details"><summary>Revisión de calidad de datos</summary><div id="dataQualityReport" class="data-quality-report" aria-live="polite"></div></details>
       <details class="edit-history-details"><summary>Historial de modificaciones</summary><div id="editHistoryList" class="edit-history-list" aria-live="polite"></div></details>
-      <label class="field-label" for="pavilionSelect">Asignar pabellón al proyecto seleccionado</label>
+      <div class="project-editor" id="projectEditor" hidden>
+  <div class="project-editor-head"><div><p class="eyebrow">PROYECTO SELECCIONADO</p><h3 id="editProjectName">Selecciona un proyecto en el mapa</h3></div><span id="editProjectType" class="editor-type-badge"></span></div>
+  <div class="project-editor-grid">
+    <label><span>Nombre</span><input id="editProjectTitle" type="text" autocomplete="off"></label>
+    <label><span>Valor registrado</span><input id="editProjectValue" type="text" autocomplete="off" placeholder="$0"></label>
+    <label><span>Fecha / hito</span><input id="editProjectDate" type="text" autocomplete="off" placeholder="enero 2027"></label>
+    <label><span>Estado</span><select id="editProjectStatus"><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="Ejecutado">Ejecutado</option><option value="En ejecución">En ejecución</option><option value="Por iniciar">Por iniciar</option></select></label>
+    <label><span>Responsable</span><input id="editProjectResponsible" type="text" autocomplete="off"></label>
+    <label><span>Avance (%)</span><input id="editProjectProgress" type="number" min="0" max="100" step="1"></label>
+    <label class="editor-full"><span>Descripción</span><textarea id="editProjectDescription" rows="3"></textarea></label>
+    <label class="editor-full"><span>Alcance · un elemento por línea</span><textarea id="editProjectScope" rows="4"></textarea></label>
+    <label class="editor-full"><span>Fotos · una ruta o URL por línea</span><textarea id="editProjectPhotos" rows="3" placeholder="IMAGEN_MAPA/foto.jpg"></textarea></label>
+    <label class="editor-full"><span>Notas</span><textarea id="editProjectNotes" rows="3"></textarea></label>
+  </div>
+  <div class="project-editor-actions"><button class="button button-primary" id="saveProjectEdits" type="button">Guardar cambios</button><button class="button button-secondary" id="cancelProjectEdits" type="button">Cancelar</button></div>
+</div>
+<label class="field-label" for="pavilionSelect">Asignar pabellón al proyecto seleccionado</label>
       <select id="pavilionSelect" class="field-select"><option value="sin">Sin asignar</option><option value="amarillo">Amarillo</option><option value="azul">Azul</option><option value="rojo">Rojo</option><option value="blanco">Blanco</option><option value="verde">Verde</option><option value="convenciones">Convenciones</option></select>
       <div class="edit-actions"><button class="button button-secondary" id="copyData" type="button">Copiar posiciones</button><button class="button button-secondary" id="downloadData" type="button">Descargar respaldo</button><button class="button button-secondary" id="importData" type="button">Importar respaldo</button><button class="button button-secondary" id="printReport" type="button">Generar informe PDF</button><button class="button button-danger" id="resetData" type="button">Restablecer</button><input id="importFile" type="file" accept="application/json,.json" hidden></div>
       <details class="edit-data-details"><summary>Ver datos técnicos</summary><textarea id="dataOutput" class="data-output" rows="5" readonly aria-label="Datos editados"></textarea></details>
@@ -127,7 +143,7 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-15"></script><script src="./js/animaciones.js?v=seguimiento-2"></script><script src="./js/mejoras.js?v=seguimiento-4"></script><script>
+  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-16"></script><script src="./js/animaciones.js?v=seguimiento-2"></script><script src="./js/mejoras.js?v=seguimiento-4"></script><script>
 (()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const active=x===t;x.classList.toggle('is-active',active);x.setAttribute('aria-selected',String(active));});document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
 
 const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const currentZoom=()=>Number(getComputedStyle(stage).getPropertyValue('--camera-scale'))||z;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,currentZoom()+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,currentZoom()-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};const infoPanel=document.getElementById('infoPanel'),infoHome=infoPanel.parentElement,infoNext=infoPanel.nextElementSibling;document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement===view){view.appendChild(infoPanel);infoPanel.style.position='fixed';infoPanel.style.zIndex='2147483000';infoPanel.style.right='24px';infoPanel.style.top='50%';}else{if(infoNext&&infoNext.parentElement===infoHome)infoHome.insertBefore(infoPanel,infoNext);else infoHome.appendChild(infoPanel);infoPanel.style.position='';infoPanel.style.zIndex='';infoPanel.style.right='';infoPanel.style.top='';}});
