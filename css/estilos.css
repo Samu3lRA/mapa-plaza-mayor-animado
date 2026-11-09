@@ -1099,7 +1099,7 @@ html[data-theme="light"] .priority-donut::after{
 .mini-chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}
 .mini-chart-head .eyebrow{margin:0 0 4px;font-size:8px;letter-spacing:.12em;color:#ffb44a}
 .mini-chart-head h2{margin:0;font-size:11px;line-height:1.2;color:#f2f6fc}
-.mini-chart-head>strong{font-size:15px;line-height:1;color:#fff}
+.mini-chart-head>strong{font-size:15px;line-height:1;color:#fff}.mini-edit-hint{margin-left:auto;padding:3px 7px;border:1px solid rgba(255,151,0,.42);border-radius:999px;color:#ffb44a;font-size:7px;font-weight:800;letter-spacing:.04em;white-space:nowrap}.mini-chart-head>strong{margin-left:0}
 .pie-chart-row{display:grid;grid-template-columns:156px minmax(0,1fr);align-items:center;gap:16px}
 .mini-donut{position:relative;width:156px;height:156px;border-radius:50%;background:conic-gradient(#ff9700 0 50%,#42a5f5 50% 75%,#43c69b 75% 100%);box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 0 0 1px rgba(255,255,255,.18)}
 .mini-donut::after{content:attr(data-total);position:absolute;inset:27px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:linear-gradient(145deg,#0b2d58,#061d3d);color:#fff;font:800 22px/1 Manrope,Arial,sans-serif;letter-spacing:-.04em;box-shadow:0 2px 9px rgba(0,0,0,.2)}
