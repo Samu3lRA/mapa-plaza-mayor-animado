@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=seguimiento-23">
+  <link rel="stylesheet" href="./css/estilos.css?v=timeline-custom-1">
 </head>
 <body>
   <div class="app-shell" id="appShell">
@@ -102,6 +102,7 @@
       <div class="edit-head"><div><p class="eyebrow">MODO EDICIÓN</p><h2>Ajustes del mapa</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
       <p class="edit-help">Arrastra los marcadores para reubicarlos. Selecciona un proyecto para cambiar su pabellón. Los cambios se guardan en este navegador; descarga un respaldo para transferirlos.</p>
       <p class="backup-status" id="backupStatus" aria-live="polite">Consultando el estado del respaldo…</p>
+      <details class="timeline-editor-details"><summary>Personalizar línea de tiempo</summary><div class="timeline-editor-fields"><p>Modifica la presentación de cada etapa. Las fotografías aceptan una ruta del repositorio o una URL de imagen.</p><label><span>Etapa</span><select id="timelineEditYear"></select></label><label><span>Título</span><input id="timelineEditTitle" type="text" maxlength="70"></label><label><span>Resumen corto</span><textarea id="timelineEditSummary" rows="2" maxlength="180"></textarea></label><label><span>Descripción ampliada</span><textarea id="timelineEditDetail" rows="3" maxlength="500"></textarea></label><label><span>Fotografía · ruta o URL</span><input id="timelineEditPhoto" type="text" placeholder="IMAGEN_MAPA/linea-tiempo-2026.jpg"></label><div class="timeline-editor-inline"><label><span>Color de etapa</span><input id="timelineEditColor" type="color" value="#ff9700"></label><label><span>Estado visual</span><select id="timelineEditStatus"><option value="auto">Automático por año</option><option value="done">Completado</option><option value="current">En curso</option><option value="future">Proyectado</option></select></label></div><div class="timeline-editor-actions"><button class="button button-primary" id="saveTimelineEdit" type="button">Guardar etapa</button><button class="button button-secondary" id="resetTimelineEdit" type="button">Restaurar línea de tiempo</button></div></div></details>
       <details class="edit-quality-details"><summary>Revisión de calidad de datos</summary><div id="dataQualityReport" class="data-quality-report" aria-live="polite"></div></details>
       <details class="edit-history-details"><summary>Historial de modificaciones</summary><div id="editHistoryList" class="edit-history-list" aria-live="polite"></div></details>
       <div class="project-editor" id="projectEditor" hidden>
@@ -143,7 +144,7 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js"></script><script src="./js/app.js?v=seguimiento-17"></script><script src="./js/animaciones.js?v=seguimiento-2"></script><script src="./js/mejoras.js?v=seguimiento-4"></script><script>
+  <script src="./js/datos.js"></script><script src="./js/app.js?v=timeline-custom-1"></script><script src="./js/animaciones.js?v=seguimiento-2"></script><script src="./js/mejoras.js?v=seguimiento-4"></script><script>
 (()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const active=x===t;x.classList.toggle('is-active',active);x.setAttribute('aria-selected',String(active));});document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
 
 const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const currentZoom=()=>Number(getComputedStyle(stage).getPropertyValue('--camera-scale'))||z;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,currentZoom()+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,currentZoom()-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};const infoPanel=document.getElementById('infoPanel'),infoHome=infoPanel.parentElement,infoNext=infoPanel.nextElementSibling;document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement===view){view.appendChild(infoPanel);infoPanel.style.position='fixed';infoPanel.style.zIndex='2147483000';infoPanel.style.right='24px';infoPanel.style.top='50%';}else{if(infoNext&&infoNext.parentElement===infoHome)infoHome.insertBefore(infoPanel,infoNext);else infoHome.appendChild(infoPanel);infoPanel.style.position='';infoPanel.style.zIndex='';infoPanel.style.right='';infoPanel.style.top='';}});
