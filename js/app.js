@@ -177,7 +177,8 @@ function resetEdits(){
  removeLocal(STORAGE_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);
  state.data=cloneProjects(PROYECTOS);
  PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
- $('[data-priority]').forEach(input=>{const defaults={experience:45,technology:37,safety:15};input.value=defaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
+ $('[data-priority]').forEach(input=>{const defaults={experience:45,technology:37,safety:15};input.value=defaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));
+  $('[data-mini-chart]').forEach(input=>{const defaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};input.value=defaults[input.dataset.miniChart];input.dispatchEvent(new Event('input',{bubbles:true}));});});
  recordChange('Restablecimiento','Se restauraron posiciones, pabellones y porcentajes iniciales.');renderAll();showToast(storageWarningShown?'Mapa restablecido en esta sesión, pero el navegador no confirmó el guardado local. Descarga un respaldo.':'Mapa restablecido a los valores iniciales.');
 }
 function updateBackupStatus(){const node=$('#backupStatus');if(!node)return;try{const saved=localStorage.getItem(BACKUP_STATUS_KEY);node.textContent=saved?'Último respaldo descargado en este navegador: '+new Date(saved).toLocaleString('es-CO'):'Aún no has descargado un respaldo en este navegador.';}catch(_){node.textContent='No se pudo consultar el estado del respaldo en este navegador.';}}
@@ -187,7 +188,8 @@ window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
 function toggleEdit(force){state.editing=force??!state.editing;els.editToggle.setAttribute('aria-pressed',String(state.editing));els.editToggle.textContent=state.editing?'Cerrar edición':'Modo edición';els.editPanel.hidden=!state.editing;document.body.classList.toggle('editing',state.editing);if(state.editing)updateDataOutput();}
 function downloadJSON(){
  const priority={};$('[data-priority]').forEach(input=>priority[input.dataset.priority]=Number(input.value)||0);
- const backup={format:'plaza-mayor-map-backup',version:1,exportedAt:new Date().toISOString(),projects:state.data.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]})),locations:placeState.map(p=>({...p})),priority};
+ const miniCharts={};$('[data-mini-chart]').forEach(input=>miniCharts[input.dataset.miniChart]=Number(input.value)||0);
+ const backup={format:'plaza-mayor-map-backup',version:1,exportedAt:new Date().toISOString(),projects:state.data.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]})),locations:placeState.map(p=>({...p})),priority,miniCharts};
  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='respaldo-mapa-plaza-mayor.json';a.click();
@@ -229,11 +231,20 @@ function importBackup(file){
      if(priorities[key]!==undefined&&(!Number.isFinite(Number(priorities[key]))||Number(priorities[key])<0||Number(priorities[key])>100))throw new Error('Hay porcentajes inválidos en el respaldo.');
     }
    }
+const miniCharts=backup.miniCharts&&typeof backup.miniCharts==='object'?backup.miniCharts:null;
+   if(miniCharts){
+    for(const key of ['statusA','statusB','typeA','typeB','typeC']){
+     if(miniCharts[key]!==undefined&&(!Number.isFinite(Number(miniCharts[key]))||Number(miniCharts[key])<0||Number(miniCharts[key])>100))throw new Error('Hay porcentajes inválidos en las gráficas secundarias.');
+    }
+   }
    state.data=nextProjects;
    nextLocations.forEach((p,i)=>Object.assign(placeState[i],p));
    persistEdits();persistPlaceEdits();
    if(priorities){
     $('[data-priority]').forEach(input=>{if(priorities[input.dataset.priority]!==undefined){input.value=Number(priorities[input.dataset.priority]);input.dispatchEvent(new Event('input',{bubbles:true}));}});
+   }
+   if(miniCharts){
+    $('[data-mini-chart]').forEach(input=>{if(miniCharts[input.dataset.miniChart]!==undefined){input.value=Number(miniCharts[input.dataset.miniChart]);input.dispatchEvent(new Event('input',{bubbles:true}));}});
    }
    recordChange('Respaldo importado','Se importaron posiciones, pabellones y porcentajes desde un archivo de respaldo.');renderAll();showToast(storageWarningShown?'Respaldo cargado en esta sesión, pero no se pudo confirmar el guardado local. Descarga un respaldo.':'Respaldo importado correctamente.');
   }catch(error){showToast(error.message||'No se pudo importar el respaldo.');}
@@ -312,38 +323,37 @@ function initPriorityChart(){
 function initMiniCharts(){
   const statusChart=$('#statusMiniChart'),typeChart=$('#typeMiniChart');
   const statusLegend=$('#statusPieLegend'),typeLegend=$('#typePieLegend');
-  if(!statusChart||!typeChart)return;
-  const render=(chart,legend,items,total)=>{
+  const statusTotal=$('#statusChartTotal'),typeTotal=$('#typeChartTotal');
+  const inputs=$$('[data-mini-chart]');
+  if(!statusChart||!typeChart||!statusLegend||!typeLegend||inputs.length!==5)return;
+  const defaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};
+  const colors={statusA:'#ff9700',statusB:'#003e99',typeA:'#f3c51b',typeB:'#6aad2d',typeC:'#5dff00'};
+  const labels={statusA:'Puesta a Punto y Estabilización',statusB:'Mejora y Evolución',typeA:'Estructuración',typeB:'En ejecución',typeC:'Ejecutado'};
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem('plaza-mayor-mini-charts-v1')||'{}')||{};}catch(_){}
+  inputs.forEach(input=>{const key=input.dataset.miniChart,stored=Number(saved[key]);input.value=Object.prototype.hasOwnProperty.call(saved,key)&&Number.isFinite(stored)?Math.max(0,Math.min(100,stored)):defaults[key];});
+  const render=(chart,legend,keys)=>{
     let cursor=0;
-    const stops=items.map(item=>{
-      const pct=total?(item.value/total)*100:0;
-      const next=cursor+pct;
-      const stop=item.color+' '+cursor+'% '+next+'%';
-      cursor=next;
-      return stop;
-    });
+    const values=keys.map(key=>Math.max(0,Math.min(100,Number($('[data-mini-chart="'+key+'"]')?.value)||0)));
+    const sum=values.reduce((a,b)=>a+b,0),scale=sum>0?100/sum:0,stops=[];
+    keys.forEach((key,i)=>{const next=cursor+values[i]*scale;stops.push(colors[key]+' '+cursor+'% '+next+'%');cursor=next;});
     if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor+'% 100%');
-    chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';
-    chart.setAttribute('data-total',total);
-    legend.innerHTML=items.map(item=>'<div class="mini-pie-item"><i style="--pie-color:'+item.color+'"></i><span>'+escapeHtml(item.label)+'</span><strong>'+item.value+'</strong></div>').join('');
+    chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';chart.setAttribute('data-total','100%');
+    legend.innerHTML=keys.map(key=>'<label class="mini-pie-item"><i style="--pie-color:'+colors[key]+'"></i><span>'+escapeHtml(labels[key])+'</span><span class="mini-input-wrap"><input type="number" min="0" max="100" step="1" value="'+Math.round(Number($('[data-mini-chart="'+key+'"]')?.value)||0)+'" data-mini-chart="'+key+'" aria-label="Porcentaje de '+escapeHtml(labels[key])+'">%</span></label>').join('');
+    legend.querySelectorAll('[data-mini-chart]').forEach(input=>{const original=inputs.find(x=>x.dataset.miniChart===input.dataset.miniChart);input.addEventListener('input',()=>{if(original){original.value=input.value;update();}});});
   };
   function update(){
-    const projects=state.data,total=projects.length;
-    const statusOrder=['Contratado','Estructuración','En ejecución','Finalizado'];
-    const statusColors=['#ff9700','#42a5f5','#43c69b','#9aa8ba'];
-    const statuses=statusOrder.map((label,i)=>({label:label==='En ejecución'?'En ejec.':label,value:projects.filter(p=>p.estado===label).length,color:statusColors[i]})).filter(x=>x.value>0);
-    const specific=projects.filter(p=>p.tipo==='especifico').length;
-    const general=projects.filter(p=>p.tipo==='general').length;
-    render(statusChart,statusLegend,statuses,total);
-    render(typeChart,typeLegend,[{label:'Específicos',value:specific,color:'#ff9700'},{label:'Generales',value:general,color:'#7B3FC6'}],total);
-    const st=$('#statusChartTotal'),tt=$('#typeChartTotal');
-    if(st)st.textContent=total;
-    if(tt)tt.textContent=total;
+    const values={};
+    inputs.forEach(input=>{let value=Number(input.value);if(!Number.isFinite(value))value=0;values[input.dataset.miniChart]=Math.max(0,Math.min(100,Math.round(value)));input.value=values[input.dataset.miniChart];});
+    persistLocal('plaza-mayor-mini-charts-v1',JSON.stringify(values));
+    render(statusChart,statusLegend,['statusA','statusB']);render(typeChart,typeLegend,['typeA','typeB','typeC']);
+    if(statusTotal)statusTotal.textContent='100%';if(typeTotal)typeTotal.textContent='100%';
+    statusChart.setAttribute('aria-label','Puesta a Punto y Estabilización '+values.statusA+'%, Mejora y Evolución '+values.statusB+'%');
+    typeChart.setAttribute('aria-label','Estructuración '+values.typeA+'%, En ejecución '+values.typeB+'%, Ejecutado '+values.typeC+'%');
   }
+  inputs.forEach(input=>{input.dataset.lastCommitted=String(Number(input.value)||0);input.addEventListener('input',update);input.addEventListener('change',()=>{const before=Number(input.dataset.lastCommitted??input.value);input.value=Math.max(0,Math.min(100,Math.round(Number(input.value)||0)));update();const current=Number(input.value);if(current!==before)recordChange('Gráfica actualizada',labels[input.dataset.miniChart]+': '+before+'% → '+current+'%');input.dataset.lastCommitted=String(current);});});
   update();
-  window.addEventListener('plaza:datachange',update);
 }
-
 
 function initInteractiveTimeline(){
  const root=$('#globalTimeline');
