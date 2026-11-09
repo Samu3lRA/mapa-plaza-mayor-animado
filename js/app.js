@@ -440,7 +440,8 @@ function initMiniCharts(){
 }
 
 function initInteractiveTimeline(){
- const root=$('#globalTimeline'),overlay=$('#timelineDetailOverlay'),closeBtn=$('#timelineDetailClose'),photoBox=$('#timelineDetailPhoto'),title=$('#timelineDetailTitle'),eyebrow=$('#timelineDetailEyebrow'),summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsBox=$('#timelineDetailProjects');
+ const root=$('#globalTimeline'),overlay=$('#timelineDetailOverlay'),closeBtn=$('#timelineDetailClose'),photoBox=$('#timelineDetailPhoto'),title=$('#timelineDetailTitle'),eyebrow=$('#timelineDetailEyebrow'),summary=$('#timelineDetailSummary'),stats=$('#timelineDetailStats'),projectsBox=$('#timelineDetailProjects'),prevYearBtn=$('#timelinePrevYear'),nextYearBtn=$('#timelineNextYear'),navCounter=$('#timelineNavCounter'),navProgress=$('#timelineNavProgress');
+ let activeYear=null,lastTimelineOpener=null;
  if(!root||!overlay||!closeBtn||!photoBox||!title||!eyebrow||!summary||!stats||!projectsBox)return;
  let events=timelineConfig;const monthNames=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],currentYear=new Date().getFullYear();
  const getYear=p=>{const m=String(p.fecha||'').match(/20\\d{2}/);return m?Number(m[0]):null;};
@@ -457,6 +458,11 @@ function initInteractiveTimeline(){
   const photo=getPhoto(event,projects),amount=projects.reduce((sum,p)=>sum+parseMoney(p.valor),0),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('contrat')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;
   const now=new Date(),currentMonth=now.getMonth();
   const nextProject=projects.find(p=>{const m=getMonth(p);return m>=0&&(year>currentYear||(year===currentYear&&m>=currentMonth));});
+  activeYear=year;const yearIndex=events.findIndex(item=>item.year===year),yearCount=events.length;
+  if(navCounter)navCounter.textContent='ETAPA '+(yearIndex+1)+' DE '+yearCount;
+  if(navProgress)navProgress.style.width=((yearIndex+1)/yearCount*100)+'%';
+  if(prevYearBtn)prevYearBtn.disabled=yearIndex<=0;
+  if(nextYearBtn)nextYearBtn.disabled=yearIndex>=yearCount-1;
   eyebrow.textContent='LÍNEA DE TIEMPO · '+year;title.textContent=event.title;summary.textContent=event.summary;
   photoBox.innerHTML=photo?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(event.title)+'" loading="lazy">':'<div class="timeline-detail-photo-placeholder"><span>⌂</span><strong>Foto pendiente</strong><small>La fotografía de esta etapa aún no está cargada.</small></div>';
   stats.innerHTML='<div><span>Proyectos</span><strong>'+projects.length+'</strong></div><div><span>Contratados</span><strong>'+contracted+'</strong></div><div><span>Estructuración</span><strong>'+structured+'</strong></div><div><span>Valor registrado</span><strong>$'+formatNumber(amount)+'</strong></div>';
@@ -465,10 +471,12 @@ function initInteractiveTimeline(){
   projectsBox.innerHTML='<div class="timeline-detail-description"><h3>Sobre esta etapa</h3><p>'+escapeHtml(event.detalle||event.summary)+'</p></div>'+(nextProject&&year>=currentYear?'<div class="timeline-next-hito"><span>PRÓXIMO HITO REGISTRADO</span><strong>'+escapeHtml(nextProject.nombre)+'</strong><small>'+escapeHtml(nextProject.fecha)+' · '+escapeHtml(nextProject.estado)+'</small></div>':'')+(projects.length?'<div><div class="timeline-projects-head"><h3>Proyectos relacionados</h3><button type="button" class="timeline-show-all" data-timeline-show-all>Ver todos en el mapa</button></div>'+sections+'</div>':'<div class="timeline-no-projects">No hay proyectos con fecha registrada en '+year+'.</div>');
   highlightYear(year);overlay.hidden=false;overlay.setAttribute('aria-hidden','false');document.body.classList.add('timeline-modal-open');requestAnimationFrame(()=>overlay.classList.add('is-open'));closeBtn.focus();
  }
- function close(){overlay.classList.remove('is-open');overlay.setAttribute('aria-hidden','true');clearHighlight();window.setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('timeline-modal-open');},220);}
- root.addEventListener('click',event=>{const button=event.target.closest('[data-timeline-year]');if(button)openYear(Number(button.dataset.timelineYear));});
+ function moveYear(direction){const index=events.findIndex(item=>item.year===activeYear),target=events[index+direction];if(target)openYear(target.year);}
+ function close(){overlay.classList.remove('is-open');overlay.setAttribute('aria-hidden','true');clearHighlight();window.setTimeout(()=>{overlay.hidden=true;document.body.classList.remove('timeline-modal-open');if(lastTimelineOpener?.isConnected)lastTimelineOpener.focus();},220);}
+ prevYearBtn?.addEventListener('click',()=>moveYear(-1));nextYearBtn?.addEventListener('click',()=>moveYear(1));
+ root.addEventListener('click',event=>{const button=event.target.closest('[data-timeline-year]');if(button){lastTimelineOpener=button;openYear(Number(button.dataset.timelineYear));}});
  projectsBox.addEventListener('click',event=>{if(event.target.closest('[data-timeline-show-all]')){close();return;}const button=event.target.closest('[data-timeline-project]');if(!button)return;const project=projectById(button.dataset.timelineProject);if(!project)return;close();window.setTimeout(()=>selectProject(project.id,{open:true}),230);});
- closeBtn.addEventListener('click',close);overlay.addEventListener('click',event=>{if(event.target===overlay)close();});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)close();});
+ closeBtn.addEventListener('click',close);overlay.addEventListener('click',event=>{if(event.target===overlay)close();});document.addEventListener('keydown',event=>{if(overlay.hidden)return;if(event.key==='Escape')close();if(event.key==='ArrowLeft')moveYear(-1);if(event.key==='ArrowRight')moveYear(1);});
  const editor=$('#timelineEditor'),yearSelect=$('#timelineEditYear'),fields={title:$('#timelineEditTitle'),summary:$('#timelineEditSummary'),detalle:$('#timelineEditDetail'),foto:$('#timelineEditPhoto'),color:$('#timelineEditColor'),status:$('#timelineEditStatus')};
  const loadTimeline=()=>{try{const saved=JSON.parse(localStorage.getItem(TIMELINE_STORAGE_KEY)||'null');if(Array.isArray(saved)){const valid=new Set(events.map(x=>x.year));timelineConfig=events.map(base=>{const custom=saved.find(x=>Number(x.year)===base.year);return custom?{...base,...custom}:base;});events=timelineConfig;}}catch(_){events=timelineConfig;}};
  const fillEditor=()=>{const item=events.find(x=>x.year===Number(yearSelect?.value))||events[0];if(!item)return;Object.keys(fields).forEach(key=>{if(fields[key])fields[key].value=item[key]??(key==='color'?'#ff9700':key==='status'?'auto':'');});};
