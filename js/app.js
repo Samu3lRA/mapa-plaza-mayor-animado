@@ -196,7 +196,7 @@ function restoreEdits(){
    if(p.tipo==='especifico'&&validPavilions.has(s.pabellon))next.pabellon=s.pabellon;
    textFields.forEach(key=>{if(typeof s[key]==='string')next[key]=s[key];});
    if(Array.isArray(s.alcance))next.alcance=s.alcance.filter(v=>typeof v==='string').slice(0,30);
-   if(Array.isArray(s.fotos))next.fotos=s.fotos.filter(v=>typeof v==='string'&&v.trim()).slice(0,20);
+   if(Array.isArray(s.fotos)&&s.fotos.some(v=>typeof v==='string'&&v.trim()))next.fotos=s.fotos.filter(v=>typeof v==='string'&&v.trim()).slice(0,20);
    if(s.avance===null||Number.isFinite(Number(s.avance)))next.avance=s.avance===null?null:Math.max(0,Math.min(100,Number(s.avance)));
    return next;
   });
