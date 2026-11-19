@@ -10,12 +10,12 @@ const COLORES_PABELLON = {
 };
 
 const PROYECTOS = [
-  {id:'e1',tipo:'especifico',nombre:'Zona de Comidas',valor:'$2.540',fecha:'enero 2027',estado:'Contratado',pabellon:'sin',x:33,y:67,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e1',tipo:'especifico',nombre:'Zona de Comidas',valor:'$2.540',fecha:'enero 2027',estado:'Contratado',pabellon:'sin',x:33,y:67,fotos:['Fotos espacios/Zona de Comidas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e2',tipo:'especifico',nombre:'Supervisión técnica Z. Comidas',valor:'$61',fecha:'enero 2027',estado:'Contratado',pabellon:'sin',x:38,y:71,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e3',tipo:'especifico',nombre:'Parcial Baños',valor:'$264',fecha:'octubre 2026',estado:'Contratado',pabellon:'sin',x:22,y:46,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e3',tipo:'especifico',nombre:'Parcial Baños',valor:'$264',fecha:'octubre 2026',estado:'Contratado',pabellon:'sin',x:22,y:46,fotos:['Fotos espacios/Zona parcial Baños.jpg','Fotos espacios/Baños.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e4',tipo:'especifico',nombre:'Equipos gimnasio',valor:'$26',fecha:'octubre 2026',estado:'Contratado',pabellon:'sin',x:11,y:76,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e5',tipo:'especifico',nombre:'Cubierta Terraza',valor:'$1.000',fecha:'febrero 2027',estado:'Estructuración',pabellon:'sin',x:52,y:47,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e6',tipo:'especifico',nombre:'Zonas de descanso Occ.',valor:'$163',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:14,y:62,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e6',tipo:'especifico',nombre:'Zonas de descanso Occ.',valor:'$163',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:14,y:62,fotos:['Fotos espacios/Zona de descanso.HEIC'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e7',tipo:'especifico',nombre:'Mtto Listones de Madera',valor:'$1.000',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:34,y:37,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e8',tipo:'especifico',nombre:'Renovación Policarbonato',valor:'$850',fecha:'abril 2027',estado:'Estructuración',pabellon:'sin',x:47,y:26,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e9',tipo:'especifico',nombre:'Cambio telas paneles',valor:'$700',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:59,y:63,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
@@ -28,7 +28,7 @@ const PROYECTOS = [
   {id:'g7',tipo:'general',nombre:'Acondicionamiento Acústico',valor:'$2.117',fecha:'junio 2027',estado:'Estructuración',x:55,y:34,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:80,y:48,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:30,y:28,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:66,y:38,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:66,y:38,fotos:['Fotos espacios/Pantallas internas.HEIC'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:46,y:80,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g12',tipo:'general',nombre:'Puntos Hidratación',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:76,y:56,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:18,y:34,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
