@@ -23,3 +23,10 @@ const stage=document.getElementById('mapStage'),view=document.getElementById('ma
   window.addEventListener('load',medir);
   medir();
 })();
+(function(){
+  /* Fuera del modo edición las cifras de las gráficas son solo lectura (también con teclado). */
+  document.addEventListener('focusin',e=>{
+    const t=e.target;
+    if(t&&t.matches&&t.matches('.priority-input-wrap input, .mini-pie-item input')&&!document.body.classList.contains('editing'))t.blur();
+  });
+})();

@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=fase9">
+  <link rel="stylesheet" href="./css/estilos.css?v=fase11">
 </head>
 <body>
   <noscript><p style="margin:0;padding:24px;background:#071629;color:#f4f7fc;font:16px/1.5 Arial,sans-serif;text-align:center">Este tablero necesita JavaScript para mostrar el mapa y los proyectos. Actívalo en tu navegador y vuelve a cargar la página.</p></noscript>
@@ -39,8 +39,7 @@
       <div class="header-actions"><button class="button button-glass theme-button" id="themeToggle" type="button">☼ <span>●</span> ☾</button><button class="button button-glass" id="presentToggle" type="button">▶ Modo presentación</button><button class="button button-outline-orange" id="editToggle" type="button" aria-pressed="false">✎ Modo edición</button></div>
     </header>
     
-    <main class="workspace" id="inicio">
-<aside class="project-sidebar glass-panel"><div class="sidebar-heading"><p class="eyebrow">CENTRO DE CONTROL</p><h2>Proyectos de inversión</h2><p>Consulta y explora los proyectos del complejo.</p></div>
+    <section class="exec-summary" id="resumenEjecutivo" aria-label="Resumen de inversión">
 <section class="priority-progress" aria-label="Porcentajes por línea de inversión">
   <div class="priority-heading"><div><p class="eyebrow">DISTRIBUCIÓN</p><h2>Pilares de la inversión</h2></div><div class="priority-heading-meta"><strong id="priorityTotal">97%</strong><span class="priority-edit-hint">Editable</span></div></div>
   <div class="priority-content">
@@ -63,6 +62,10 @@
     <div class="pie-chart-row"><div class="mini-donut" id="typeMiniChart" aria-label="Gráfica circular de proyectos por tipo"></div><div class="mini-pie-legend" id="typePieLegend"></div></div>
   </div>
 </section>
+</section>
+    <main class="workspace" id="inicio">
+<aside class="project-sidebar glass-panel"><div class="sidebar-heading"><p class="eyebrow">CENTRO DE CONTROL</p><h2>Proyectos de inversión</h2><p>Consulta y explora los proyectos del complejo.</p></div>
+
 <section class="map-tools" aria-label="Buscar y filtrar proyectos">
 <label class="search-field"><span>⌕</span><input id="projectSearch" type="search" placeholder="Buscar proyecto, responsable..." autocomplete="off"></label>
 <div class="filter-row"><select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="En ejecución">En ejecución</option><option value="Finalizado">Finalizado</option></select><select id="pavilionFilter" aria-label="Filtrar por pabellón"><option value="">Todos los pabellones</option><option value="amarillo">Amarillo</option><option value="rojo">Rojo</option><option value="verde">Verde</option><option value="azul">Azul</option><option value="blanco">Blanco</option><option value="convenciones">Convenciones</option><option value="sin">Sin asignar</option><option value="general">Toda la infraestructura</option></select></div><button class="clear-filters" id="clearFilters" type="button">Limpiar búsqueda y filtros</button></section>
@@ -180,6 +183,6 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js?v=fase9"></script><script src="./js/app.js?v=fase9"></script><script src="./js/animaciones.js?v=fase9"></script><script src="./js/mejoras.js?v=fase9"></script><script src="./js/interfaz.js?v=fase9"></script><script src="./js/calendario.js?v=fase9"></script>
+  <script src="./js/datos.js?v=fase11"></script><script src="./js/app.js?v=fase11"></script><script src="./js/animaciones.js?v=fase11"></script><script src="./js/mejoras.js?v=fase11"></script><script src="./js/interfaz.js?v=fase11"></script><script src="./js/calendario.js?v=fase11"></script>
 </body>
 </html>

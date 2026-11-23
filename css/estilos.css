@@ -1823,3 +1823,33 @@ button.cal-day{cursor:pointer;font-weight:800}
 
 /* Evita el desplazamiento horizontal causado por los márgenes negativos del encabezado. */
 html,body{overflow-x:clip}
+
+/* ===== Resumen ejecutivo: las tres gráficas en una franja sobre el mapa ===== */
+.exec-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:20px 0 4px;align-items:stretch}
+.exec-summary .sidebar-mini-charts{display:contents}
+.exec-summary .priority-progress,.exec-summary .mini-chart-card{margin:0;padding:16px 18px 16px;border-radius:18px;border:1px solid rgba(160,195,240,.22);background:linear-gradient(160deg,rgba(10,45,92,.9),rgba(5,22,48,.94));box-shadow:0 14px 34px rgba(0,10,32,.3);display:flex;flex-direction:column}
+.exec-summary .priority-heading,.exec-summary .mini-chart-head{margin-bottom:14px}
+.exec-summary .priority-heading h2,.exec-summary .mini-chart-head h2{font-size:15px}
+.exec-summary .priority-content,.exec-summary .pie-chart-row{display:grid!important;grid-template-columns:128px minmax(0,1fr)!important;gap:18px!important;align-items:center;flex:1}
+.exec-summary{--dashboard-donut-size:128px}
+.exec-summary .priority-donut::after,.exec-summary .mini-donut::after{inset:22px!important;font-size:20px!important}
+.exec-summary .priority-value,.exec-summary .mini-pie-item{font-size:12px}
+/* Fuera del modo edición los valores son solo lectura: sin casillas ni avisos de "Editable". */
+body:not(.editing) .priority-edit-hint,body:not(.editing) .mini-edit-hint,body:not(.editing) .priority-footnote{display:none}
+body:not(.editing) .priority-input-wrap input,body:not(.editing) .mini-pie-item input{pointer-events:none;background:transparent!important;border-color:transparent!important;box-shadow:none!important;-moz-appearance:textfield;appearance:textfield;width:34px!important;min-width:34px!important;max-width:34px!important;font-size:14px!important;text-align:right;padding:0!important}
+body:not(.editing) .priority-input-wrap input::-webkit-outer-spin-button,body:not(.editing) .priority-input-wrap input::-webkit-inner-spin-button,body:not(.editing) .mini-pie-item input::-webkit-outer-spin-button,body:not(.editing) .mini-pie-item input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+body:not(.editing) .mini-pie-item input{color:#fff!important}
+body:not(.editing) .priority-input-wrap input{color:inherit!important}
+[data-theme="light"] .exec-summary .priority-progress,[data-theme="light"] .exec-summary .mini-chart-card{background:linear-gradient(160deg,#fff,#edf3fa);border-color:rgba(0,62,153,.16);box-shadow:0 12px 28px rgba(0,40,100,.1)}
+[data-theme="light"] body:not(.editing) .mini-pie-item input{color:#17345b!important}
+@media(max-width:1100px){.exec-summary{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.exec-summary{grid-template-columns:1fr}.exec-summary .priority-content,.exec-summary .pie-chart-row{grid-template-columns:108px minmax(0,1fr)!important;gap:12px!important}.exec-summary{--dashboard-donut-size:108px}.exec-summary .priority-donut::after,.exec-summary .mini-donut::after{inset:19px!important;font-size:17px!important}}
+
+/* ===== Modo presentación: solo el mapa y el panel del proyecto ===== */
+.app-shell.is-presenting .exec-summary,.app-shell.is-presenting .tl-section,.app-shell.is-presenting .investment-disclaimer,.app-shell.is-presenting .project-sidebar{display:none!important}
+.app-shell.is-presenting .workspace{grid-template-columns:minmax(0,1fr);padding-top:16px}
+.app-shell.is-presenting .map-section{margin:0}
+body.is-presenting-body{overflow:hidden}
+/* Proyecto sin foto: recuadro bajo con la textura de la marca, no media pantalla vacía. */
+.panel-photo-wrap:has(.photo-pending){aspect-ratio:auto;height:88px}
+.photo-pending{height:100%;display:grid;place-items:center;padding:0 20px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#a9c4ea;text-align:center;background:radial-gradient(circle at 75% 15%,rgba(66,140,235,.38),transparent 55%),repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 14px),linear-gradient(160deg,#0d3270,#06183a)}
