@@ -208,7 +208,7 @@ function restoreEdits(){
 }
 function resetEdits(){
  if(!window.confirm('¿Restablecer posiciones, pabellones, porcentajes y personalización de la línea de tiempo a sus valores iniciales? Esta acción no se puede deshacer en este navegador.'))return;
- removeLocal(STORAGE_KEY);removeLocal(VERSION_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');removeLocal(TIMELINE_STORAGE_KEY);timelineConfig=cloneTimeline();window.PlazaMayorTimeline?.refresh();
+ removeLocal(STORAGE_KEY);removeLocal(VERSION_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');window.PlazaMayorControles?.reset();removeLocal(TIMELINE_STORAGE_KEY);timelineConfig=cloneTimeline();window.PlazaMayorTimeline?.refresh();
  state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
  const priorityDefaults={experience:45,technology:37,safety:15};
  $$('[data-priority]').forEach(input=>{input.value=priorityDefaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});

@@ -1853,3 +1853,10 @@ body.is-presenting-body{overflow:hidden}
 /* Proyecto sin foto: recuadro bajo con la textura de la marca, no media pantalla vacía. */
 .panel-photo-wrap:has(.photo-pending){aspect-ratio:auto;height:88px}
 .photo-pending{height:100%;display:grid;place-items:center;padding:0 20px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#a9c4ea;text-align:center;background:radial-gradient(circle at 75% 15%,rgba(66,140,235,.38),transparent 55%),repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 14px),linear-gradient(160deg,#0d3270,#06183a)}
+
+/* Mover los botones del mapa (solo en modo edición) */
+.mv-handle{display:none}
+body.editing .mv-target{outline:2px dashed rgba(255,180,74,.8);outline-offset:3px}
+body.editing .mv-handle{position:absolute;left:-10px;top:-10px;z-index:9;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:#ff9700;color:#1b1200;font-size:13px;line-height:1;cursor:grab;touch-action:none;user-select:none;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
+@media(max-width:760px){body.editing .mv-handle{display:none}body.editing .mv-target{outline:0}}

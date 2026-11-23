@@ -30,3 +30,53 @@ const stage=document.getElementById('mapStage'),view=document.getElementById('ma
     if(t&&t.matches&&t.matches('.priority-input-wrap input, .mini-pie-item input')&&!document.body.classList.contains('editing'))t.blur();
   });
 })();
+(function(){
+  /* Modo edición: mover los botones del mapa (centrar/enfoque, leyenda, barra de zoom).
+     Cada uno tiene un asa ⠿ visible solo en modo edición. La posición se guarda como fracción
+     del tamaño del mapa en este navegador. Doble clic en el asa devuelve ese control a su sitio. */
+  const KEY='plaza-mayor-controles-v1';
+  const section=document.querySelector('.map-section');
+  if(!section)return;
+  const T={centro:'.map-center-control',leyenda:'#mainLegend',barra:'.map-bottom'};
+  let pos={};
+  try{pos=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(_){pos={};}
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(pos));}catch(_){}};
+  const movil=()=>window.innerWidth<=760;
+  function apply(id){
+    const el=document.querySelector(T[id]);if(!el)return;
+    const p=pos[id];
+    if(!p||movil()){el.style.translate='';return;}
+    const r=section.getBoundingClientRect();
+    el.style.translate=(p.x*r.width)+'px '+(p.y*r.height)+'px';
+  }
+  const applyAll=()=>Object.keys(T).forEach(apply);
+  Object.keys(T).forEach(id=>{
+    const el=document.querySelector(T[id]);if(!el)return;
+    const h=document.createElement('span');
+    h.className='mv-handle';h.textContent='⠿';h.title='Arrastra para mover · doble clic para restablecer';
+    h.setAttribute('role','button');h.setAttribute('aria-label','Mover este control del mapa');
+    el.appendChild(h);
+    el.classList.add('mv-target');
+    let start=null;
+    h.addEventListener('pointerdown',e=>{
+      if(!document.body.classList.contains('editing')||movil())return;
+      e.preventDefault();h.setPointerCapture(e.pointerId);
+      const s=section.getBoundingClientRect(),r=el.getBoundingClientRect(),cur=pos[id]||{x:0,y:0};
+      start={px:e.clientX,py:e.clientY,cx:cur.x*s.width,cy:cur.y*s.height,
+        minX:s.left-r.left,maxX:s.right-r.right,minY:s.top-r.top,maxY:s.bottom-r.bottom,w:s.width,h:s.height};
+      h.classList.add('is-drag');
+    });
+    h.addEventListener('pointermove',e=>{
+      if(!start)return;
+      const dx=Math.min(start.maxX,Math.max(start.minX,e.clientX-start.px)),dy=Math.min(start.maxY,Math.max(start.minY,e.clientY-start.py));
+      const x=start.cx+dx,y=start.cy+dy;
+      pos[id]={x:x/start.w,y:y/start.h};apply(id);
+    });
+    const end=()=>{if(!start)return;start=null;h.classList.remove('is-drag');save();};
+    h.addEventListener('pointerup',end);h.addEventListener('pointercancel',end);
+    h.addEventListener('dblclick',()=>{delete pos[id];apply(id);save();});
+  });
+  window.addEventListener('resize',applyAll);
+  applyAll();
+  window.PlazaMayorControles={reset(){pos={};try{localStorage.removeItem(KEY);}catch(_){}applyAll();}};
+})();

@@ -87,6 +87,8 @@ Los cambios se guardan únicamente en el `localStorage` de ese navegador (clave 
 
 Para fijar los cambios para todos, traslada los valores aprobados a `js/datos.js` y sube `DATOS_VERSION`. Si el navegador conserva ediciones de una versión anterior, el modo edición lo avisa al abrirse: descarga un respaldo y usa **Restablecer** para ver los datos publicados.
 
+Los botones del mapa (centrar/enfoque, leyenda y barra de zoom) se mueven en modo edición con su asa naranja ⠿; doble clic en el asa devuelve el control a su sitio. La posición se guarda solo en ese navegador (clave `plaza-mayor-controles-v1`).
+
 Las cifras de las gráficas (distribución de la inversión, estado y tipo) se editan directo en sus casillas y también se guardan solo en ese navegador.
 
 ## Modo presentación
