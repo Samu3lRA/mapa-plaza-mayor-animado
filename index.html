@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#071629">
+  <title>Mapa interactivo · Plaza Mayor Medellín</title>
+  <meta name="description" content="Mapa interactivo y animado de proyectos de inversión de Plaza Mayor Medellín.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/estilos.css?v=timeline-explorer-2">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <header class="topbar investment-header">
+      <div class="investment-brand">
+        <img class="brand-logo" src="./IMAGEN_MAPA/LOGO.png" alt="Logo de Plaza Mayor Medellín">
+        <div class="investment-heading">
+          <p class="investment-kicker">PLAZA MAYOR MEDELLÍN</p>
+          <h1>PLAN DE INVERSIÓN</h1>
+          <h2>Tablero de seguimiento</h2>
+        </div>
+      </div>
+      <div class="investment-intro">
+        <p class="investment-motto">Impulsamos el desarrollo de la ciudad-región y creamos experiencias extraordinarias.</p>
+        <p class="investment-instruction">Consulta y explora los proyectos en Plaza Mayor</p>
+        <div class="investment-meta"><span>Fecha de actualización</span><strong id="updateDate">06/11/2026</strong></div>
+      </div>
+      <div class="header-actions"><button class="button button-glass theme-button" id="themeToggle" type="button">☼ <span>●</span> ☾</button><button class="button button-glass" id="presentToggle" type="button">▶ Modo presentación</button><button class="button button-outline-orange" id="editToggle" type="button" aria-pressed="false">✎ Modo edición</button></div>
+    </header>
+    
+    <main class="workspace" id="inicio">
+<aside class="project-sidebar glass-panel"><div class="sidebar-heading"><p class="eyebrow">CENTRO DE CONTROL</p><h1>Proyectos de inversión</h1><p>Consulta y explora los proyectos del complejo.</p></div>
+<section class="priority-progress" aria-label="Porcentajes por línea de inversión">
+  <div class="priority-heading"><div><p class="eyebrow">DISTRIBUCIÓN</p><h2>Pilares de la inversión</h2></div><div class="priority-heading-meta"><strong id="priorityTotal">97%</strong><span class="priority-edit-hint">Editable</span></div></div>
+  <div class="priority-content">
+    <div class="priority-donut" id="priorityDonut" role="img" aria-label="Gráfica circular de distribución porcentual de las líneas de inversión"></div>
+    <div class="priority-values">
+      <label class="priority-value priority-one"><span>Mejora de experiencias</span><span class="priority-input-wrap"><input type="number" min="0" max="100" step="1" value="45" data-priority="experience" aria-label="Porcentaje de mejora de experiencias">%</span></label>
+      <label class="priority-value priority-two"><span>Actualización tecnológica</span><span class="priority-input-wrap"><input type="number" min="0" max="100" step="1" value="37" data-priority="technology" aria-label="Porcentaje de actualización tecnológica">%</span></label>
+      <label class="priority-value priority-three"><span>Seguridad humana / mejora operación</span><span class="priority-input-wrap"><input type="number" min="0" max="100" step="1" value="15" data-priority="safety" aria-label="Porcentaje de seguridad humana y mejora de operación">%</span></label>
+    </div>
+  </div>
+  <p class="priority-footnote">Puedes modificar los valores; los cambios se guardan en este navegador.</p>
+</section>
+<section class="sidebar-mini-charts" aria-label="Indicadores de inversión">
+  <div class="mini-chart-card">
+    <div class="mini-chart-head"><div><p class="eyebrow">ESTADO</p><h2>Proyectos por estado</h2></div><span class="mini-edit-hint">Editable</span><strong id="statusChartTotal">100%</strong></div>
+    <div class="pie-chart-row"><div class="mini-donut" id="statusMiniChart" aria-label="Gráfica circular de proyectos por estado"></div><div class="mini-pie-legend" id="statusPieLegend"></div></div>
+  </div>
+  <div class="mini-chart-card">
+    <div class="mini-chart-head"><div><p class="eyebrow">ALCANCE</p><h2>Proyectos por tipo</h2></div><span class="mini-edit-hint">Editable</span><strong id="typeChartTotal">100%</strong></div>
+    <div class="pie-chart-row"><div class="mini-donut" id="typeMiniChart" aria-label="Gráfica circular de proyectos por tipo"></div><div class="mini-pie-legend" id="typePieLegend"></div></div>
+  </div>
+</section>
+<section class="map-tools" aria-label="Buscar y filtrar proyectos">
+<label class="search-field"><span>⌕</span><input id="projectSearch" type="search" placeholder="Buscar proyecto, responsable..." autocomplete="off"></label>
+<div class="filter-row"><select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="En ejecución">En ejecución</option><option value="Finalizado">Finalizado</option></select><select id="pavilionFilter" aria-label="Filtrar por pabellón"><option value="">Todos los pabellones</option><option value="amarillo">Amarillo</option><option value="rojo">Rojo</option><option value="verde">Verde</option><option value="azul">Azul</option><option value="blanco">Blanco</option><option value="convenciones">Convenciones</option><option value="sin">Sin asignar</option><option value="general">Toda la infraestructura</option></select></div><button class="clear-filters" id="clearFilters" type="button">Limpiar búsqueda y filtros</button></section>
+<div class="list-tabs" role="tablist" aria-label="Tipo de proyectos">
+  <button class="list-tab is-active" type="button" role="tab" data-list-tab="specific" aria-controls="specificList" aria-selected="true">Específicos <span id="specificCount">(9)</span></button>
+  <button class="list-tab" type="button" role="tab" data-list-tab="general" aria-controls="generalList" aria-selected="false">Generales <span id="generalCount">(13)</span></button>
+</div>
+<div class="project-list tab-list is-active" id="specificList" role="tabpanel" aria-label="Proyectos específicos"></div>
+<div class="project-list tab-list" id="generalList" role="tabpanel" aria-label="Proyectos de toda la infraestructura" hidden></div></aside>
+<section class="map-section" aria-label="Mapa interactivo de Plaza Mayor"><div class="map-viewport" id="mapViewport"><div class="map-stage" id="mapStage"><picture class="map-picture"><img src="./IMAGEN_MAPA/Imagen%20de%20ChatGPT%205%20nov%202026,%2004_48_55%20p.m.png" alt="Vista aérea completa de Plaza Mayor Medellín; toda la zona a color corresponde al complejo" class="map-image" decoding="async" fetchpriority="high"></picture><div class="place-markers" id="placeMarkers" aria-label="Pabellones y zonas del complejo"></div><div class="points-layer" id="pointsLayer" aria-label="Proyectos sobre el mapa"></div></div></div>
+<div class="map-legend glass-panel" id="mainLegend"><div id="legendItems" class="legend-items"></div></div><div class="map-center-control"><button class="icon-button glass-panel" id="centerMap" type="button" aria-label="Centrar mapa">⌖</button><button class="icon-button glass-panel" id="focusMode" type="button" aria-label="Activar modo de enfoque" aria-pressed="false">◎</button></div>
+<div class="map-bottom glass-panel"><div class="map-bottom-left"><strong id="mapProjectCount">▥ 22 proyectos</strong><i></i><span>▧ Plaza Mayor Medellín</span></div><div class="zoom-controls"><button class="icon-button" id="zoomOut" type="button" aria-label="Alejar">−</button><button class="icon-button" id="zoomIn" type="button" aria-label="Acercar">+</button><button class="icon-button" id="fullscreenMap" type="button" aria-label="Pantalla completa">⛶</button></div><div class="map-hint"><span>ⓘ</span> Haz clic en un punto para ver más información</div></div>
+<div class="recording-legend" id="recordingLegend" aria-hidden="true"><span class="recording-legend-title">Plaza Mayor</span><span class="recording-dot"></span><span>Toda la infraestructura</span><span class="recording-dot recording-dot-gray"></span><span>Por asignar</span></div></section></main>
+<section class="investment-timeline" id="historiaInversion" aria-label="Línea de tiempo del plan de inversión">
+  <div class="timeline-global-head">
+    <div>
+      <p class="eyebrow">EVOLUCIÓN DEL PLAN</p>
+      <h2>Línea de tiempo · 2024 — 2027</h2>
+    </div>
+    <span>Hitos del proceso de inversión</span>
+  </div>
+  <div class="timeline-global" id="globalTimeline">
+    <button class="timeline-year is-past" type="button" data-timeline-year="2024" aria-label="Ver información de 2024"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2024</span><span class="timeline-action-label">Explorar etapa</span></span><span class="timeline-year-copy"><strong>Antecedentes</strong><span>Inicio del horizonte de planificación.</span></span><span class="timeline-year-metrics" data-timeline-metrics="2024"></span></button>
+    <button class="timeline-year is-past" type="button" data-timeline-year="2025" aria-label="Ver información de 2025"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2025</span><span class="timeline-action-label">Explorar etapa</span></span><span class="timeline-year-copy"><strong>Planeación</strong><span>Definición y priorización de necesidades.</span></span><span class="timeline-year-metrics" data-timeline-metrics="2025"></span></button>
+    <button class="timeline-year is-current" type="button" data-timeline-year="2026" aria-label="Ver información de 2026"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2026</span><span class="timeline-action-label">Explorar etapa</span></span><span class="timeline-year-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></span><span class="timeline-year-metrics" data-timeline-metrics="2026"></span></button>
+    <button class="timeline-year is-future" type="button" data-timeline-year="2027" aria-label="Ver información de 2027"><span class="timeline-year-node"><span class="timeline-year-photo" aria-hidden="true"></span><span class="timeline-year-label">2027</span><span class="timeline-action-label">Explorar etapa</span></span><span class="timeline-year-copy"><strong>Ejecución proyectada</strong><span>Fechas previstas para contratación, ejecución y entregas.</span></span><span class="timeline-year-metrics" data-timeline-metrics="2027"></span></button>
+  </div>
+</section>
+
+<div class="timeline-detail-overlay" id="timelineDetailOverlay" hidden aria-hidden="true">
+  <section class="timeline-detail" role="dialog" aria-modal="true" aria-labelledby="timelineDetailTitle">
+    <button class="icon-button timeline-detail-close" id="timelineDetailClose" type="button" aria-label="Cerrar detalle">×</button>
+    <div class="timeline-detail-photo" id="timelineDetailPhoto"></div>
+    <div class="timeline-detail-nav" aria-label="Navegación entre años">
+      <button class="timeline-nav-arrow" id="timelinePrevYear" type="button" aria-label="Año anterior">←</button>
+      <div class="timeline-nav-center"><span id="timelineNavCounter">ETAPA 1 DE 4</span><div class="timeline-nav-track"><i id="timelineNavProgress"></i></div></div>
+      <button class="timeline-nav-arrow" id="timelineNextYear" type="button" aria-label="Año siguiente">→</button>
+    </div>
+    <div class="timeline-detail-body">
+      <p class="eyebrow" id="timelineDetailEyebrow">LÍNEA DE TIEMPO</p>
+      <h2 id="timelineDetailTitle"></h2>
+      <p class="timeline-detail-summary" id="timelineDetailSummary"></p>
+      <div class="timeline-detail-stats" id="timelineDetailStats"></div>
+      <div class="timeline-detail-projects" id="timelineDetailProjects"></div>
+    </div>
+  </section>
+</div>
+<footer class="investment-disclaimer"><p>La información presentada en este tablero tiene carácter informativo y corresponde al estado de avance de las obras con corte a la fecha de actualización. Los cronogramas, porcentajes y fechas estimadas pueden estar sujetos a modificaciones de acuerdo con las condiciones técnicas, operativas y administrativas de cada proyecto. Las actualizaciones se realizarán conforme avance la ejecución y se valide la información correspondiente.</p></footer>
+<section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
+      <div class="edit-head"><div><p class="eyebrow">MODO EDICIÓN</p><h2>Ajustes del mapa</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
+      <p class="edit-help">Arrastra los marcadores para reubicarlos. Selecciona un proyecto para cambiar su pabellón. Los cambios se guardan en este navegador; descarga un respaldo para transferirlos.</p>
+      <p class="backup-status" id="backupStatus" aria-live="polite">Consultando el estado del respaldo…</p>
+      <details class="timeline-editor-details"><summary>Personalizar línea de tiempo</summary><div class="timeline-editor-fields"><p>Modifica la presentación de cada etapa. Las fotografías aceptan una ruta del repositorio o una URL de imagen.</p><label><span>Etapa</span><select id="timelineEditYear"></select></label><label><span>Título</span><input id="timelineEditTitle" type="text" maxlength="70"></label><label><span>Resumen corto</span><textarea id="timelineEditSummary" rows="2" maxlength="180"></textarea></label><label><span>Descripción ampliada</span><textarea id="timelineEditDetail" rows="3" maxlength="500"></textarea></label><label><span>Fotografía · ruta o URL</span><input id="timelineEditPhoto" type="text" placeholder="IMAGEN_MAPA/linea-tiempo-2026.jpg"></label><div class="timeline-editor-inline"><label><span>Color de etapa</span><input id="timelineEditColor" type="color" value="#ff9700"></label><label><span>Estado visual</span><select id="timelineEditStatus"><option value="auto">Automático por año</option><option value="done">Completado</option><option value="current">En curso</option><option value="future">Proyectado</option></select></label></div><div class="timeline-editor-actions"><button class="button button-primary" id="saveTimelineEdit" type="button">Guardar etapa</button><button class="button button-secondary" id="resetTimelineEdit" type="button">Restaurar línea de tiempo</button></div></div></details>
+      <details class="edit-quality-details"><summary>Revisión de calidad de datos</summary><div id="dataQualityReport" class="data-quality-report" aria-live="polite"></div></details>
+      <details class="edit-history-details"><summary>Historial de modificaciones</summary><div id="editHistoryList" class="edit-history-list" aria-live="polite"></div></details>
+      <div class="project-editor" id="projectEditor" hidden>
+  <div class="project-editor-head"><div><p class="eyebrow">PROYECTO SELECCIONADO</p><h3 id="editProjectName">Selecciona un proyecto en el mapa</h3></div><span id="editProjectType" class="editor-type-badge"></span></div>
+  <div class="project-editor-grid">
+    <label><span>Nombre</span><input id="editProjectTitle" type="text" autocomplete="off"></label>
+    <label><span>Valor registrado</span><input id="editProjectValue" type="text" autocomplete="off" placeholder="$0"></label>
+    <label><span>Fecha / hito</span><input id="editProjectDate" type="text" autocomplete="off" placeholder="enero 2027"></label>
+    <label><span>Estado</span><select id="editProjectStatus"><option value="Contratado">Contratado</option><option value="Estructuración">Estructuración</option><option value="Ejecutado">Ejecutado</option><option value="En ejecución">En ejecución</option><option value="Por iniciar">Por iniciar</option></select></label>
+    <label><span>Responsable</span><input id="editProjectResponsible" type="text" autocomplete="off"></label>
+    <label><span>Avance (%)</span><input id="editProjectProgress" type="number" min="0" max="100" step="1"></label>
+    <label class="editor-full"><span>Descripción</span><textarea id="editProjectDescription" rows="3"></textarea></label>
+    <label class="editor-full"><span>Alcance · un elemento por línea</span><textarea id="editProjectScope" rows="4"></textarea></label>
+    <label class="editor-full"><span>Fotos · una ruta o URL por línea</span><textarea id="editProjectPhotos" rows="3" placeholder="IMAGEN_MAPA/foto.jpg"></textarea></label>
+    <label class="editor-full"><span>Notas</span><textarea id="editProjectNotes" rows="3"></textarea></label>
+  </div>
+  <div class="project-editor-actions"><button class="button button-primary" id="saveProjectEdits" type="button">Guardar cambios</button><button class="button button-secondary" id="cancelProjectEdits" type="button">Cancelar</button></div>
+</div>
+<label class="field-label" for="pavilionSelect">Asignar pabellón al proyecto seleccionado</label>
+      <select id="pavilionSelect" class="field-select"><option value="sin">Sin asignar</option><option value="amarillo">Amarillo</option><option value="azul">Azul</option><option value="rojo">Rojo</option><option value="blanco">Blanco</option><option value="verde">Verde</option><option value="convenciones">Convenciones</option></select>
+      <div class="edit-actions"><button class="button button-secondary" id="copyData" type="button">Copiar posiciones</button><button class="button button-secondary" id="downloadData" type="button">Descargar respaldo</button><button class="button button-secondary" id="importData" type="button">Importar respaldo</button><button class="button button-secondary" id="printReport" type="button">Generar informe PDF</button><button class="button button-danger" id="resetData" type="button">Restablecer</button><input id="importFile" type="file" accept="application/json,.json" hidden></div>
+      <details class="edit-data-details"><summary>Ver datos técnicos</summary><textarea id="dataOutput" class="data-output" rows="5" readonly aria-label="Datos editados"></textarea></details>
+    </section>
+    <div class="presentation-controls" id="presentationControls" hidden><div class="presentation-progress"><span id="presentationProgressBar"></span></div><div class="presentation-meta"><span id="presentationCounter">1 / 22</span><span>Espacio: pausar · ← →: navegar · Esc: salir</span></div></div>
+  </div>
+  <aside class="info-panel" id="infoPanel" aria-hidden="true" aria-label="Información del proyecto">
+    <button class="icon-button panel-close" id="panelClose" type="button" aria-label="Cerrar información">×</button>
+    <div class="panel-scroll" id="panelScroll">
+      <div class="panel-photo-wrap" id="panelPhotoWrap"></div><div class="gallery-controls" id="galleryControls" hidden><button type="button" id="galleryPrev" aria-label="Foto anterior">‹</button><span id="galleryCounter"></span><button type="button" id="galleryNext" aria-label="Foto siguiente">›</button></div>
+      <div class="panel-block panel-status-block" data-panel-block="status"><span class="status-pill" id="panelStatus"></span></div>
+      <div class="panel-block" data-panel-block="title"><h2 id="panelTitle"></h2></div>
+      <div class="panel-block panel-value-block" data-panel-block="value"><strong id="panelValue">$0</strong></div>
+      <div class="panel-block panel-meta" data-panel-block="meta"><div><span>Fecha</span><strong id="panelDate"></strong></div><div><span>Ubicación</span><strong id="panelLocation"></strong></div></div>
+      <div class="panel-block" data-panel-block="description" id="descriptionBlock"><h3>Descripción</h3><p id="panelDescription"></p></div>
+      <div class="panel-block" data-panel-block="scope" id="scopeBlock"><h3>Alcance</h3><ul id="panelScope"></ul></div>
+      <div class="panel-block" data-panel-block="progress" id="progressBlock"><div class="progress-head"><h3>Avance</h3><strong id="panelProgressText"></strong></div><div class="progress-track"><span id="panelProgressBar"></span></div></div>
+      <div class="panel-block panel-small" data-panel-block="responsible" id="responsibleBlock"><span>Responsable</span><strong id="panelResponsible"></strong></div>
+      <div class="panel-block panel-small" data-panel-block="notes" id="notesBlock"><span>Notas</span><p id="panelNotes"></p></div><div class="panel-block timeline-block" id="timelineBlock"><h3>Cronología</h3><div id="projectTimeline"></div></div><div class="panel-block comparison-block" id="comparisonBlock" hidden><h3>Antes y después</h3><div id="comparisonImages"></div></div><div class="panel-block history-block" id="historyBlock"><h3>Historial de actualizaciones</h3><div id="projectHistory"></div></div><div class="panel-actions"><button class="button button-secondary" id="printProject" type="button">Imprimir ficha / PDF</button></div>
+    </div>
+  </aside>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./js/datos.js"></script><script src="./js/app.js?v=timeline-explorer-2"></script><script src="./js/fotos-espacios.js?v=1"></script><script src="./js/animaciones.js?v=seguimiento-2"></script><script src="./js/mejoras.js?v=seguimiento-4"></script><script>
+(()=>{const tabs=[...document.querySelectorAll('[data-list-tab]')];tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const active=x===t;x.classList.toggle('is-active',active);x.setAttribute('aria-selected',String(active));});document.querySelectorAll('.tab-list').forEach(x=>{x.hidden=x.id!==(t.dataset.listTab==='specific'?'specificList':'generalList');});}));
+
+const stage=document.getElementById('mapStage'),view=document.getElementById('mapViewport');let z=1;const currentZoom=()=>Number(getComputedStyle(stage).getPropertyValue('--camera-scale'))||z;const apply=()=>{stage.style.setProperty('--camera-scale',z);stage.style.setProperty('--camera-x','0px');stage.style.setProperty('--camera-y','0px')};document.getElementById('zoomIn').onclick=()=>{z=Math.min(2.2,currentZoom()+.2);apply()};document.getElementById('zoomOut').onclick=()=>{z=Math.max(1,currentZoom()-.2);apply()};document.getElementById('centerMap').onclick=()=>{z=1;apply();view.scrollTo({left:0,behavior:'smooth'})};const infoPanel=document.getElementById('infoPanel'),infoHome=infoPanel.parentElement,infoNext=infoPanel.nextElementSibling;document.getElementById('fullscreenMap').onclick=()=>document.fullscreenElement?document.exitFullscreen():view.requestFullscreen?.();document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement===view){view.appendChild(infoPanel);infoPanel.style.position='fixed';infoPanel.style.zIndex='2147483000';infoPanel.style.right='24px';infoPanel.style.top='50%';}else{if(infoNext&&infoNext.parentElement===infoHome)infoHome.insertBefore(infoPanel,infoNext);else infoHome.appendChild(infoPanel);infoPanel.style.position='';infoPanel.style.zIndex='';infoPanel.style.right='';infoPanel.style.top='';}});
+})();</script>
+</body>
+</html>
