@@ -1919,3 +1919,23 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 [data-theme="light"] .tl-year{color:rgba(11,42,85,.3)}
 [data-theme="light"] .tl-step[data-state="is-current"] .tl-year{color:#0b2a55}
 [data-theme="light"] .road-m{color:#4a5f7a}[data-theme="light"] .road-m em{color:#6b7e96}[data-theme="light"] .road-m.is-year{color:#0b2a55}
+
+/* Contraste del cristal: fondo un poco más profundo y textos más claros (WCAG AA) */
+.tl-section{background:linear-gradient(rgba(3,22,66,.34),rgba(3,22,66,.34)),linear-gradient(140deg,rgba(255,255,255,.13),rgba(255,255,255,.045))}
+.tl-copy span{color:#e4edf9}
+.tl-status{color:#d3e1f3}
+.tl-stats{color:#e4edf9}
+.tl-empty{color:#d3e1f3}
+.tl-year{color:rgba(255,255,255,.72)}
+.tl-cta{color:#ffcf8a;border-bottom-color:rgba(255,207,138,.5)}
+.tl-head .eyebrow,.tl-step[data-state="is-current"] .tl-status{color:#ffcf8a}
+.road-m{color:#d3e1f3}.road-m em{color:#c3d3ea}
+.road-legend,.road-when,.road-note{color:#e4edf9}
+.road-note{margin:12px 0 4px;font-size:11.5px;line-height:1.5;display:flex;gap:22px;flex-wrap:wrap}
+.road-note b{color:#fff}
+[data-theme="light"] .tl-section{background:linear-gradient(140deg,rgba(255,255,255,.82),rgba(255,255,255,.58))}
+[data-theme="light"] .tl-head .eyebrow,[data-theme="light"] .tl-step[data-state="is-current"] .tl-status,[data-theme="light"] .tl-cta{color:#a85500}
+[data-theme="light"] .tl-cta{border-bottom-color:rgba(168,85,0,.4)}
+[data-theme="light"] .tl-copy span,[data-theme="light"] .tl-stats,[data-theme="light"] .tl-empty,[data-theme="light"] .tl-status,[data-theme="light"] .road-legend,[data-theme="light"] .road-when,[data-theme="light"] .road-note{color:#3d5069}
+[data-theme="light"] .road-note b{color:#0b2a55}
+[data-theme="light"] .road-m{color:#3d5069}[data-theme="light"] .road-m em{color:#566a84}
