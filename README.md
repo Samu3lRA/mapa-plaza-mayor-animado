@@ -8,6 +8,7 @@ Tablero web interactivo de seguimiento de los proyectos de inversión de Plaza M
 - Búsqueda y filtros por estado y pabellón.
 - Panel de información por proyecto: foto o galería, valor, fecha, ubicación, cronología, alcance, avance, responsable y notas.
 - Línea de tiempo 2024 – 2027 con detalle por etapa.
+- Calendario del plan: cada proyecto aparece en el día (o mes) de su fecha. Naranja = planeado, verde = terminado. Para pintar un día exacto, escribe la fecha con día (`15 enero 2027`); con solo mes (`enero 2027`) queda en la lista "día sin definir".
 - Gráficas de distribución de la inversión, de estado y de tipo (editables).
 - Tema claro y oscuro.
 - Modo presentación, modo grabación y modo enfoque.
@@ -27,7 +28,8 @@ mapa-plaza-mayor-animado/
 │   ├── app.js           mapa, marcadores, edición, filtros, respaldos y línea de tiempo
 │   ├── animaciones.js   arrastre del plano y animaciones del mapa
 │   ├── mejoras.js       galería, cronología del proyecto, informes e impresión
-│   └── interfaz.js      pestañas, zoom, centrar y pantalla completa
+│   ├── interfaz.js      pestañas, zoom, centrar y pantalla completa
+│   └── calendario.js    calendario de fechas de los proyectos
 ├── assets/fotos/        fotos de los espacios (JPG)
 ├── IMAGEN_MAPA/         plano aéreo, logotipos e ícono de la pestaña
 ├── GUIA_INTERNA_MANTENIMIENTO.md
