@@ -31,7 +31,6 @@
   const end=e=>{
     if(!dragging||e.pointerId!==pointerId)return;
     dragging=false;pointerId=null;viewport.classList.remove('is-panning');
-    if(moved){viewport.classList.add('did-pan');setTimeout(()=>viewport.classList.remove('did-pan'),80);}
   };
   viewport.addEventListener('pointerup',end);
   viewport.addEventListener('pointercancel',end);
