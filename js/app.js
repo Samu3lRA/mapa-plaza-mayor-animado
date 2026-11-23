@@ -12,6 +12,7 @@ let storageWarningShown=false;
 const state={selectedId:null,previousFocus:null,panelOpen:false,editing:false,presentation:false,presentationPaused:false,presentationIndex:0,presentationTimer:null,touchStartY:null,data:cloneProjects(PROYECTOS)};
 const els={appShell:$('#appShell'),mapViewport:$('#mapViewport'),mapStage:$('#mapStage'),pointsLayer:$('#pointsLayer'),generalList:$('#generalList'),specificList:$('#specificList'),legendItems:$('#legendItems'),themeToggle:$('#themeToggle'),editToggle:$('#editToggle'),presentToggle:$('#presentToggle'),infoPanel:$('#infoPanel'),panelScroll:$('#panelScroll'),panelClose:$('#panelClose'),panelPhotoWrap:$('#panelPhotoWrap'),panelStatus:$('#panelStatus'),panelTitle:$('#panelTitle'),panelValue:$('#panelValue'),panelDate:$('#panelDate'),panelLocation:$('#panelLocation'),panelDescription:$('#panelDescription'),panelScope:$('#panelScope'),panelProgressText:$('#panelProgressText'),panelProgressBar:$('#panelProgressBar'),panelResponsible:$('#panelResponsible'),panelNotes:$('#panelNotes'),descriptionBlock:$('#descriptionBlock'),scopeBlock:$('#scopeBlock'),progressBlock:$('#progressBlock'),responsibleBlock:$('#responsibleBlock'),notesBlock:$('#notesBlock'),editPanel:$('#editPanel'),editClose:$('#editClose'),projectEditor:$('#projectEditor'),editProjectName:$('#editProjectName'),editProjectType:$('#editProjectType'),editProjectTitle:$('#editProjectTitle'),editProjectValue:$('#editProjectValue'),editProjectDate:$('#editProjectDate'),editProjectStatus:$('#editProjectStatus'),editProjectResponsible:$('#editProjectResponsible'),editProjectProgress:$('#editProjectProgress'),editProjectDescription:$('#editProjectDescription'),editProjectScope:$('#editProjectScope'),editProjectPhotos:$('#editProjectPhotos'),editProjectNotes:$('#editProjectNotes'),saveProjectEdits:$('#saveProjectEdits'),cancelProjectEdits:$('#cancelProjectEdits'),pavilionSelect:$('#pavilionSelect'),copyData:$('#copyData'),downloadData:$('#downloadData'),resetData:$('#resetData'),dataOutput:$('#dataOutput'),presentationControls:$('#presentationControls'),presentationProgressBar:$('#presentationProgressBar'),presentationCounter:$('#presentationCounter'),toast:$('#toast'),recordingLegend:$('#recordingLegend'),editHistoryList:$('#editHistoryList'),dataQualityReport:$('#dataQualityReport'),importData:$('#importData'),importFile:$('#importFile')};
 function cloneProjects(ps){return ps.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]}));}
+function migrateFoto(v){return (typeof FOTO_RUTAS_ANTERIORES!=='undefined'&&FOTO_RUTAS_ANTERIORES[v])||v;}
 function projectById(id){return state.data.find(p=>p.id===id);}
 function colorFor(p){return p.tipo==='general'?COLORES_PABELLON.general:(COLORES_PABELLON[p.pabellon]||COLORES_PABELLON.sin);}
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
@@ -196,7 +197,7 @@ function restoreEdits(){
    if(p.tipo==='especifico'&&validPavilions.has(s.pabellon))next.pabellon=s.pabellon;
    textFields.forEach(key=>{if(typeof s[key]==='string')next[key]=s[key];});
    if(Array.isArray(s.alcance))next.alcance=s.alcance.filter(v=>typeof v==='string').slice(0,30);
-   if(Array.isArray(s.fotos))next.fotos=s.fotos.filter(v=>typeof v==='string'&&v.trim()).slice(0,20);
+   if(Array.isArray(s.fotos))next.fotos=s.fotos.filter(v=>typeof v==='string'&&v.trim()).map(migrateFoto).slice(0,20);
    if(s.avance===null||Number.isFinite(Number(s.avance)))next.avance=s.avance===null?null:Math.max(0,Math.min(100,Number(s.avance)));
    return next;
   });
@@ -252,7 +253,7 @@ function importBackup(file){
     const next={...p,x,y};
     ['nombre','valor','fecha','estado','descripcion','responsable','notas'].forEach(key=>{if(typeof incoming[key]==='string')next[key]=incoming[key];});
     if(Array.isArray(incoming.alcance))next.alcance=incoming.alcance.filter(v=>typeof v==='string').slice(0,30);
-    if(Array.isArray(incoming.fotos))next.fotos=incoming.fotos.filter(v=>typeof v==='string'&&v.trim()).slice(0,20);
+    if(Array.isArray(incoming.fotos))next.fotos=incoming.fotos.filter(v=>typeof v==='string'&&v.trim()).map(migrateFoto).slice(0,20);
     if(incoming.avance===null||Number.isFinite(Number(incoming.avance)))next.avance=incoming.avance===null?null:Math.max(0,Math.min(100,Number(incoming.avance)));
     if(p.tipo==='especifico'){
      if(!pavilionKeys.has(incoming.pabellon))throw new Error('Hay un pabellón no válido en el respaldo.');
