@@ -73,7 +73,7 @@ body{background:radial-gradient(ellipse at 78% 0%,rgba(0,62,153,.32),transparent
 }
 .sidebar-heading{padding:2px 3px 18px}
 .sidebar-heading .eyebrow{margin:0 0 7px;color:#ffb44a;letter-spacing:.14em;font-weight:800}
-.sidebar-heading h1{font-size:20px;line-height:1.25;margin:0 0 7px;letter-spacing:-.035em}
+.sidebar-heading h2{font-size:20px;line-height:1.25;margin:0 0 7px;letter-spacing:-.035em}
 .sidebar-heading>p:last-child{margin:0;color:#aebed1;font-size:11px;line-height:1.5}
 .list-tabs{gap:6px;padding:12px 0;border-top:1px solid var(--line)}
 .list-tab{padding:10px 8px;border:1px solid transparent;font-size:11px;color:#c8d5e5}
@@ -132,7 +132,7 @@ body{background:radial-gradient(ellipse at 78% 0%,rgba(0,62,153,.32),transparent
   .header-actions .button{flex:1;padding:9px 10px;font-size:10px}
   .workspace{gap:12px;padding-top:14px}
   .project-sidebar{padding:15px;border-radius:15px}
-  .sidebar-heading h1{font-size:18px}
+  .sidebar-heading h2{font-size:18px}
   .map-viewport{border-radius:14px}
   .summary{display:none}
   .info-panel{background:linear-gradient(145deg,rgba(8,42,83,.94),rgba(5,19,37,.96))}
@@ -1693,3 +1693,5 @@ html[data-theme="light"] .timeline-nav-center span{color:#64758b}
  .timeline-nav-center{width:62%}
 }
 @media(prefers-reduced-motion:reduce){.timeline-nav-track i,.timeline-nav-arrow{transition:none}}
+/* El modo edición solo aparece con ?editar=1 en la dirección. */
+body:not(.edit-enabled) #editToggle{display:none!important}

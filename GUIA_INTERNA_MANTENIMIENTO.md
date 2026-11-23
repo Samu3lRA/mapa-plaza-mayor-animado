@@ -6,17 +6,19 @@ Documento operativo para mantener el tablero sin modificar su diseño ni perder 
 
 - `index.html`: estructura de la página, controles y carga de archivos.
 - `css/estilos.css`: apariencia, distribución y adaptación a pantallas.
-- `js/datos.js`: datos base de los proyectos y orden de presentación.
+- `js/datos.js`: datos base de los proyectos, orden de presentación, `DATOS_VERSION` y `FECHA_ACTUALIZACION`.
 - `js/app.js`: mapa, marcadores, edición, filtros, almacenamiento local, respaldos y línea de tiempo.
 - `js/animaciones.js`: animaciones y respuestas visuales del mapa.
-- `js/mejoras.js`: indicadores, galería, cronología de cada proyecto e informes.
-- `IMAGEN_MAPA/`: plano, logotipo y recursos gráficos usados por el tablero.
+- `js/mejoras.js`: galería, cronología de cada proyecto, informes e impresión de fichas.
+- `js/interfaz.js`: pestañas de la lista, zoom, centrar mapa y pantalla completa.
+- `IMAGEN_MAPA/`: plano, logotipos e ícono de la pestaña usados por el tablero.
+- `assets/fotos/`: fotos de los espacios (JPG, unos 1600 px y sin metadatos de ubicación).
 
 **Regla de mantenimiento:** hacer cambios pequeños, en un solo archivo por vez cuando sea posible. No reemplazar archivos completos con versiones antiguas ni cambiar nombres/rutas de imágenes sin actualizar sus referencias.
 
 ## 2. Cómo editar y guardar
 
-1. Abrir el tablero en el navegador habitual.
+1. Abrir el tablero en el navegador habitual, agregando `?editar=1` al final de la dirección (sin eso el botón **Modo edición** no aparece, para que los visitantes no lo vean).
 2. Entrar en **Modo edición**.
 3. Mover los marcadores o cambiar el pabellón del proyecto seleccionado.
 4. Modificar los porcentajes directamente en sus campos.
@@ -52,10 +54,11 @@ Los cambios hechos desde el navegador son locales. Para que una actualización s
 1. Descargar un respaldo actualizado.
 2. Revisar los datos con el responsable de la información.
 3. Trasladar únicamente los valores aprobados a `js/datos.js` y/o al código correspondiente.
-4. Publicar los cambios en la rama `main`.
-5. Abrir el sitio y verificarlo en una ventana nueva o con recarga forzada.
-6. Confirmar que los marcadores, filtros, paneles y línea de tiempo funcionan.
-7. Mantener el respaldo anterior hasta confirmar la nueva versión.
+4. Subir el número de `DATOS_VERSION` y actualizar `FECHA_ACTUALIZACION` en `js/datos.js`. Si cambiaste un archivo CSS o JS, cambiar también su `?v=` en `index.html`.
+5. Publicar los cambios en la rama `main`.
+6. Abrir el sitio y verificarlo en una ventana nueva o con recarga forzada.
+7. Confirmar que los marcadores, filtros, paneles y línea de tiempo funcionan.
+8. Mantener el respaldo anterior hasta confirmar la nueva versión.
 
 No asumir que una posición o porcentaje guardado en un computador ya quedó publicado en GitHub.
 
@@ -69,6 +72,7 @@ No asumir que una posición o porcentaje guardado en un computador ya quedó pub
 - [ ] Las pestañas de proyectos específicos y generales cambian correctamente.
 - [ ] El zoom, centrar mapa y pantalla completa responden.
 - [ ] La línea de tiempo abre y cierra sus detalles.
+- [ ] Sin `?editar=1` el botón Modo edición no aparece; con `?editar=1` sí.
 - [ ] El modo edición permite mover puntos y cambiar pabellones.
 - [ ] La descarga e importación de respaldo funcionan.
 - [ ] Los gráficos y el tema claro/oscuro se actualizan.

@@ -1,3 +1,9 @@
+/* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
+   así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
+const DATOS_VERSION=1;
+/* Fecha que se muestra en el encabezado como "Fecha de actualización". */
+const FECHA_ACTUALIZACION='06/11/2026';
+
 const COLORES_PABELLON = {
   amarillo:{nombre:'Amarillo',fondo:'#F2C200',texto:'#14171C'},
   rojo:{nombre:'Rojo',fondo:'#D93636',texto:'#FFFFFF'},

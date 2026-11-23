@@ -1,17 +1,20 @@
 # Mapa Plaza Mayor Animado
 
-Mapa web interactivo de los proyectos de inversión de Plaza Mayor Medellín. Está construido con HTML, CSS y JavaScript puros, sin frameworks ni compilación.
+Tablero web interactivo de seguimiento de los proyectos de inversión de Plaza Mayor Medellín. Está construido con HTML, CSS y JavaScript puros, sin frameworks ni compilación.
 
-## Estado
+## Qué incluye
 
-Implementa las cuatro fases del encargo:
+- Mapa responsive con 22 proyectos (9 específicos y 13 generales), leyenda, tooltips y listas por pestañas.
+- Búsqueda y filtros por estado y pabellón.
+- Panel de información por proyecto: foto o galería, valor, fecha, ubicación, cronología, alcance, avance, responsable y notas.
+- Línea de tiempo 2024 – 2027 con detalle por etapa.
+- Gráficas de distribución de la inversión, de estado y de tipo (editables).
+- Tema claro y oscuro.
+- Modo presentación, modo grabación y modo enfoque.
+- Impresión de ficha por proyecto y, desde el modo edición, informe de todos los proyectos (PDF desde el navegador).
+- Modo edición con respaldo e importación.
 
-- **Fase 1:** mapa responsive, 22 puntos, leyenda, tooltips y listas.
-- **Fase 2:** panel lateral, selección, zoom de cámara, onda, conteo de valor, avance, Ken Burns y `prefers-reduced-motion`.
-- **Fase 3:** modo edición, arrastre con puntero, asignación de pabellón, copia/descarga de puntos y persistencia versionada.
-- **Fase 4:** modo presentación, modo grabación, controles de teclado y documentación.
-
-> La imagen aérea original y las fotografías de proyectos son materiales del usuario. No se inventan ni se sustituyen.
+> La imagen aérea y las fotografías de los proyectos son materiales del usuario. No se inventan ni se sustituyen.
 
 ## Estructura
 
@@ -19,16 +22,19 @@ Implementa las cuatro fases del encargo:
 mapa-plaza-mayor-animado/
 ├── index.html
 ├── css/estilos.css
-├── js/app.js
-├── js/datos.js
-├── assets/
-│   ├── plaza-mayor.png
-│   ├── plaza-mayor.webp
-│   └── fotos/
+├── js/
+│   ├── datos.js         datos de los proyectos, colores, línea de tiempo, versión y fecha
+│   ├── app.js           mapa, marcadores, edición, filtros, respaldos y línea de tiempo
+│   ├── animaciones.js   arrastre del plano y animaciones del mapa
+│   ├── mejoras.js       galería, cronología del proyecto, informes e impresión
+│   └── interfaz.js      pestañas, zoom, centrar y pantalla completa
+├── assets/fotos/        fotos de los espacios (JPG)
+├── IMAGEN_MAPA/         plano aéreo, logotipos e ícono de la pestaña
+├── GUIA_INTERNA_MANTENIMIENTO.md
 └── .nojekyll
 ```
 
-La imagen aérea entregada por el usuario es de 2048 × 943 px (proporción 2.17:1). El proyecto está preparado para `assets/plaza-mayor.png` y `assets/plaza-mayor.webp`, optimizada para carga web. La zona coloreada de la imagen corresponde a todo Plaza Mayor. Las fotos individuales se agregan en `assets/fotos/` y se referencian desde `fotos` en `js/datos.js`.
+El plano usado por el mapa es `IMAGEN_MAPA/mapa-plaza-mayor.png` (1200 × 552 px). Una imagen de mayor resolución se vería más nítida al acercar con el zoom; si la reemplazas, conserva la misma proporción (2.17:1) para que los puntos no se desplacen.
 
 ## Ejecutar localmente
 
@@ -48,23 +54,42 @@ Los 9 específicos comienzan con `pabellon: "sin"`. No se asignan automáticamen
 
 No se deben agregar unidades a los valores hasta confirmarlas.
 
+Al final de cada cambio publicado en `datos.js`:
+
+1. Sube el número de `DATOS_VERSION` (1 → 2 → 3…).
+2. Actualiza `FECHA_ACTUALIZACION`, que es la fecha que se muestra en el encabezado.
+
+## Fotos
+
+Las fotos viven en `assets/fotos/` y se asignan en el campo `fotos` de cada proyecto en `js/datos.js`, por ejemplo `fotos:['assets/fotos/zona-comidas.jpg']`.
+
+Para que carguen rápido y sin riesgo:
+
+- Usa **JPG** (los HEIC de iPhone no se ven en Chrome, Edge ni Firefox).
+- Reduce a unos **1600 px** de lado largo (cada foto debería pesar menos de 500 KB).
+- Quita los metadatos **EXIF/GPS** antes de subirlas: el repositorio puede ser público y las fotos de celular traen la ubicación.
+- Usa nombres sin espacios ni tildes, en minúsculas y con guiones.
+
 ## Modo edición
 
-Pulsa **Modo edición**.
+El botón **Modo edición** no aparece para los visitantes. Para verlo, agrega `?editar=1` a la dirección, por ejemplo `https://…/index.html?editar=1`.
 
 1. Arrastra un punto con mouse o dedo.
-2. Selecciona un específico y cambia su pabellón.
-3. **Copiar datos** genera una línea JSON por punto.
-4. **Descargar puntos.json** guarda los datos de posición/pabellón.
-5. **Restablecer** elimina los cambios locales y vuelve a `datos.js`.
+2. Selecciona un proyecto para cambiar su pabellón o sus datos.
+3. **Copiar posiciones** copia los datos al portapapeles.
+4. **Descargar respaldo** guarda un archivo `respaldo-mapa-plaza-mayor.json`.
+5. **Importar respaldo** restaura un archivo descargado antes.
+6. **Restablecer** elimina los cambios locales y vuelve a `datos.js`.
 
-Los cambios se guardan únicamente en `localStorage` con la clave versionada `plaza-mayor-mapa-edicion-v1`. La fuente de verdad sigue siendo `js/datos.js`.
+Los cambios se guardan únicamente en el `localStorage` de ese navegador (clave `plaza-mayor-mapa-edicion-v1`). La fuente de verdad sigue siendo `js/datos.js`.
 
-Para fijar los cambios para todos, copia los valores de `puntos.json` o del área de texto y actualiza los campos correspondientes en `js/datos.js`. Después de publicar una nueva versión de `datos.js`, si el navegador conserva una edición vieja, usa **Restablecer** o limpia la clave `plaza-mayor-mapa-edicion-v1` desde las herramientas de desarrollo.
+Para fijar los cambios para todos, traslada los valores aprobados a `js/datos.js` y sube `DATOS_VERSION`. Si el navegador conserva ediciones de una versión anterior, el modo edición lo avisa al abrirse: descarga un respaldo y usa **Restablecer** para ver los datos publicados.
+
+Las cifras de las gráficas (distribución de la inversión, estado y tipo) se editan directo en sus casillas y también se guardan solo en ese navegador.
 
 ## Modo presentación
 
-Pulsa **Presentar**. El recorrido usa el orden de `ORDEN_PRESENTACION` en `js/datos.js`: específicos 1–9 y después G1–G13.
+Pulsa **Modo presentación**. El recorrido usa el orden de `ORDEN_PRESENTACION` en `js/datos.js`: específicos 1–9 y después G1–G13.
 
 Cada punto permanece 6 segundos por defecto (`PRESENTATION_MS` en `app.js`).
 
@@ -109,6 +134,8 @@ El repositorio está preparado para GitHub Pages desde `main` y la raíz del pro
 
 En GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: main → Folder: / (root)**.
 
+Los archivos CSS y JS se cargan con un parámetro de versión (`?v=…` en `index.html`). Cuando cambies uno de ellos, cambia también su versión para que los navegadores no usen una copia vieja.
+
 ## Accesibilidad y movimiento
 
 - Los puntos son botones reales.
@@ -124,7 +151,7 @@ Quedan deliberadamente vacíos hasta que el usuario los proporcione:
 
 - pabellón definitivo de los 9 específicos;
 - posiciones definitivas de los 22 puntos;
-- fotos;
+- fotos de los proyectos que aún no la tienen (hoy hay fotos para 4 de 22);
 - descripciones;
 - alcances;
 - avances;
