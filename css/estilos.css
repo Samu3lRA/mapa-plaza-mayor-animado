@@ -1733,3 +1733,24 @@ button.cal-day{cursor:pointer;font-weight:800}
 [data-theme="light"] .cal-day.is-today{border-color:#003e99;box-shadow:0 0 0 1px #003e99 inset}
 [data-theme="light"] .cal-legend i.is-today{border-color:#003e99}
 [data-theme="light"] .timeline-detail-calendar{--muted:#4a5a6d}
+
+/* Las tres gráficas del panel (pilares, estado y tipo) comparten tamaños de texto, casillas y botón "Editable". */
+.priority-progress,.mini-chart-card{padding:12px 11px 11px}
+.priority-heading .eyebrow,.mini-chart-head .eyebrow{margin:0 0 4px;font-size:10px;font-weight:800;letter-spacing:.13em;color:#ffb44a}
+.priority-heading h2,.mini-chart-head h2{margin:2px 0 0;font-size:13px;line-height:1.25;letter-spacing:-.01em}
+.mini-chart-head{align-items:center;margin-bottom:13px}
+.mini-chart-head>strong{display:none}
+.priority-edit-hint,.mini-edit-hint{margin:0;padding:4px 7px;border:1px solid rgba(255,151,0,.38);border-radius:999px;color:#ffbd64;font-size:9px;font-weight:800;letter-spacing:.04em;white-space:nowrap}
+.priority-value,.mini-pie-item{font-size:10px;line-height:1.3}
+.mini-pie-item{color:#dce7f4;grid-template-columns:9px minmax(0,1fr) 62px!important;column-gap:7px!important;width:100%;box-sizing:border-box;padding-right:8px}
+.mini-pie-item strong{display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:10px}
+.mini-pie-item input,.priority-input-wrap input{box-sizing:border-box!important;width:42px!important;min-width:42px!important;max-width:42px!important;height:27px;padding:0 2px!important;border-radius:7px;font:700 11px Manrope,Arial,sans-serif!important;text-align:center}
+.priority-values,.mini-pie-legend{gap:10px}
+[data-theme="light"] .mini-pie-item{color:#40536b}
+@media(max-width:760px){
+  .priority-heading .eyebrow,.mini-chart-head .eyebrow{font-size:9px}
+  .priority-heading h2,.mini-chart-head h2{font-size:12px}
+  .priority-value,.mini-pie-item{font-size:9px}
+  .mini-pie-item{grid-template-columns:8px minmax(0,1fr) 58px!important;column-gap:5px!important;padding-right:6px}
+  .mini-pie-item input,.priority-input-wrap input{width:38px!important;min-width:38px!important;max-width:38px!important;height:25px;font-size:10px!important}
+}
