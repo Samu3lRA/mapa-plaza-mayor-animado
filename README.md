@@ -7,7 +7,7 @@ Tablero web interactivo de seguimiento de los proyectos de inversión de Plaza M
 - Mapa responsive con 22 proyectos (9 específicos y 13 generales), leyenda, tooltips y listas por pestañas.
 - Búsqueda y filtros por estado y pabellón.
 - Panel de información por proyecto: foto o galería, valor, fecha, ubicación, cronología, alcance, avance, responsable y notas.
-- Línea de tiempo 2024 – 2027 con detalle por etapa.
+- Línea de tiempo 2024 – 2027 con detalle por etapa y una hoja de ruta con los 22 proyectos ubicados en el mes de su fecha (con marca de «Hoy»).
 - Botón **Resumen PDF** en el encabezado: genera un PDF A4 (indicadores, gráficas, línea de tiempo, calendario de fechas y tabla de proyectos) con los datos que muestra el tablero, listo para la junta. Se guarda con "Guardar como PDF" en el diálogo de impresión.
 - Calendario por año: al abrir un año de la línea de tiempo (2024–2027) aparece su calendario de 12 meses. Naranja = planeado, verde = terminado. Para pintar un día exacto, escribe la fecha con día (`15 enero 2027`); con solo mes (`enero 2027`) el mes muestra "N sin día" y el proyecto queda en la lista de abajo.
 - Gráficas de distribución de la inversión, de estado y de tipo (editables).

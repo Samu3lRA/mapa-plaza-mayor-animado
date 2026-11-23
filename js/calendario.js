@@ -75,5 +75,32 @@
     const box=document.getElementById('timelineDetailCalendar');
     if(box&&box.dataset.year)render(+box.dataset.year);
   });
+
+  /* Hoja de ruta: todos los proyectos ubicados en el mes de su fecha (debajo de la línea de tiempo). */
+  const ESTRUCT=/estruct/i;
+  function renderRuta(){
+    const box=document.getElementById('tlRoad');if(!box)return;
+    const list=((window.PlazaMayorData&&PlazaMayorData.getProjects())||[]).map(p=>{const f=parseFecha(p.fecha);return f?{p,f}:null}).filter(Boolean);
+    if(!list.length){box.innerHTML='';return;}
+    const idx=f=>f.y*12+f.m;
+    list.sort((a,b)=>idx(a.f)-idx(b.f)||(a.f.d||16)-(b.f.d||16)||a.p.nombre.localeCompare(b.p.nombre,'es'));
+    const min=Math.min(...list.map(i=>idx(i.f))),max=Math.max(...list.map(i=>idx(i.f))),n=max-min+1;
+    const hoy=new Date(),pos=(f)=>{const dias=new Date(f.y,f.m+1,0).getDate();return ((idx(f)-min)+((f.d||Math.round(dias/2))-0.5)/dias)/n*100;};
+    const hoyIdx=hoy.getFullYear()*12+hoy.getMonth(),hoyPct=hoyIdx>=min&&hoyIdx<=max?((hoyIdx-min)+(hoy.getDate()-0.5)/new Date(hoy.getFullYear(),hoy.getMonth()+1,0).getDate())/n*100:null;
+    let cab='',y0=null;
+    for(let k=0;k<n;k++){const t=min+k,y=Math.floor(t/12),m=t%12;cab+='<span class="road-m'+(y!==y0?' is-year':'')+'">'+MESES[m].slice(0,3)+(y!==y0?'<em>'+y+'</em>':'')+'</span>';y0=y;}
+    const filas=list.map(({p,f})=>{
+      const est=ESTRUCT.test(p.estado||'');
+      return '<button type="button" class="road-row" data-cal-id="'+esc(p.id)+'" title="'+esc(p.nombre+' · '+p.fecha+' · '+(p.estado||''))+'">'
+        +'<span class="road-name">'+esc(p.nombre)+'</span>'
+        +'<span class="road-track"><i class="road-dot'+(est?' is-est':'')+(HECHO.test(p.estado||'')?' is-done':'')+'" style="left:'+pos(f).toFixed(2)+'%"></i><span class="road-when" style="left:'+pos(f).toFixed(2)+'%">'+esc(p.fecha)+'</span></span></button>';
+    }).join('');
+    box.innerHTML='<div class="road-head"><h3>Fechas previstas por proyecto</h3><ul class="road-legend"><li><i class="road-dot"></i>Contratado</li><li><i class="road-dot is-est"></i>En estructuración</li><li><i class="road-dot is-done"></i>Terminado</li></ul></div>'
+      +'<div class="road-grid" style="--n:'+n+'"><div class="road-axis"><span class="road-name"></span><span class="road-months">'+cab+'</span></div>'
+      +'<div class="road-rows">'+filas+(hoyPct!=null?'<span class="road-today" style="left:calc(var(--road-label) + (100% - var(--road-label)) * '+(hoyPct/100).toFixed(4)+')"><b>Hoy</b></span>':'')+'</div></div>';
+  }
+  document.addEventListener('click',e=>{const b=e.target.closest('#tlRoad [data-cal-id]');if(b)abrir(b.dataset.calId);});
+  window.addEventListener('plaza:datachange',renderRuta);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderRuta);else renderRuta();
   window.PlazaMayorCalendar={render};
 })();
