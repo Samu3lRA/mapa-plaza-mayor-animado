@@ -414,7 +414,6 @@ function initMiniCharts(){
 
   function update(){
     const values=getValues();
-    Object.values(values).forEach(v=>{});
     $$('[data-mini-chart]').forEach(input=>{input.value=values[input.dataset.miniChart];});
     persistLocal(storageKey,JSON.stringify(values));
     renderChart(statusChart,['statusA','statusB'],values);
