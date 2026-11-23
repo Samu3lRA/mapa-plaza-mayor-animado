@@ -1695,3 +1695,6 @@ html[data-theme="light"] .timeline-nav-center span{color:#64758b}
 @media(prefers-reduced-motion:reduce){.timeline-nav-track i,.timeline-nav-arrow{transition:none}}
 /* El modo edición solo aparece con ?editar=1 en la dirección. */
 body:not(.edit-enabled) #editToggle{display:none!important}
+
+/* El panel de información queda debajo de los botones del encabezado (--panel-libre lo calcula interfaz.js). */
+@media(min-width:761px){.info-panel{top:calc(50% + (var(--panel-libre,24px) - 24px)/2)!important;max-height:calc(100vh - var(--panel-libre,24px) - 24px)!important}}
