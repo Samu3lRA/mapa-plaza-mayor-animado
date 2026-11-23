@@ -1862,3 +1862,15 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 @media(max-width:760px){body.editing .mv-handle{display:none}body.editing .mv-target{outline:0}}
 
 .app-shell.is-presenting #reportToggle{display:none}
+
+/* ===== Encabezado más limpio y aviso legal discreto ===== */
+.investment-motto{font-size:13px;font-weight:600;color:#e3edfa;max-width:430px;line-height:1.4}
+.investment-intro{gap:10px}
+.investment-header #presentToggle{background:linear-gradient(180deg,#ffa81f,#ff9700);border-color:#ff9700;color:#1b1200;font-weight:800;box-shadow:0 6px 18px rgba(255,151,0,.32)}
+.investment-header #presentToggle:hover{filter:brightness(1.08)}
+.investment-header #reportToggle,.investment-header #themeToggle{font-weight:600}
+.investment-header .theme-button{padding:8px 13px;font-size:15px;letter-spacing:2px}
+.investment-disclaimer{max-width:1680px;margin:26px auto 14px;padding:12px 4px 0;border:0;border-top:1px solid rgba(255,255,255,.14);border-radius:0;background:transparent}
+.investment-disclaimer p{font-size:10px;line-height:1.6;color:#9fb4cf;max-width:1100px}
+[data-theme="light"] .investment-disclaimer{background:transparent;border-top-color:rgba(0,62,153,.16)}
+[data-theme="light"] .investment-disclaimer p{color:#5b6f88}
