@@ -54,25 +54,19 @@ function gallery(p){
 function printReport(){
  const w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para generar el informe.');return;}
  const rows=getProjects().map(p=>'<tr><td>'+safe(p.nombre)+'</td><td>'+safe(p.tipo==='general'?'Toda la infraestructura':(colors[p.pabellon]?.nombre||'Sin asignar'))+'</td><td>'+safe(p.estado)+'</td><td>'+safe(p.valor)+'</td><td>'+safe(p.fecha)+'</td></tr>').join('');
- w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Informe de proyectos · Plaza Mayor</title><style>body{font:13px Arial;padding:30px;color:#172b45}h1{color:#003e99}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{padding:10px;text-align:left;border-bottom:1px solid #dce4ee}th{background:#edf3fa;color:#003e99}@media print{body{padding:0}}</style><h1>Plaza Mayor · Informe de proyectos</h1><p>'+getProjects().length+' proyectos registrados</p><table><thead><tr><th>Proyecto</th><th>Ubicación</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr></thead><tbody>'+rows+'</tbody></table><script>window.onload=()=>window.print()<\\/script></html>');
+ w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Informe de proyectos · Plaza Mayor</title><style>body{font:13px Arial;padding:30px;color:#172b45}h1{color:#003e99}table{width:100%;border-collapse:collapse;margin-top:22px}th,td{padding:10px;text-align:left;border-bottom:1px solid #dce4ee}th{background:#edf3fa;color:#003e99}@media print{body{padding:0}}</style><h1>Plaza Mayor · Informe de proyectos</h1><p>'+getProjects().length+' proyectos registrados</p><table><thead><tr><th>Proyecto</th><th>Ubicación</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr></thead><tbody>'+rows+'</tbody></table><script>window.onload=()=>window.print()</script></html>');
  w.document.close();
 }
 function printProject(p){
  const w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para generar la ficha.');return;}
  const location=p.tipo==='general'?'Toda la infraestructura':(p.pabellon==='convenciones'?'Convenciones':(colors[p.pabellon]?.nombre||'Sin asignar'));
- w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Ficha · '+safe(p.nombre)+'</title><style>body{font:15px Arial;padding:38px;color:#172b45;max-width:850px;margin:auto}h1{color:#003e99}h2{font-size:16px;color:#003e99;margin-top:28px}.meta{padding:14px;background:#eef3fa;border-radius:10px;line-height:1.8}.tag{display:inline-block;padding:7px 12px;background:#fff0d9;border-radius:20px}li{margin:7px 0}@media print{button{display:none}}</style><h1>'+safe(p.nombre)+'</h1><p class="tag">'+safe(p.estado)+'</p><div class="meta"><b>Valor:</b> '+safe(p.valor)+'<br><b>Fecha:</b> '+safe(p.fecha)+'<br><b>Ubicación:</b> '+safe(location)+'<br><b>Responsable:</b> '+safe(p.responsable||'Por definir')+'</div><h2>Descripción</h2><p>'+safe(p.descripcion||'Sin descripción registrada')+'</p><h2>Alcance</h2><ul>'+(p.alcance||[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><h2>Notas</h2><p>'+safe(p.notas||'Sin notas registradas')+'</p><script>window.onload=()=>window.print()<\\/script></html>');
+ w.document.write('<!doctype html><html lang="es"><meta charset="utf-8"><title>Ficha · '+safe(p.nombre)+'</title><style>body{font:15px Arial;padding:38px;color:#172b45;max-width:850px;margin:auto}h1{color:#003e99}h2{font-size:16px;color:#003e99;margin-top:28px}.meta{padding:14px;background:#eef3fa;border-radius:10px;line-height:1.8}.tag{display:inline-block;padding:7px 12px;background:#fff0d9;border-radius:20px}li{margin:7px 0}@media print{button{display:none}}</style><h1>'+safe(p.nombre)+'</h1><p class="tag">'+safe(p.estado)+'</p><div class="meta"><b>Valor:</b> '+safe(p.valor)+'<br><b>Fecha:</b> '+safe(p.fecha)+'<br><b>Ubicación:</b> '+safe(location)+'<br><b>Responsable:</b> '+safe(p.responsable||'Por definir')+'</div><h2>Descripción</h2><p>'+safe(p.descripcion||'Sin descripción registrada')+'</p><h2>Alcance</h2><ul>'+(p.alcance||[]).map(x=>'<li>'+safe(x)+'</li>').join('')+'</ul><h2>Notas</h2><p>'+safe(p.notas||'Sin notas registradas')+'</p><script>window.onload=()=>window.print()</script></html>');
  w.document.close();
 }
 function bind(){
  $('#printReport')?.addEventListener('click',printReport);
  $('#focusMode')?.addEventListener('click',e=>{const active=document.body.classList.toggle('focus-mode');e.currentTarget.setAttribute('aria-pressed',String(active));e.currentTarget.setAttribute('aria-label',active?'Desactivar modo de enfoque':'Activar modo de enfoque');});
- pointLayer?.addEventListener('click',e=>{const point=e.target.closest('.map-point');if(!point)return;const p=getProjects().find(x=>x.id===point.dataset.id);if(!p)return;setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);});
- const listRoot=$('.project-sidebar');
-  listRoot?.addEventListener('click',event=>{
-   const el=event.target.closest('.project-list-item');if(!el)return;
-   const p=getProjects().find(x=>x.id===el.dataset.id);if(!p)return;
-   setTimeout(()=>{gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);},30);
-  });
+ window.addEventListener('plaza:panelrender',e=>{const p=e.detail&&e.detail.project;if(!p)return;gallery(p);comparison(p);chronology(p);history(p);const btn=$('#printProject');if(btn)btn.onclick=()=>printProject(p);});
 }
 function renderFinancials(){
  const ps=getProjects(),fmt=n=>new Intl.NumberFormat('es-CO').format(n),money=p=>Number(String(p.valor||'').replace(/[^0-9]/g,''))||0;
