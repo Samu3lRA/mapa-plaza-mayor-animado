@@ -16,6 +16,7 @@ const els={appShell:$('#appShell'),mapViewport:$('#mapViewport'),mapStage:$('#ma
 function cloneProjects(ps){return ps.map(p=>({...p,fotos:[...(p.fotos||[])],alcance:[...(p.alcance||[])]}));}
 function migrateFoto(v){return (typeof FOTO_RUTAS_ANTERIORES!=='undefined'&&FOTO_RUTAS_ANTERIORES[v])||v;}
 function projectById(id){return state.data.find(p=>p.id===id);}
+function numeroDe(p){return state.data.findIndex(x=>x.id===p.id)+1;}
 function colorFor(p){return p.tipo==='general'?COLORES_PABELLON.general:(COLORES_PABELLON[p.pabellon]||COLORES_PABELLON.sin);}
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function formatNumber(v){return new Intl.NumberFormat('es-CO').format(Math.max(0,Math.round(v)));}
@@ -25,7 +26,7 @@ function reportStorageFailure(){if(storageWarningShown)return;storageWarningShow
 function persistLocal(key,value){try{localStorage.setItem(key,value);return true;}catch(_){reportStorageFailure();return false;}}
 function removeLocal(key){try{localStorage.removeItem(key);return true;}catch(_){reportStorageFailure();return false;}}
 function renderLegend(){els.legendItems.innerHTML='';['amarillo','azul','rojo','blanco','verde','convenciones','sin','general'].forEach(k=>{const c=COLORES_PABELLON[k],i=document.createElement('span');i.className='legend-item';i.innerHTML='<i style="--legend-bg:'+c.fondo+';--legend-text:'+c.texto+'"></i><span>'+escapeHtml(c.nombre)+'</span>';els.legendItems.appendChild(i);});}
-function createPoint(p,index){const c=colorFor(p),b=document.createElement('button');b.type='button';b.className='map-point';b.dataset.id=p.id;b.style.left=p.x+'%';b.style.top=p.y+'%';b.style.setProperty('--point-bg',c.fondo);b.style.setProperty('--point-text',c.texto);b.style.setProperty('--entry-delay',(index*45)+'ms');b.setAttribute('aria-label',p.nombre);b.innerHTML='<span>'+(p.tipo==='general'?'TI':p.id.slice(1))+'</span><span class="point-tooltip" aria-hidden="true">'+escapeHtml(p.nombre)+'</span>';b.addEventListener('click',()=>selectProject(p.id,{open:true}));b.addEventListener('pointerdown',e=>{if(state.editing)beginDrag(e,b);});return b;}
+function createPoint(p,index){const c=colorFor(p),b=document.createElement('button');b.type='button';b.className='map-point';b.dataset.id=p.id;b.style.left=p.x+'%';b.style.top=p.y+'%';b.style.setProperty('--point-bg',c.fondo);b.style.setProperty('--point-text',c.texto);b.style.setProperty('--entry-delay',(index*45)+'ms');b.setAttribute('aria-label',p.nombre);b.innerHTML='<span>'+numeroDe(p)+'</span><span class="point-tooltip" aria-hidden="true">'+escapeHtml(p.nombre)+'</span>';b.addEventListener('click',()=>selectProject(p.id,{open:true}));b.addEventListener('pointerdown',e=>{if(state.editing)beginDrag(e,b);});return b;}
 function renderPoints(){els.pointsLayer.innerHTML='';state.data.forEach((p,i)=>els.pointsLayer.appendChild(createPoint(p,i)));}
 
 const PLACE_MARKERS=[
@@ -84,19 +85,12 @@ function applyProjectFilters(){
  const visible=new Set(state.data.filter(matches).map(p=>p.id));
  $$('.map-point').forEach(el=>{const show=visible.has(el.dataset.id);el.classList.toggle('is-filtered-out',!show);el.setAttribute('aria-hidden',String(!show));el.tabIndex=show?0:-1;});
  $$('.project-list-item').forEach(el=>{el.hidden=!visible.has(el.dataset.id);});
- const specific=state.data.filter(p=>p.tipo==='especifico'&&visible.has(p.id)).length;
- const general=state.data.filter(p=>p.tipo==='general'&&visible.has(p.id)).length;
- const sc=$('#specificCount'),gc=$('#generalCount');
- if(sc)sc.textContent='('+specific+')';if(gc)gc.textContent='('+general+')';
+ const pc=$('#projectCount');if(pc)pc.textContent='('+visible.size+')';
  const mc=$('#mapProjectCount');if(mc)mc.textContent='▥ '+visible.size+' proyectos';
- ['specific','general'].forEach(type=>{
-  const list=type==='specific'?$('#specificList'):$('#generalList');
-  if(!list)return;
-  let empty=list.querySelector('.filter-empty');
-  const count=type==='specific'?specific:general;
-  if(!count&&!empty){empty=document.createElement('p');empty.className='filter-empty';empty.textContent='No se encontraron proyectos.';list.appendChild(empty);}
-  if(count&&empty)empty.remove();
- });
+ const list=$('#specificList');
+ if(list){let empty=list.querySelector('.filter-empty');
+  if(!visible.size&&!empty){empty=document.createElement('p');empty.className='filter-empty';empty.textContent='No se encontraron proyectos.';list.appendChild(empty);}
+  if(visible.size&&empty)empty.remove();}
 }
 function initProjectFilters(){
  ['projectSearch','statusFilter','pavilionFilter'].forEach(id=>{
@@ -109,8 +103,8 @@ function initProjectFilters(){
  });
 }
 
-function createListItem(p){const c=colorFor(p),i=document.createElement('button');i.type='button';i.className='project-list-item';i.dataset.id=p.id;i.innerHTML='<span class="list-marker" style="--point-bg:'+c.fondo+';--point-text:'+c.texto+'">'+(p.tipo==='general'?'TI':p.id.slice(1))+'</span><span class="list-copy"><strong>'+escapeHtml(p.nombre)+'</strong><span>'+escapeHtml(p.valor)+' · '+escapeHtml(p.fecha)+'</span></span><span class="list-status">'+escapeHtml(p.tipo === "general" ? "Toda la infraestructura" : (p.pabellon === "sin" ? "Sin asignar" : (COLORES_PABELLON[p.pabellon]?.nombre || "Sin asignar")))+'</span>';i.addEventListener('click',()=>selectProject(p.id,{open:true}));return i;}
-function renderLists(){els.generalList.innerHTML='';els.specificList.innerHTML='';state.data.filter(p=>p.tipo==='general').forEach(p=>els.generalList.appendChild(createListItem(p)));state.data.filter(p=>p.tipo==='especifico').forEach(p=>els.specificList.appendChild(createListItem(p)));}
+function createListItem(p){const c=colorFor(p),i=document.createElement('button');i.type='button';i.className='project-list-item';i.dataset.id=p.id;i.innerHTML='<span class="list-marker" style="--point-bg:'+c.fondo+';--point-text:'+c.texto+'">'+numeroDe(p)+'</span><span class="list-copy"><strong>'+escapeHtml(p.nombre)+'</strong><span>'+escapeHtml(p.valor)+' · '+escapeHtml(p.fecha)+'</span></span><span class="list-status">'+escapeHtml(p.tipo === "general" ? "Toda la infraestructura" : (p.pabellon === "sin" ? "Sin asignar" : (COLORES_PABELLON[p.pabellon]?.nombre || "Sin asignar")))+'</span>';i.addEventListener('click',()=>selectProject(p.id,{open:true}));return i;}
+function renderLists(){els.specificList.innerHTML='';state.data.forEach(p=>els.specificList.appendChild(createListItem(p)));}
 function clearSelected(){$$('.is-selected').forEach(e=>e.classList.remove('is-selected'));}
 function markSelected(id){clearSelected();$('[data-id="'+CSS.escape(id)+'"].map-point')?.classList.add('is-selected');$('[data-id="'+CSS.escape(id)+'"].project-list-item')?.classList.add('is-selected');}
 function cameraForPoint(p,scale=1.6){if(REDUCED.matches||scale===1)return{scale:1,x:0,y:0};const vw=els.mapViewport.clientWidth,vh=els.mapViewport.clientHeight,sw=els.mapStage.clientWidth,sh=els.mapStage.clientHeight,tx=p.x/100*sw,ty=p.y/100*sh,maxX=Math.max(0,(sw*scale-vw)/2),maxY=Math.max(0,(sh*scale-vh)/2);return{scale,x:Math.max(-maxX,Math.min(maxX,vw/2-tx*scale)),y:Math.max(-maxY,Math.min(maxY,vh/2-ty*scale))};}

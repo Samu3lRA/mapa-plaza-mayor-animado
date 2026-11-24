@@ -1942,3 +1942,5 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 
 /* Acceso discreto al editor (sin ?editar=1) */
 .editor-access{font-size:12px;padding:8px 14px;opacity:.7}.editor-access:hover,.editor-access[aria-pressed=true]{opacity:1}
+
+.list-head{display:flex;gap:6px;align-items:baseline;padding:4px 4px 10px;border-bottom:1px solid var(--line);font-size:13px;color:#d5dfec}.list-head strong{color:#fff}
