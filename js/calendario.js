@@ -71,7 +71,7 @@
     const b=e.target.closest('#timelineDetailCalendar [data-cal-id]');
     if(b)abrir(b.dataset.calId);
   });
-  window.addEventListener('plaza:yearopen',e=>render(e.detail&&e.detail.year,e.detail&&e.detail.fase));
+  
   window.addEventListener('plaza:datachange',()=>{
     const box=document.getElementById('timelineDetailCalendar');
     if(box&&box.dataset.year)render(+box.dataset.year,box.dataset.fase||undefined);
@@ -96,8 +96,8 @@
         +'<span class="road-name">'+esc(p.nombre)+'</span>'
         +'<span class="road-track"><i class="road-dot'+(est?' is-est':'')+(HECHO.test(p.estado||'')?' is-done':'')+'" style="left:'+pos(f).toFixed(2)+'%"></i><span class="road-when" style="left:'+pos(f).toFixed(2)+'%">'+esc(p.fecha)+'</span></span></button>';
     }).join('');
-    box.innerHTML='<div class="road-head"><h3>Fechas previstas por proyecto</h3><ul class="road-legend"><li><i class="road-dot"></i>Contratado</li><li><i class="road-dot is-est"></i>En estructuración</li><li><i class="road-dot is-done"></i>Terminado</li></ul></div>'
-      +'<p class="road-note"><span><b>Contratado:</b> el proyecto ya tiene contrato adjudicado.</span><span><b>En estructuración:</b> se preparan los estudios y el proceso para contratar.</span></p>'
+    box.innerHTML='<div class="road-head"><h3>Fechas previstas por proyecto</h3><ul class="road-legend"><li><i class="road-dot"></i>En ejecución</li><li><i class="road-dot is-est"></i>En estructuración</li><li><i class="road-dot is-done"></i>Terminado</li></ul></div>'
+      +'<p class="road-note"><span><b>En ejecución:</b> el contrato ya fue adjudicado y el proyecto está en marcha.</span><span><b>En estructuración:</b> se preparan los estudios y el proceso para contratar.</span></p>'
       +'<div class="road-grid" style="--n:'+n+'"><div class="road-axis"><span class="road-name"></span><span class="road-months">'+cab+'</span></div>'
       +'<div class="road-rows">'+filas+(hoyPct!=null?'<span class="road-today" style="left:calc(var(--road-label) + (100% - var(--road-label)) * '+(hoyPct/100).toFixed(4)+')"><b>Hoy</b></span>':'')+'</div></div>';
   }

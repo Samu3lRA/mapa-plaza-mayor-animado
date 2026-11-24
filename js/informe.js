@@ -34,19 +34,19 @@
 
   function construir(){
     const ps=proyectos(),hoy=new Date();
-    const con=ps.filter(p=>low(p.estado).includes('contrat')).length,est=ps.filter(p=>low(p.estado).includes('estruct')).length;
+    const con=ps.filter(p=>low(p.estado).includes('ejecuc')).length,est=ps.filter(p=>low(p.estado).includes('estruct')).length;
     const valor=ps.reduce((a,p)=>a+dinero(p.valor),0);
     const corte=(typeof FECHA_ACTUALIZACION!=='undefined'&&FECHA_ACTUALIZACION)||hoy.toLocaleDateString('es-CO');
     const logo=abs('./IMAGEN_MAPA/LOGO.png');
     const disc=(document.querySelector('.investment-disclaimer p')||{}).textContent||'';
-    const kpis=[[ps.length,'Proyectos del plan','#7fb3ff'],[con,'Contratados','#43c69b'],[est,'En estructuración','#ffb44a'],['$'+fmt(valor),'Valor registrado','#c9d6e8']]
+    const kpis=[[ps.length,'Proyectos del plan','#7fb3ff'],[con,'En ejecución','#43c69b'],[est,'En estructuración','#ffb44a'],['$'+fmt(valor),'Valor registrado','#c9d6e8']]
       .map(k=>'<div class="kpi" style="border-top-color:'+k[2]+'"><b>'+esc(k[0])+'</b><small>'+esc(k[1])+'</small></div>').join('');
     const graf=graficas().map(g=>'<div class="chart"><p class="eb">'+esc(g.k)+'</p><h3>'+esc(g.t)+'</h3><div class="chart-row">'+donut(g.items,g.total,120)+'<ul>'+g.items.map(i=>'<li><i style="background:'+i.c+'"></i><span>'+esc(i.n)+'</span><b>'+esc(i.v)+'%</b></li>').join('')+'</ul></div></div>').join('');
     const anios=[...new Set(ps.map(anio).filter(Boolean))].sort();
     const base=anios.length?anios:[];
-    const linea=base.map(y=>{const l=ps.filter(p=>anio(p)===y),c=l.filter(p=>low(p.estado).includes('contrat')).length,e=l.filter(p=>low(p.estado).includes('estruct')).length;
+    const linea=base.map(y=>{const l=ps.filter(p=>anio(p)===y),c=l.filter(p=>low(p.estado).includes('ejecuc')).length,e=l.filter(p=>low(p.estado).includes('estruct')).length;
       const tag=y<hoy.getFullYear()?'Etapa concluida':y===hoy.getFullYear()?'En curso':'Proyectada';
-      return '<div class="year"><span class="tag">'+tag+'</span><strong>'+y+'</strong><span>'+l.length+' proyectos</span><span>'+c+' contratados · '+e+' en estructuración</span></div>';}).join('');
+      return '<div class="year"><span class="tag">'+tag+'</span><strong>'+y+'</strong><span>'+l.length+' proyectos</span><span>'+c+' en ejecución · '+e+' en estructuración</span></div>';}).join('');
     const meses={};ps.forEach(p=>{const y=anio(p),m=mesDe(p);if(!y||m<0)return;const k=y*12+m;(meses[k]=meses[k]||{y,m,l:[]}).l.push(p);});
     const cal=Object.keys(meses).map(Number).sort((a,b)=>a-b).map(k=>{const x=meses[k];
       return '<tr><td class="mes">'+MESES[x.m]+' '+x.y+'</td><td class="n">'+x.l.length+'</td><td>'+x.l.map(p=>esc(p.nombre)).join(' · ')+'</td></tr>';}).join('');
@@ -64,7 +64,7 @@
      +'<h2>Indicadores de inversión</h2><div class="charts">'+graf+'</div>'
      +(linea?'<h2>Línea de tiempo</h2><div class="years">'+linea+'</div>':'')
      +(cal?'<h2>Calendario de fechas</h2><table><thead><tr><th>Mes</th><th>N.º</th><th>Proyectos</th></tr></thead><tbody>'+cal+'</tbody></table>':'')
-     +'<p class="nota"><b>Contratado:</b> el proyecto ya tiene contrato adjudicado. <b>En estructuración:</b> se preparan los estudios y el proceso para contratar.</p>'
+     +'<p class="nota"><b>En ejecución:</b> el contrato ya fue adjudicado y el proyecto está en marcha. <b>En estructuración:</b> se preparan los estudios y el proceso para contratar.</p>'
      +'<h2 class="pb">Proyectos</h2><table><thead><tr><th>#</th><th>Proyecto</th><th>Ubicación</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr></thead><tbody>'+filas+'</tbody></table>'
      +(disc?'<p class="disc">'+esc(disc.trim())+'</p>':'')+'<p class="pie">Generado el '+hoy.toLocaleDateString('es-CO')+' desde el tablero Plan de inversión · Plaza Mayor Medellín</p>';
     return '<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Plan de inversión · Resumen ejecutivo</title><style>'+css+'</style></head><body>'+body+'</body></html>';
