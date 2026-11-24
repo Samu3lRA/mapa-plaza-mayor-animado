@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=fase17">
+  <link rel="stylesheet" href="./css/estilos.css?v=fase18">
 </head>
 <body>
   <noscript><p style="margin:0;padding:24px;background:#071629;color:#f4f7fc;font:16px/1.5 Arial,sans-serif;text-align:center">Este tablero necesita JavaScript para mostrar el mapa y los proyectos. Actívalo en tu navegador y vuelve a cargar la página.</p></noscript>
@@ -147,7 +147,7 @@
 <footer class="investment-disclaimer"><p>La información presentada en este tablero tiene carácter informativo y corresponde al estado de avance de las obras con corte a la fecha de actualización. Los cronogramas, porcentajes y fechas estimadas pueden estar sujetos a modificaciones de acuerdo con las condiciones técnicas, operativas y administrativas de cada proyecto. Las actualizaciones se realizarán conforme avance la ejecución y se valide la información correspondiente.</p></footer>
 <section class="edit-panel" id="editPanel" hidden aria-label="Modo edición">
       <div class="edit-head"><div><p class="eyebrow">MODO EDICIÓN</p><h2>Ajustes del mapa</h2></div><button class="icon-button" id="editClose" type="button" aria-label="Cerrar modo edición">×</button></div>
-      <p class="edit-help">Arrastra los marcadores para reubicarlos; los botones y la leyenda del mapa se mueven con su asa naranja ⠿ (doble clic la devuelve a su sitio). Los porcentajes de las gráficas se editan directo en sus casillas. Selecciona un proyecto para cambiar su pabellón. Los cambios se guardan en este navegador; descarga un respaldo para transferirlos.</p>
+      <p class="edit-help">Arrastra los marcadores para reubicarlos; cada botón del mapa (centrar, enfoque, zoom, pantalla completa) se arrastra directo y la leyenda con su asa naranja ⠿ (doble clic los devuelve a su sitio). Los porcentajes de las gráficas se editan directo en sus casillas. Selecciona un proyecto para cambiar su pabellón. Los cambios se guardan en este navegador; descarga un respaldo para transferirlos.</p>
       <p class="backup-status" id="backupStatus" aria-live="polite">Consultando el estado del respaldo…</p>
       <details class="timeline-editor-details"><summary>Personalizar línea de tiempo</summary><div class="timeline-editor-fields"><p>Modifica la presentación de cada etapa. Las fotografías aceptan una ruta del repositorio o una URL de imagen.</p><label><span>Etapa</span><select id="timelineEditYear"></select></label><label><span>Título</span><input id="timelineEditTitle" type="text" maxlength="70"></label><label><span>Resumen corto</span><textarea id="timelineEditSummary" rows="2" maxlength="180"></textarea></label><label><span>Descripción ampliada</span><textarea id="timelineEditDetail" rows="3" maxlength="500"></textarea></label><label><span>Fotografía · ruta o URL</span><input id="timelineEditPhoto" type="text" placeholder="IMAGEN_MAPA/linea-tiempo-2026.jpg"></label><div class="timeline-editor-inline"><label><span>Color de etapa</span><input id="timelineEditColor" type="color" value="#ff9700"></label><label><span>Estado visual</span><select id="timelineEditStatus"><option value="auto">Automático por año</option><option value="done">Completado</option><option value="current">En curso</option><option value="future">Proyectado</option></select></label></div><div class="timeline-editor-actions"><button class="button button-primary" id="saveTimelineEdit" type="button">Guardar etapa</button><button class="button button-secondary" id="resetTimelineEdit" type="button">Restaurar línea de tiempo</button></div></div></details>
       <details class="edit-quality-details"><summary>Revisión de calidad de datos</summary><div id="dataQualityReport" class="data-quality-report" aria-live="polite"></div></details>
@@ -191,6 +191,6 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js?v=fase17"></script><script src="./js/app.js?v=fase17"></script><script src="./js/animaciones.js?v=fase17"></script><script src="./js/mejoras.js?v=fase17"></script><script src="./js/interfaz.js?v=fase17"></script><script src="./js/calendario.js?v=fase17"></script><script src="./js/informe.js?v=fase17"></script>
+  <script src="./js/datos.js?v=fase18"></script><script src="./js/app.js?v=fase18"></script><script src="./js/animaciones.js?v=fase18"></script><script src="./js/mejoras.js?v=fase18"></script><script src="./js/interfaz.js?v=fase18"></script><script src="./js/calendario.js?v=fase18"></script><script src="./js/informe.js?v=fase18"></script>
 </body>
 </html>
