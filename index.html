@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/estilos.css?v=fase20">
+  <link rel="stylesheet" href="./css/estilos.css?v=fase21">
 </head>
 <body>
   <noscript><p style="margin:0;padding:24px;background:#071629;color:#f4f7fc;font:16px/1.5 Arial,sans-serif;text-align:center">Este tablero necesita JavaScript para mostrar el mapa y los proyectos. Actívalo en tu navegador y vuelve a cargar la página.</p></noscript>
@@ -100,13 +100,15 @@
       </button>
     </li>
     <li class="tl-step"><span class="tl-node" aria-hidden="true"></span>
-      <button class="tl-card" type="button" data-timeline-year="2026" aria-label="Ver información de 2026: Contratación y estructuración">
+      <div class="tl-card tl-card-fases" role="group" data-timeline-year="2026" data-fases="1" aria-label="2026: fases del año">
         <span class="tl-status"></span>
         <span class="tl-year">2026</span>
-        <span class="tl-copy"><strong>Contratación y estructuración</strong><span>Seguimiento de proyectos y preparación de intervenciones.</span></span>
+        <span class="tl-phases">
+          <button class="tl-phase" type="button" data-fase="contratacion">Contratación y estructuración</button>
+          <button class="tl-phase" type="button" data-fase="ejecucion">Ejecución</button>
+        </span>
         <span class="tl-stats" data-timeline-metrics="2026"></span>
-        <span class="tl-cta">Detalle y calendario</span>
-      </button>
+      </div>
     </li>
     <li class="tl-step"><span class="tl-node" aria-hidden="true"></span>
       <button class="tl-card" type="button" data-timeline-year="2027" aria-label="Ver información de 2027: Ejecución proyectada">
@@ -187,6 +189,6 @@
     </div>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./js/datos.js?v=fase20"></script><script src="./js/app.js?v=fase20"></script><script src="./js/animaciones.js?v=fase20"></script><script src="./js/mejoras.js?v=fase20"></script><script src="./js/interfaz.js?v=fase20"></script><script src="./js/calendario.js?v=fase20"></script><script src="./js/informe.js?v=fase20"></script>
+  <script src="./js/datos.js?v=fase21"></script><script src="./js/app.js?v=fase21"></script><script src="./js/animaciones.js?v=fase21"></script><script src="./js/mejoras.js?v=fase21"></script><script src="./js/interfaz.js?v=fase21"></script><script src="./js/calendario.js?v=fase21"></script><script src="./js/informe.js?v=fase21"></script>
 </body>
 </html>

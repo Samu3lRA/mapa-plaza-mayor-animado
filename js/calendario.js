@@ -22,9 +22,10 @@
     const d=dm&&+dm[1]>=1&&+dm[1]<=31?+dm[1]:null;
     return {y:+y,m,d};
   }
-  function delAnio(year){
+  const FASES={contratacion:/contrat|estruct/i,ejecucion:/ejecuc/i};
+  function delAnio(year,fase){
     const list=(window.PlazaMayorData&&PlazaMayorData.getProjects())||[];
-    return list.map(p=>{const f=parseFecha(p.fecha);return f&&f.y===year?{p,f,hecho:HECHO.test(p.estado||'')}:null}).filter(Boolean);
+    return list.map(p=>{const f=parseFecha(p.fecha);return f&&f.y===year&&(!fase||FASES[fase].test(p.estado||''))?{p,f,hecho:HECHO.test(p.estado||'')}:null}).filter(Boolean);
   }
 
   function mes(year,m,lst,hoy){
@@ -44,11 +45,11 @@
       <div class="cal-dow">${DIAS.map(x=>`<span>${x}</span>`).join('')}</div><div class="cal-days">${c}</div></div>`;
   }
 
-  function render(year){
+  function render(year,fase){
     const box=document.getElementById('timelineDetailCalendar');
     if(!box||!year)return;
-    box.dataset.year=year;
-    const lst=delAnio(year),hoy=new Date();
+    box.dataset.year=year;box.dataset.fase=fase||'';
+    const lst=delAnio(year,fase),hoy=new Date();
     const sin=lst.filter(i=>!i.f.d).sort((a,b)=>a.f.m-b.f.m);
     box.innerHTML=`<h3>Calendario ${year}</h3>
       <div class="cal-year">${MESES.map((_,m)=>mes(year,m,lst,hoy)).join('')}</div>
@@ -70,10 +71,10 @@
     const b=e.target.closest('#timelineDetailCalendar [data-cal-id]');
     if(b)abrir(b.dataset.calId);
   });
-  window.addEventListener('plaza:yearopen',e=>render(e.detail&&e.detail.year));
+  window.addEventListener('plaza:yearopen',e=>render(e.detail&&e.detail.year,e.detail&&e.detail.fase));
   window.addEventListener('plaza:datachange',()=>{
     const box=document.getElementById('timelineDetailCalendar');
-    if(box&&box.dataset.year)render(+box.dataset.year);
+    if(box&&box.dataset.year)render(+box.dataset.year,box.dataset.fase||undefined);
   });
 
   /* Hoja de ruta: todos los proyectos ubicados en el mes de su fecha (debajo de la línea de tiempo). */
