@@ -453,7 +453,15 @@ function initInteractiveTimeline(){
   const n=Math.max(1,root.querySelectorAll('.tl-step').length-1);
   root.style.setProperty('--tl-progress',(Math.max(0,idx)/n*100)+'%');
  };
- const renderYearMetrics=()=>{renderYearCards();renderTimelineSummary();};
+ const renderFaseCounts=()=>{
+  const y=state.data.filter(p=>getYear(p)===2026),low=p=>String(p.estado||'').toLocaleLowerCase('es'),
+   con=y.filter(p=>low(p).includes('contrat')).length,est=y.filter(p=>low(p).includes('estruct')).length,eje=y.filter(p=>low(p).includes('ejecuc')).length,
+   pl=n=>n+' proyecto'+(n===1?'':'s');
+  const a=root.querySelector('[data-fase-count="contratacion"]'),b=root.querySelector('[data-fase-count="ejecucion"]');
+  if(a)a.textContent=pl(con+est)+' · '+con+' contratado'+(con===1?'':'s')+' · '+est+' en estructuración';
+  if(b)b.textContent=pl(eje);
+ };
+ const renderYearMetrics=()=>{renderYearCards();renderFaseCounts();renderTimelineSummary();};
  const renderPhotos=()=>events.forEach(event=>{const node=root.querySelector('[data-timeline-year="'+event.year+'"] .tl-photo');if(!node)return;const src=getPhoto(event,state.data);node.innerHTML=src?'<img src="'+escapeHtml(src)+'" alt="" loading="lazy">':'<span class="timeline-photo-placeholder" aria-hidden="true">⌂</span>';});
  const highlightYear=year=>{$$('.map-point').forEach(point=>point.classList.toggle('timeline-highlight',getYear(projectById(point.dataset.id)||{})===year));document.body.classList.add('timeline-year-focused');};
  const clearHighlight=()=>{$$('.map-point').forEach(point=>point.classList.remove('timeline-highlight'));document.body.classList.remove('timeline-year-focused');};
