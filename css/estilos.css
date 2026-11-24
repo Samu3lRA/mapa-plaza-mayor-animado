@@ -1956,3 +1956,16 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 .tl-phase-name{display:block}.tl-phase-count{display:block;margin-top:4px;font-size:11.5px;font-weight:500;color:#e4edf9;opacity:.92}
 .tl-stats[hidden]{display:none!important}
 [data-theme="light"] .tl-phase-count{color:#33507a}
+
+/* Tema claro: cronología y fecha del panel de proyecto legibles */
+[data-theme="light"] .timeline-step{color:#4a5f7d}
+[data-theme="light"] .timeline-step.is-done{color:#0b2a55;font-weight:600}
+[data-theme="light"] .timeline-step i{border-color:#6b7f9c}
+[data-theme="light"] .timeline-date{color:#4a5f7d}
+
+/* Tema claro: textos pequeños del detalle de la línea de tiempo con contraste AA */
+[data-theme="light"] .timeline-detail-stats span,[data-theme="light"] .timeline-detail-stats small{color:#4a5f7d!important}
+[data-theme="light"] .timeline-next-hito span{color:#1f5fa8!important}
+[data-theme="light"] .timeline-next-hito small,[data-theme="light"] .timeline-project-card small,[data-theme="light"] .timeline-month-heading small{color:#4a5f7d!important}
+[data-theme="light"] .timeline-month-heading span,[data-theme="light"] .timeline-show-all,[data-theme="light"] .timeline-project-card b,[data-theme="light"] .timeline-project-arrow{color:#a34f00!important}
+[data-theme="light"] .timeline-detail-description p{color:#33507a!important}
