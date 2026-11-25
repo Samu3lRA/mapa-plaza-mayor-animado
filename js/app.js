@@ -397,7 +397,7 @@ function initMiniCharts(){
   const renderChart=(chart,keys,values)=>{
     let cursor=0;
     const sum=keys.reduce((total,key)=>total+values[key],0);
-    const scale=sum>0?100/sum:0;
+    const scale=sum>100?100/sum:1;
     const stops=[];
     keys.forEach(key=>{
       const next=cursor+values[key]*scale;
@@ -406,7 +406,8 @@ function initMiniCharts(){
     });
     if(cursor<100)stops.push('rgba(255,255,255,.16) '+cursor+'% 100%');
     chart.style.backgroundImage='conic-gradient('+stops.join(',')+')';
-    chart.setAttribute('data-total','100%');
+    chart.setAttribute('data-total',sum+'%');
+    return sum;
   };
 
   const renderLegend=(legend,keys,values)=>{
@@ -426,12 +427,12 @@ function initMiniCharts(){
     const values=getValues();
     $$('[data-mini-chart]').forEach(input=>{input.value=values[input.dataset.miniChart];});
     persistLocal(storageKey,JSON.stringify(values));
-    renderChart(statusChart,['statusA','statusB'],values);
-    renderChart(typeChart,['typeA','typeB','typeC'],values);
-    if(statusTotal)statusTotal.textContent='100%';
-    if(typeTotal)typeTotal.textContent='100%';
-    statusChart.setAttribute('aria-label','Puesta a Punto y Estabilización '+values.statusA+'%, Mejora y Evolución '+values.statusB+'%, total 100%');
-    typeChart.setAttribute('aria-label','Estructuración '+values.typeA+'%, En ejecución '+values.typeB+'%, Ejecutado '+values.typeC+'%, total 100%');
+    const sumStatus=renderChart(statusChart,['statusA','statusB'],values);
+    const sumType=renderChart(typeChart,['typeA','typeB','typeC'],values);
+    if(statusTotal)statusTotal.textContent=sumStatus+'%';
+    if(typeTotal)typeTotal.textContent=sumType+'%';
+    statusChart.setAttribute('aria-label','Puesta a Punto y Estabilización '+values.statusA+'%, Mejora y Evolución '+values.statusB+'%, total '+sumStatus+'%');
+    typeChart.setAttribute('aria-label','Estructuración '+values.typeA+'%, En ejecución '+values.typeB+'%, Ejecutado '+values.typeC+'%, total '+sumType+'%');
   }
 
   $$('[data-mini-chart]').forEach(input=>{
