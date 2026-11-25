@@ -2012,3 +2012,7 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 .map-viewport:fullscreen .map-stage{flex:none;width:min(100vw,calc(100vh*2576/1716));height:auto;aspect-ratio:2576/1716}
 .map-viewport:fullscreen .map-image{object-fit:fill}
 html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
+
+/* Modo presentación a pantalla completa: el mapa se ajusta al alto disponible */
+.app-shell.is-presenting .map-viewport{width:min(100%,calc((100vh - 210px)*2576/1716));margin-left:auto;margin-right:auto}
+.app-shell.is-presenting .map-bottom{display:none}
