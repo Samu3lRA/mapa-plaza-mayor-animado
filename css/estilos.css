@@ -2039,3 +2039,6 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
   .project-sidebar{min-width:0;max-height:none}
   .project-list{max-height:520px}
 }
+
+/* Se quitan los botones Centrar y Enfoque de la esquina del mapa */
+.map-center-control{display:none!important}
