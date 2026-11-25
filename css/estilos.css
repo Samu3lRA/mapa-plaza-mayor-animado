@@ -2016,3 +2016,26 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
 /* Modo presentación a pantalla completa: el mapa se ajusta al alto disponible */
 .app-shell.is-presenting .map-viewport{width:min(100%,calc((100vh - 210px)*2576/1716));margin-left:auto;margin-right:auto}
 .app-shell.is-presenting .map-bottom{display:none}
+
+/* Celular / tablet angosta: mapa más alto y controles que caben */
+@media(max-width:760px){
+  .map-viewport{aspect-ratio:4/5!important;overflow:auto}
+  .map-stage{min-width:0;width:auto;height:100%;aspect-ratio:2576/1716}
+  .map-hint,.map-bottom-left span,.map-bottom-left i{display:none!important}
+  .map-bottom{left:10px;right:10px;bottom:10px;padding:6px 10px;justify-content:space-between}
+  .map-bottom .zoom-controls{margin-left:auto;gap:6px}
+  .map-bottom .icon-button{width:38px;height:38px}
+  .map-legend{top:auto;bottom:66px;left:10px;right:10px;padding:6px 10px;overflow-x:auto}
+  .map-legend .legend-items{flex-wrap:nowrap;white-space:nowrap}
+  .map-center-control{top:10px;left:10px}
+  .map-center-control .icon-button{width:38px;height:38px}
+}
+@media(min-width:761px) and (max-width:900px){.map-bottom .zoom-controls{margin-right:0}.map-bottom{padding-right:12px}}
+
+/* Tablet (761–1100 px): una sola columna, mapa arriba y lista debajo, para que el mapa no quede diminuto */
+@media(min-width:761px) and (max-width:1100px){
+  .workspace{grid-template-columns:minmax(0,1fr)!important}
+  .map-section{order:-1}
+  .project-sidebar{min-width:0;max-height:none}
+  .project-list{max-height:520px}
+}

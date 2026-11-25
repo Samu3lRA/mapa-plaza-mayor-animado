@@ -4,12 +4,12 @@ Tablero web interactivo de seguimiento de los proyectos de inversión de Plaza M
 
 ## Qué incluye
 
-- Mapa responsive con 22 proyectos (9 específicos y 13 generales), leyenda, tooltips y listas por pestañas.
+- Mapa responsive con 22 proyectos numerados (1–22), leyenda de pabellones, tooltips, búsqueda y filtros por estado y pabellón.
 - Búsqueda y filtros por estado y pabellón.
 - Panel de información por proyecto: foto o galería, valor, fecha, ubicación, cronología, alcance, avance, responsable y notas.
-- Línea de tiempo 2024 – 2027 con detalle por etapa y una hoja de ruta con los 22 proyectos ubicados en el mes de su fecha (con marca de «Hoy»).
-- Botón **Resumen PDF** en el encabezado: genera un PDF A4 (indicadores, gráficas, línea de tiempo, calendario de fechas y tabla de proyectos) con los datos que muestra el tablero, listo para la junta. Se guarda con "Guardar como PDF" en el diálogo de impresión.
-- Calendario por año: al abrir un año de la línea de tiempo (2024–2027) aparece su calendario de 12 meses. Naranja = planeado, verde = terminado. Para pintar un día exacto, escribe la fecha con día (`15 enero 2027`); con solo mes (`enero 2027`) el mes muestra "N sin día" y el proyecto queda en la lista de abajo.
+- Línea de tiempo 2026 – 2027: Ejecución (9 proyectos con mes y año, y resumen Contratado / Ejecutado / Ejecución) y Contratación y estructuración.
+- Botón **Resumen PDF** en el encabezado: genera un PDF A4 (indicadores, gráficas, línea de tiempo y tabla de proyectos) con los datos actuales.
+- Las gráficas «Proyectos por tipo» y «Proyectos por estado» son editables; el centro muestra la suma real de los porcentajes.
 - Gráficas de distribución de la inversión, de estado y de tipo (editables).
 - Tema claro y oscuro.
 - Modo presentación, modo grabación y modo enfoque.
@@ -29,8 +29,8 @@ mapa-plaza-mayor-animado/
 │   ├── app.js           mapa, marcadores, edición, filtros, respaldos y línea de tiempo
 │   ├── animaciones.js   arrastre del plano y animaciones del mapa
 │   ├── mejoras.js       galería, cronología del proyecto, informes e impresión
-│   ├── interfaz.js      pestañas, zoom, centrar y pantalla completa
-│   ├── calendario.js    calendario de cada año en la línea de tiempo
+│   ├── interfaz.js      zoom, centrar, pantalla completa y botones movibles del mapa
+│   ├── calendario.js    (sin uso: el calendario por año se retiró; se puede borrar)
 │   └── informe.js       resumen ejecutivo en PDF
 ├── assets/fotos/        fotos de los espacios (JPG)
 ├── IMAGEN_MAPA/         plano aéreo, logotipos e ícono de la pestaña
@@ -54,7 +54,7 @@ Abre `http://localhost:8000`.
 
 Todo el contenido editable está en `js/datos.js`. Cada registro admite `nombre`, `valor`, `fecha`, `estado`, `pabellon`, `x`, `y`, `fotos`, `descripcion`, `alcance`, `avance`, `responsable` y `notas`.
 
-Los 9 específicos comienzan con `pabellon: "sin"`. No se asignan automáticamente. Los generales siempre usan el color morado de General (G).
+Los proyectos sin pabellón comienzan con `pabellon: "sin"`. No se asignan automáticamente.
 
 No se deben agregar unidades a los valores hasta confirmarlas.
 
@@ -95,7 +95,7 @@ Las cifras de las gráficas (distribución de la inversión, estado y tipo) se e
 
 ## Modo presentación
 
-Pulsa **Modo presentación**. El recorrido usa el orden de `ORDEN_PRESENTACION` en `js/datos.js`: específicos 1–9 y después G1–G13.
+Pulsa **Modo presentación**: entra en pantalla completa y recorre los 22 proyectos en el orden de `ORDEN_PRESENTACION` en `js/datos.js`. Esc para salir.
 
 Cada punto permanece 6 segundos por defecto (`PRESENTATION_MS` en `app.js`).
 

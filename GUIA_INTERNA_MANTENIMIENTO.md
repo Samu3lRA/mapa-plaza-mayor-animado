@@ -10,7 +10,7 @@ Documento operativo para mantener el tablero sin modificar su diseño ni perder 
 - `js/app.js`: mapa, marcadores, edición, filtros, almacenamiento local, respaldos y línea de tiempo.
 - `js/animaciones.js`: animaciones y respuestas visuales del mapa.
 - `js/mejoras.js`: galería, cronología de cada proyecto, informes e impresión de fichas.
-- `js/interfaz.js`: pestañas de la lista, zoom, centrar mapa y pantalla completa.
+- `js/interfaz.js`: zoom, centrar mapa, pantalla completa y botones movibles.
 - `IMAGEN_MAPA/`: plano, logotipos e ícono de la pestaña usados por el tablero.
 - `assets/fotos/`: fotos de los espacios (JPG, unos 1600 px y sin metadatos de ubicación).
 
@@ -69,7 +69,7 @@ No asumir que una posición o porcentaje guardado en un computador ya quedó pub
 - [ ] Al seleccionar un punto se abre el panel correcto.
 - [ ] La búsqueda encuentra proyectos por nombre y responsable.
 - [ ] Los filtros por estado y pabellón funcionan.
-- [ ] Las pestañas de proyectos específicos y generales cambian correctamente.
+- [ ] La búsqueda y los filtros (estado y pabellón) muestran los proyectos correctos.
 - [ ] El zoom, centrar mapa y pantalla completa responden.
 - [ ] La línea de tiempo abre y cierra sus detalles.
 - [ ] Sin `?editar=1` el botón Modo edición no aparece; con `?editar=1` sí.
