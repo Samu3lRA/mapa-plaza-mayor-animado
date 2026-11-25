@@ -1994,3 +1994,7 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 [data-theme="light"] .xl-bloque span,[data-theme="light"] .xl-bloque small{color:#4a5f7d}
 [data-theme="light"] .xl-bloque i{color:#a34f00}
 .xl-actions .button-primary{background:linear-gradient(120deg,#ff9700,#ffb44a);border-color:#ff9700;color:#101c2a}
+
+.mini-chart-total{margin:4px 0 0;font-size:12px;color:#c9d6e8}.mini-chart-total b{font-size:15px;color:#fff;letter-spacing:.02em}.mini-chart-total span{color:#aab8ca}
+[data-theme="light"] .mini-chart-total{color:#4a5f7d}[data-theme="light"] .mini-chart-total b{color:#0b2a55}[data-theme="light"] .mini-chart-total span{color:#4a5f7d}
+[data-theme="light"] .mini-input-wrap{color:#33507a!important}

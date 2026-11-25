@@ -24,7 +24,7 @@
     const colP=['#ff9700','#42a5f5','#43c69b'];
     const pil=[...document.querySelectorAll('.priority-value')].map((l,i)=>({n:l.querySelector('span').textContent.trim(),v:Number(l.querySelector('input').value)||0,c:colP[i]||'#8b93a0'}));
     if(pil.length)out.push({t:'Pilares de la inversión',k:'DISTRIBUCIÓN',items:pil,total:(document.getElementById('priorityTotal')||{}).textContent||pil.reduce((a,i)=>a+i.v,0)+'%'});
-    [['statusPieLegend','Proyectos por estado','ESTADO','statusChartTotal'],['typePieLegend','Proyectos por tipo','ALCANCE','typeChartTotal']].forEach(([id,t,k,tot])=>{
+    [['statusPieLegend','Proyectos por tipo','ALCANCE','statusChartTotal'],['typePieLegend','Proyectos por estado','ESTADO','typeChartTotal']].forEach(([id,t,k,tot])=>{
       const box=document.getElementById(id);if(!box)return;
       const it=[...box.querySelectorAll('.mini-pie-item')].map(row=>({n:row.children[1].textContent.trim(),v:Number(row.querySelector('input').value)||0,c:getComputedStyle(row.querySelector('i')).backgroundColor}));
       if(it.length)out.push({t,k,items:it,total:(document.getElementById(tot)||{}).textContent||'100%'});
