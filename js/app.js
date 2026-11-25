@@ -475,6 +475,9 @@ function initInteractiveTimeline(){
   const a=root.querySelector('[data-fase-count="contratacion"]'),b=root.querySelector('[data-fase-count="ejecucion"]');
   if(a)a.textContent=pl(con+est)+(con?' · '+con+' contratado'+(con===1?'':'s'):'')+' · '+est+' en estructuración';
   if(b)b.textContent=pl(ej.length)+' · $'+formatNumber(ej.reduce((t,p)=>t+parseMoney(p.valor),0));
+  const SUM=root.querySelector('[data-fase-sum="ejecucion"]');
+  if(SUM){const R=(typeof RESUMEN_EJECUCION!=='undefined'?RESUMEN_EJECUCION:{}),v=n=>Number.isFinite(n)?'$'+formatNumber(n):'—',e=ej.reduce((t,p)=>t+parseMoney(p.valor),0);
+   SUM.innerHTML='<span class="tl-sum-row"><span>Contratado</span><b>'+v(R.contratado)+'</b></span><span class="tl-sum-row"><span>Ejecutado</span><b>'+v(R.ejecutado)+'</b></span><span class="tl-sum-row"><span>Ejecución</span><b>'+v(e)+'</b></span>';}
   const L=root.querySelector('[data-fase-list="ejecucion"]');
   if(L){const key=p=>{const m=getMonth(p);return (getYear(p)||9999)*12+(m<0?11:m);};
    L.innerHTML=ej.slice().sort((x,y)=>key(x)-key(y)||x.nombre.localeCompare(y.nombre,'es')).map(p=>'<span class="tl-phase-item"><span>'+escapeHtml(p.nombre)+'</span><em>'+escapeHtml(p.fecha||'Fecha por definir')+'</em></span>').join('');}

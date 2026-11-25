@@ -1998,3 +1998,11 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 .mini-chart-total{margin:4px 0 0;font-size:12px;color:#c9d6e8}.mini-chart-total b{font-size:15px;color:#fff;letter-spacing:.02em}.mini-chart-total span{color:#aab8ca}
 [data-theme="light"] .mini-chart-total{color:#4a5f7d}[data-theme="light"] .mini-chart-total b{color:#0b2a55}[data-theme="light"] .mini-chart-total span{color:#4a5f7d}
 [data-theme="light"] .mini-input-wrap{color:#33507a!important}
+
+/* Solo 2026 y 2027 */
+.tl-track{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:620px){.tl-track{grid-template-columns:1fr}}
+.tl-phase-sum{display:block;margin-top:8px}
+.tl-sum-row{display:flex;justify-content:space-between;gap:10px;padding:3px 0;font-size:12px;color:#e4edf9}
+.tl-sum-row b{font-weight:700;color:#fff}
+[data-theme="light"] .tl-sum-row{color:#33507a}[data-theme="light"] .tl-sum-row b{color:#0b2a55}
