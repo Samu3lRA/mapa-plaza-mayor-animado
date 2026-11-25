@@ -193,7 +193,7 @@ function restoreEdits(){
    if(Number.isFinite(x)&&x>=0&&x<=100)next.x=x;
    if(Number.isFinite(y)&&y>=0&&y<=100)next.y=y;
    if(p.tipo==='especifico'&&validPavilions.has(s.pabellon))next.pabellon=s.pabellon;
-   textFields.forEach(key=>{if(typeof s[key]==='string')next[key]=s[key];});
+   (staleEdits?['descripcion','responsable','notas']:textFields).forEach(key=>{if(typeof s[key]==='string')next[key]=s[key];});
    if(Array.isArray(s.alcance))next.alcance=s.alcance.filter(v=>typeof v==='string').slice(0,30);
    if(Array.isArray(s.fotos)&&!staleEdits){const f=s.fotos.filter(v=>typeof v==='string'&&v.trim()).map(migrateFoto).slice(0,20);if(f.length)next.fotos=f;}
    if(s.avance===null||Number.isFinite(Number(s.avance)))next.avance=s.avance===null?null:Math.max(0,Math.min(100,Number(s.avance)));
