@@ -38,7 +38,7 @@ mapa-plaza-mayor-animado/
 └── .nojekyll
 ```
 
-El plano usado por el mapa es `IMAGEN_MAPA/mapa-plaza-mayor.png` (1200 × 552 px). Una imagen de mayor resolución se vería más nítida al acercar con el zoom; si la reemplazas, conserva la misma proporción (2.17:1) para que los puntos no se desplacen.
+El plano usado por el mapa es `IMAGEN_MAPA/mapa-plaza-mayor.jpg` (2424 × 1115 px, recorte de la foto aérea DJI_0798). Una imagen de mayor resolución se vería más nítida al acercar con el zoom; si la reemplazas, conserva la misma proporción (2.17:1) para que los puntos no se desplacen.
 
 ## Ejecutar localmente
 
