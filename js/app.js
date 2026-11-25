@@ -474,7 +474,7 @@ function initInteractiveTimeline(){
    pl=n=>n+' proyecto'+(n===1?'':'s');
   const a=root.querySelector('[data-fase-count="contratacion"]'),b=root.querySelector('[data-fase-count="ejecucion"]');
   if(a)a.textContent=pl(con+est)+(con?' · '+con+' contratado'+(con===1?'':'s'):'')+' · '+est+' en estructuración';
-  if(b)b.textContent=pl(ej.length)+' · $'+formatNumber(ej.reduce((t,p)=>t+parseMoney(p.valor),0));
+  if(b)b.textContent=pl(ej.length);
   const SUM=root.querySelector('[data-fase-sum="ejecucion"]');
   if(SUM){const R=(typeof RESUMEN_EJECUCION!=='undefined'?RESUMEN_EJECUCION:{}),v=n=>Number.isFinite(n)?'$'+formatNumber(n):'—',e=ej.reduce((t,p)=>t+parseMoney(p.valor),0);
    SUM.innerHTML='<span class="tl-sum-row"><span>Contratado</span><b>'+v(R.contratado)+'</b></span><span class="tl-sum-row"><span>Ejecutado</span><b>'+v(R.ejecutado)+'</b></span><span class="tl-sum-row"><span>Ejecución</span><b>'+v(e)+'</b></span>';}
