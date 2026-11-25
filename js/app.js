@@ -472,7 +472,7 @@ function initInteractiveTimeline(){
    con=y.filter(p=>low(p).includes('contrat')).length,est=y.filter(p=>low(p).includes('estruct')).length,ej=y.filter(p=>low(p).includes('ejecuc')),
    pl=n=>n+' proyecto'+(n===1?'':'s');
   const a=root.querySelector('[data-fase-count="contratacion"]'),b=root.querySelector('[data-fase-count="ejecucion"]');
-  if(a)a.textContent=pl(con+est)+(con?' · '+con+' contratado'+(con===1?'':'s'):'')+' · '+est+' en estructuración';
+  if(a){const pend=y.filter(p=>low(p).includes('contrat')||low(p).includes('estruct')),tot=pend.reduce((t,p)=>t+parseMoney(p.valor),0);a.textContent='Valor: $'+formatNumber(tot);}
   if(b)b.textContent=pl(ej.length);
   const SUM=root.querySelector('[data-fase-sum="ejecucion"]');
   if(SUM){const R=(typeof RESUMEN_EJECUCION!=='undefined'?RESUMEN_EJECUCION:{}),v=n=>Number.isFinite(n)?'$'+formatNumber(n):'—',e=ej.reduce((t,p)=>t+parseMoney(p.valor),0);
