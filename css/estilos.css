@@ -2006,3 +2006,9 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 .tl-sum-row{display:flex;justify-content:space-between;gap:10px;padding:3px 0;font-size:12px;color:#e4edf9}
 .tl-sum-row b{font-weight:700;color:#fff}
 [data-theme="light"] .tl-sum-row{color:#33507a}[data-theme="light"] .tl-sum-row b{color:#0b2a55}
+
+/* Pantalla completa: el escenario conserva la proporción del mapa para que los puntos (en %) no se desplacen */
+.map-viewport:fullscreen{display:flex;align-items:center;justify-content:center;background:#003e99}
+.map-viewport:fullscreen .map-stage{flex:none;width:min(100vw,calc(100vh*2048/943));height:auto;aspect-ratio:2048/943}
+.map-viewport:fullscreen .map-image{object-fit:fill}
+html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
