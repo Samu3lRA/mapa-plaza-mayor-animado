@@ -163,3 +163,14 @@ Quedan deliberadamente vacíos hasta que el usuario los proporcione:
 - avances;
 - responsables;
 - unidades de las cifras.
+
+## Actualizar los datos desde un Excel
+
+En el modo edición (botón **✎ Editor**) hay dos botones nuevos: **Descargar plantilla Excel** y **Actualizar desde Excel**.
+
+- La plantilla (`assets/plantilla-plan-de-inversion.xlsx`) trae los proyectos actuales. Se edita solo la hoja `Proyectos`; la hoja `Instrucciones` no se lee.
+- Columnas leídas: `ID`, `Proyecto`, `Valor`, `Fecha de entrega` (mes y año) y `Estado` (En ejecución, Estructuración o Ejecutado). Cualquier otra columna u hoja se ignora.
+- Solo se pueden cambiar nombre, valor, fecha y estado. Nunca se tocan posiciones, fotos, descripciones, pabellones ni notas.
+- Antes de aplicar se muestra un resumen. Si hay errores (valor que no es número, fecha sin mes y año, estado inválido, filas repetidas) no se aplica nada.
+- Un proyecto sin ID es nuevo: entra centrado en el mapa para ubicarlo a mano. Un proyecto que no está en el Excel se conserva.
+- Por ahora los cambios quedan en el navegador de quien los aplica; publicarlos para todos es la fase siguiente. El lector de Excel (`js/vendor/xlsx.mini.min.js`, SheetJS 0.18.5) se carga solo al usar el botón.

@@ -17,8 +17,8 @@ function cloneProjects(ps){return ps.map(p=>({...p,fotos:[...(p.fotos||[])],alca
 function migrateFoto(v){return (typeof FOTO_RUTAS_ANTERIORES!=='undefined'&&FOTO_RUTAS_ANTERIORES[v])||v;}
 function projectById(id){return state.data.find(p=>p.id===id);}
 function numeroDe(p){return state.data.findIndex(x=>x.id===p.id)+1;}
-const COLORES_ESTADO={ejecucion:{nombre:'En ejecución',fondo:'#39FF14',texto:'#062b0a'},estructuracion:{nombre:'En estructuración',fondo:'#FF9700',texto:'#1b1200'}};
-function colorFor(p){const e=String(p.estado||'').toLocaleLowerCase('es');if(e.includes('ejecuc'))return COLORES_ESTADO.ejecucion;if(e.includes('estruct'))return COLORES_ESTADO.estructuracion;return COLORES_PABELLON.sin;}
+const COLORES_ESTADO={ejecucion:{nombre:'En ejecución',fondo:'#39FF14',texto:'#062b0a'},estructuracion:{nombre:'En estructuración',fondo:'#FF9700',texto:'#1b1200'},ejecutado:{nombre:'Ejecutado',fondo:'#4DA3FF',texto:'#06223f'}};
+function colorFor(p){const e=String(p.estado||'').toLocaleLowerCase('es');if(e.includes('ejecuc'))return COLORES_ESTADO.ejecucion;if(/ejecutad|finaliz|terminad/.test(e))return COLORES_ESTADO.ejecutado;if(e.includes('estruct'))return COLORES_ESTADO.estructuracion;return COLORES_PABELLON.sin;}
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function formatNumber(v){return new Intl.NumberFormat('es-CO').format(Math.max(0,Math.round(v)));}
 function parseMoney(v){return Number(String(v).replace(/[^0-9]/g,''))||0;}
@@ -26,7 +26,7 @@ function showToast(m,ms=2200){if(!els.toast)return;els.toast.textContent=m;els.t
 function reportStorageFailure(){if(storageWarningShown)return;storageWarningShown=true;showToast('Aviso: el navegador no permitió guardar los cambios. Descarga un respaldo antes de salir.');}
 function persistLocal(key,value){try{localStorage.setItem(key,value);return true;}catch(_){reportStorageFailure();return false;}}
 function removeLocal(key){try{localStorage.removeItem(key);return true;}catch(_){reportStorageFailure();return false;}}
-function renderLegend(){els.legendItems.innerHTML='';[COLORES_ESTADO.ejecucion,COLORES_ESTADO.estructuracion,...['amarillo','azul','rojo','blanco','verde','convenciones'].map(k=>COLORES_PABELLON[k])].forEach(c=>{const i=document.createElement('span');i.className='legend-item';i.innerHTML='<i style="--legend-bg:'+c.fondo+';--legend-text:'+c.texto+'"></i><span>'+escapeHtml(c.nombre)+'</span>';els.legendItems.appendChild(i);});}
+function renderLegend(){els.legendItems.innerHTML='';[COLORES_ESTADO.ejecucion,COLORES_ESTADO.estructuracion,...(state.data.some(p=>colorFor(p)===COLORES_ESTADO.ejecutado)?[COLORES_ESTADO.ejecutado]:[]),...['amarillo','azul','rojo','blanco','verde','convenciones'].map(k=>COLORES_PABELLON[k])].forEach(c=>{const i=document.createElement('span');i.className='legend-item';i.innerHTML='<i style="--legend-bg:'+c.fondo+';--legend-text:'+c.texto+'"></i><span>'+escapeHtml(c.nombre)+'</span>';els.legendItems.appendChild(i);});}
 function createPoint(p,index){const c=colorFor(p),b=document.createElement('button');b.type='button';b.className='map-point';b.dataset.id=p.id;b.style.left=p.x+'%';b.style.top=p.y+'%';b.style.setProperty('--point-bg',c.fondo);b.style.setProperty('--point-text',c.texto);b.style.setProperty('--entry-delay',(index*45)+'ms');b.setAttribute('aria-label',p.nombre);b.innerHTML='<span>'+numeroDe(p)+'</span><span class="point-tooltip" aria-hidden="true">'+escapeHtml(p.nombre)+'</span>';b.addEventListener('click',()=>selectProject(p.id,{open:true}));b.addEventListener('pointerdown',e=>{if(state.editing)beginDrag(e,b);});return b;}
 function renderPoints(){els.pointsLayer.innerHTML='';state.data.forEach((p,i)=>els.pointsLayer.appendChild(createPoint(p,i)));}
 
@@ -199,6 +199,10 @@ function restoreEdits(){
    if(s.avance===null||Number.isFinite(Number(s.avance)))next.avance=s.avance===null?null:Math.max(0,Math.min(100,Number(s.avance)));
    return next;
   });
+  saved.filter(x=>x&&x.nuevo&&typeof x.id==='string'&&typeof x.nombre==='string'&&!state.data.some(p=>p.id===x.id)).forEach(x=>{
+   state.data.push({id:x.id,tipo:'especifico',nombre:x.nombre,valor:String(x.valor||''),fecha:String(x.fecha||''),estado:String(x.estado||'Estructuración'),pabellon:'sin',
+    x:Math.max(0,Math.min(100,Number(x.x)||50)),y:Math.max(0,Math.min(100,Number(x.y)||50)),fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:'',nuevo:true});
+  });
  }catch(_){}
 }
 function resetEdits(){
@@ -215,7 +219,17 @@ function resetEdits(){
 function updateBackupStatus(){const node=$('#backupStatus');if(!node)return;try{const saved=localStorage.getItem(BACKUP_STATUS_KEY);node.textContent=saved?'Último respaldo descargado en este navegador: '+new Date(saved).toLocaleString('es-CO'):'Aún no has descargado un respaldo en este navegador.';}catch(_){node.textContent='No se pudo consultar el estado del respaldo en este navegador.';}}
 function notifyDataChanged(){window.dispatchEvent(new CustomEvent('plaza:datachange',{detail:{projects:state.data}}));}
 function renderAll(){renderPoints();renderLists();renderLegend();renderPlaceMarkers();updateDataOutput();updateDataQualityReport();renderEditHistory();applyProjectFilters();if(state.selectedId)markSelected(state.selectedId);notifyDataChanged();}
-window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();}};
+window.PlazaMayorData={getProjects:()=>state.data,refresh:()=>{renderAll();},
+ /* Aplica el resultado ya validado de js/excel.js: solo nombre, valor, fecha y estado; los proyectos nuevos entran sin foto y centrados en el mapa. */
+ aplicarExcel(cambios,nuevos){
+  const CAMPOS=['nombre','valor','fecha','estado'];
+  cambios.forEach(c=>{const p=projectById(c.id);if(!p)return;CAMPOS.forEach(k=>{if(c.despues&&typeof c.despues[k]==='string')p[k]=c.despues[k];});});
+  let n=state.data.reduce((m,p)=>{const r=/^n(\d+)$/.exec(p.id);return r?Math.max(m,+r[1]):m;},0);
+  const creados=nuevos.map(x=>{n+=1;const p={id:'n'+n,tipo:'especifico',nombre:x.nombre,valor:x.valor,fecha:x.fecha,estado:x.estado,pabellon:'sin',x:50,y:50,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:'',nuevo:true};state.data.push(p);return p;});
+  persistEdits();recordChange('Datos actualizados desde Excel',cambios.length+' proyecto(s) modificado(s), '+creados.length+' nuevo(s)');
+  renderAll();notifyDataChanged();showToast('Datos actualizados desde Excel');
+  return creados.map(p=>p.id);
+ }};
 function toggleEdit(force){const wanted=force??!state.editing;if(wanted&&!EDIT_ALLOWED)return;state.editing=wanted;els.editToggle.setAttribute('aria-pressed',String(state.editing));els.editToggle.textContent=state.editing?'Cerrar edición':'Modo edición';els.editPanel.hidden=!state.editing;document.body.classList.toggle('editing',state.editing);if(state.editing)updateDataOutput();}
 function downloadJSON(){
  const priority={};$$('[data-priority]').forEach(input=>priority[input.dataset.priority]=Number(input.value)||0);

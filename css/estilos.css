@@ -1976,3 +1976,21 @@ body.editing .mv-handle.is-drag{cursor:grabbing;transform:scale(1.15)}
 [data-theme="light"] .tl-phase-list{border-top-color:rgba(0,62,153,.2)}
 [data-theme="light"] .tl-phase-item{color:#0b2a55}
 [data-theme="light"] .tl-phase-item em{color:#a34f00}
+
+/* Actualizar desde Excel */
+.xl-modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:rgba(2,12,30,.66);backdrop-filter:blur(4px)}
+.xl-card{width:min(640px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;border-radius:18px;background:#0b2147;color:#f4f7fc;border:1px solid rgba(255,255,255,.22);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.xl-card h3{margin:0;padding:18px 22px 12px;font-size:17px;border-bottom:1px solid rgba(255,255,255,.14)}
+.xl-body{padding:14px 22px;overflow:auto;font-size:13px;line-height:1.5}
+.xl-cifras{margin:0 0 12px;color:#e4edf9}.xl-cifras b{color:#fff;font-size:16px}
+.xl-bloque{margin:0 0 12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}
+.xl-bloque ul{margin:8px 0 0;padding-left:18px}.xl-bloque li{margin:6px 0}.xl-bloque span{color:#aab8ca}.xl-bloque i{color:#ffb44a;font-style:normal}.xl-bloque small{color:#aab8ca}
+.xl-error{background:rgba(255,90,90,.14);border-color:rgba(255,120,120,.55)}
+.xl-actions{display:flex;justify-content:flex-end;gap:10px;padding:12px 22px 18px;border-top:1px solid rgba(255,255,255,.14)}
+[data-theme="light"] .xl-card{background:#fff;color:#0b2a55;border-color:rgba(0,62,153,.25)}
+[data-theme="light"] .xl-card h3,[data-theme="light"] .xl-actions{border-color:rgba(0,62,153,.14)}
+[data-theme="light"] .xl-bloque{background:rgba(0,62,153,.05);border-color:rgba(0,62,153,.16)}
+[data-theme="light"] .xl-cifras,[data-theme="light"] .xl-cifras b{color:#0b2a55}
+[data-theme="light"] .xl-bloque span,[data-theme="light"] .xl-bloque small{color:#4a5f7d}
+[data-theme="light"] .xl-bloque i{color:#a34f00}
+.xl-actions .button-primary{background:linear-gradient(120deg,#ff9700,#ffb44a);border-color:#ff9700;color:#101c2a}
