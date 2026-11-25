@@ -18,7 +18,7 @@ function migrateFoto(v){return (typeof FOTO_RUTAS_ANTERIORES!=='undefined'&&FOTO
 function projectById(id){return state.data.find(p=>p.id===id);}
 function numeroDe(p){return state.data.findIndex(x=>x.id===p.id)+1;}
 const COLORES_ESTADO={ejecucion:{nombre:'En ejecución',fondo:'#39FF14',texto:'#062b0a'},estructuracion:{nombre:'En estructuración',fondo:'#FF9700',texto:'#1b1200'},ejecutado:{nombre:'Ejecutado',fondo:'#4DA3FF',texto:'#06223f'}};
-function colorFor(p){const e=String(p.estado||'').toLocaleLowerCase('es');if(e.includes('ejecuc'))return COLORES_ESTADO.ejecucion;if(/ejecutad|finaliz|terminad/.test(e))return COLORES_ESTADO.ejecutado;if(e.includes('estruct'))return COLORES_ESTADO.estructuracion;return COLORES_PABELLON.sin;}
+function colorFor(p){return COLORES_PABELLON.sin;} /* todos los puntos van en gris; el estado se ve en la lista, el panel y la línea de tiempo */
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function formatNumber(v){return new Intl.NumberFormat('es-CO').format(Math.max(0,Math.round(v)));}
 function parseMoney(v){return Number(String(v).replace(/[^0-9]/g,''))||0;}
@@ -26,7 +26,7 @@ function showToast(m,ms=2200){if(!els.toast)return;els.toast.textContent=m;els.t
 function reportStorageFailure(){if(storageWarningShown)return;storageWarningShown=true;showToast('Aviso: el navegador no permitió guardar los cambios. Descarga un respaldo antes de salir.');}
 function persistLocal(key,value){try{localStorage.setItem(key,value);return true;}catch(_){reportStorageFailure();return false;}}
 function removeLocal(key){try{localStorage.removeItem(key);return true;}catch(_){reportStorageFailure();return false;}}
-function renderLegend(){els.legendItems.innerHTML='';[COLORES_ESTADO.ejecucion,COLORES_ESTADO.estructuracion,...(state.data.some(p=>colorFor(p)===COLORES_ESTADO.ejecutado)?[COLORES_ESTADO.ejecutado]:[]),...['amarillo','azul','rojo','blanco','verde','convenciones'].map(k=>COLORES_PABELLON[k])].forEach(c=>{const i=document.createElement('span');i.className='legend-item';i.innerHTML='<i style="--legend-bg:'+c.fondo+';--legend-text:'+c.texto+'"></i><span>'+escapeHtml(c.nombre)+'</span>';els.legendItems.appendChild(i);});}
+function renderLegend(){els.legendItems.innerHTML='';['amarillo','azul','rojo','blanco','verde','convenciones'].forEach(k=>{const c=COLORES_PABELLON[k],i=document.createElement('span');i.className='legend-item';i.innerHTML='<i style="--legend-bg:'+c.fondo+';--legend-text:'+c.texto+'"></i><span>'+escapeHtml(c.nombre)+'</span>';els.legendItems.appendChild(i);});}
 function createPoint(p,index){const c=colorFor(p),b=document.createElement('button');b.type='button';b.className='map-point';b.dataset.id=p.id;b.style.left=p.x+'%';b.style.top=p.y+'%';b.style.setProperty('--point-bg',c.fondo);b.style.setProperty('--point-text',c.texto);b.style.setProperty('--entry-delay',(index*45)+'ms');b.setAttribute('aria-label',p.nombre);b.innerHTML='<span>'+numeroDe(p)+'</span><span class="point-tooltip" aria-hidden="true">'+escapeHtml(p.nombre)+'</span>';b.addEventListener('click',()=>selectProject(p.id,{open:true}));b.addEventListener('pointerdown',e=>{if(state.editing)beginDrag(e,b);});return b;}
 function renderPoints(){els.pointsLayer.innerHTML='';state.data.forEach((p,i)=>els.pointsLayer.appendChild(createPoint(p,i)));}
 
