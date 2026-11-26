@@ -491,7 +491,7 @@ function initInteractiveTimeline(){
   const event=events.find(item=>item.year===year);if(!event)return;
   const faseOk=p=>!fase||FASES[fase].test(String(p.estado||''));
   const projects=state.data.filter(p=>(fase||getYear(p)===year)&&faseOk(p)).sort((a,b)=>{const ma=getMonth(a),mb=getMonth(b);return (ma<0?99:ma)-(mb<0?99:mb)||a.nombre.localeCompare(b.nombre,'es');});
-  const photo=getPhoto(event,projects),amount=projects.reduce((sum,p)=>sum+parseMoney(p.valor),0),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('ejecuc')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;
+  const photo=(fase==='ejecucion'&&event.fotoEjecucion)||getPhoto(event,projects),amount=projects.reduce((sum,p)=>sum+parseMoney(p.valor),0),contracted=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('ejecuc')).length,structured=projects.filter(p=>String(p.estado).toLocaleLowerCase('es').includes('estruct')).length;
   const now=new Date(),currentMonth=now.getMonth();
   const nextProject=projects.find(p=>{const m=getMonth(p);return m>=0&&(year>currentYear||(year===currentYear&&m>=currentMonth));});
   activeYear=year;const yearIndex=events.findIndex(item=>item.year===year),yearCount=events.length;
