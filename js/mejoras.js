@@ -9,7 +9,7 @@ const colors=typeof COLORES_PABELLON!=='undefined'?COLORES_PABELLON:{};
 const safe=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 function chronology(p){
  const root=$('#projectTimeline'),block=$('#timelineBlock');if(!root||!block)return;
- const steps=[['Estructuración',/estructur/i.test(p.estado||'')||/contratado|ejecución|finalizado/i.test(p.estado||'')],['Contratación',/contratado|ejecución|finalizado/i.test(p.estado||'')],['Ejecución',/ejecución|finalizado/i.test(p.estado||'')],['Finalización',/finalizado/i.test(p.estado||'')]];
+ const steps=[['Estructuración',/estructur/i.test(p.estado||'')||/contratado|ejecución|ejecutado|finalizado/i.test(p.estado||'')],['Contratación',/contratado|ejecución|ejecutado|finalizado/i.test(p.estado||'')],['Ejecución',/ejecución|ejecutado|finalizado/i.test(p.estado||'')],['Finalización',/ejecutado|finalizado/i.test(p.estado||'')]];
  root.innerHTML=steps.map(([label,done])=>'<div class="timeline-step '+(done?'is-done':'')+'"><i></i><span>'+label+'</span></div>').join('')+'<p class="timeline-date">Fecha registrada: '+safe(p.fecha||'Por definir')+'</p>';
 }
 function comparison(p){
