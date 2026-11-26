@@ -29,7 +29,8 @@ function gallery(p){
  const photos=p.fotos||[];let index=0;
  function show(){if(!photos.length){wrap.innerHTML='<div class="photo-pending">Fotografía pendiente de cargar</div>';if(controls)controls.hidden=true;return;}
  const item=photos[index],src=typeof item==='string'?item:item.url;
- wrap.innerHTML='<img class="panel-photo" src="'+safe(src||'')+'" alt="'+safe(p.nombre)+' · fotografía '+(index+1)+'" loading="lazy">';
+ const pos=/^[0-9% .a-z-]{1,30}$/i.test(p.fotoPos||'')?' style="object-position:'+p.fotoPos+'"':'';
+ wrap.innerHTML='<img class="panel-photo" src="'+safe(src||'')+'" alt="'+safe(p.nombre)+' · fotografía '+(index+1)+'"'+pos+' loading="lazy">';
  if(controls){controls.hidden=photos.length<2;counter.textContent=(index+1)+' / '+photos.length;}
  }
  show();
