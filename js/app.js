@@ -477,8 +477,12 @@ function initInteractiveTimeline(){
   const SUM=root.querySelector('[data-fase-sum="ejecucion"]');
   if(SUM){const R=(typeof RESUMEN_EJECUCION!=='undefined'?RESUMEN_EJECUCION:{}),v=n=>Number.isFinite(n)?'$'+formatNumber(n)+' M':'—',e=ej.reduce((t,p)=>t+parseMoney(p.valor),0);
    SUM.innerHTML='<span class="tl-sum-row"><span>Contratado</span><b>'+v(R.contratado)+'</b></span><span class="tl-sum-row"><span>Ejecutado</span><b>'+v(R.ejecutado)+'</b></span><span class="tl-sum-row"><span>Ejecución</span><b>'+v(Number.isFinite(R.ejecucion)?R.ejecucion:e)+'</b></span>';}
+  const key=p=>{const m=getMonth(p);return (getYear(p)||9999)*12+(m<0?11:m);};
+  const rowsOf=arr=>arr.slice().sort((x,y)=>key(x)-key(y)||x.nombre.localeCompare(y.nombre,'es')).map(p=>'<span class="tl-phase-item"><span>'+escapeHtml(p.nombre)+'</span><em>'+escapeHtml(p.fecha||'Fecha por definir')+'</em></span>').join('');
+  const LC=root.querySelector('[data-fase-list="contratacion"]');
+  if(LC)LC.innerHTML=rowsOf(y.filter(p=>low(p).includes('contrat')||low(p).includes('estruct')));
   const L=root.querySelector('[data-fase-list="ejecucion"]');
-  if(L){const key=p=>{const m=getMonth(p);return (getYear(p)||9999)*12+(m<0?11:m);};
+  if(L){
    L.innerHTML=ej.slice().sort((x,y)=>key(x)-key(y)||x.nombre.localeCompare(y.nombre,'es')).map(p=>'<span class="tl-phase-item"><span>'+escapeHtml(p.nombre)+'</span><em>'+escapeHtml(p.fecha||'Fecha por definir')+'</em></span>').join('');}
  };
  const renderYearMetrics=()=>{renderYearCards();renderFaseCounts();renderTimelineSummary();};
