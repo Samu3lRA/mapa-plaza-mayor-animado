@@ -6,7 +6,7 @@
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const low=s=>String(s||'').toLocaleLowerCase('es');
   const sinTildes=s=>low(s).normalize('NFD').replace(/[̀-ͯ]/g,'');
-  const dinero=v=>Number(String(v||'').replace(/[^\d]/g,''))||0;
+  const dinero=v=>Number(String(v||'').replace(/[^0-9,]/g,'').replace(',','.'))||0;
   const fmt=n=>n.toLocaleString('es-CO');
   const proyectos=()=>(window.PlazaMayorData&&PlazaMayorData.getProjects())||[];
   const anio=p=>{const m=String(p.fecha||'').match(/20\d{2}/);return m?+m[0]:null;};

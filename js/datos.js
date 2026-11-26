@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=25;
+const DATOS_VERSION=26;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -20,7 +20,7 @@ const COLORES_PABELLON = {
 
 const PROYECTOS = [
   {id:'e1',tipo:'especifico',nombre:'Zona de Comidas',valor:'$2.699',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:27.7,y:47.5,fotos:['assets/fotos/zona-comidas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e2',tipo:'especifico',nombre:'Supervisión técnica Z. Comidas',valor:'$61',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:22.7,y:48.7,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e2',tipo:'especifico',nombre:'Supervisión técnica Z. Comidas',valor:'$64,5',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:22.7,y:48.7,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e3',tipo:'especifico',nombre:'Remodelación de baños',valor:'$264',fecha:'octubre 2026',estado:'Ejecutado',pabellon:'sin',x:42.3,y:48.0,fotos:['assets/fotos/banos-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e4',tipo:'especifico',nombre:'Equipos gimnasio',valor:'$26',fecha:'octubre 2026',estado:'En ejecución',pabellon:'sin',x:93.7,y:48.6,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e5',tipo:'especifico',nombre:'Cubierta Terraza',valor:'$1.000',fecha:'febrero 2027',estado:'Estructuración',pabellon:'sin',x:21.0,y:65.3,fotos:['assets/fotos/renovacion-policarbonato.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
