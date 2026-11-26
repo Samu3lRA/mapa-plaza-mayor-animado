@@ -29,7 +29,7 @@
   }
   function parseEstado(v){
     const t=norm(v);if(!t)return null;
-    if(/ejecutad|finaliz|terminad|entregad/.test(t))return 'Ejecutado';
+    if(/ejecutad|finaliz|terminad|entregad/.test(t))return 'Finalizado';
     if(/ejecuc/.test(t))return 'En ejecución';
     if(/estruct/.test(t))return 'Estructuración';
     return null;
@@ -62,7 +62,7 @@
       if(!nombre)prob.push('falta el nombre del proyecto');
       if(valorN==null)prob.push('el valor "'+(cel('valor')==null?'':cel('valor'))+'" no es un número');
       if(!fecha)prob.push('la fecha "'+(cel('fecha')==null?'':(cel('fecha') instanceof Date?'(fecha)':cel('fecha')))+'" debe ser mes y año, por ejemplo abril 2027');
-      if(!estado)prob.push('el estado "'+(cel('estado')==null?'':cel('estado'))+'" no es válido (usa En ejecución, Estructuración o Ejecutado)');
+      if(!estado)prob.push('el estado "'+(cel('estado')==null?'':cel('estado'))+'" no es válido (usa En ejecución, Estructuración o Finalizado)');
       if(id&&vistos.has(id))prob.push('el ID '+id+' está repetido');
       if(nombre&&nombresVistos.has(norm(nombre)))prob.push('el proyecto "'+nombre+'" está repetido');
       if(prob.length){out.errores.push('Fila '+fila+': '+prob.join('; ')+'.');continue;}
