@@ -11,7 +11,7 @@
   const proyectos=()=>(window.PlazaMayorData&&PlazaMayorData.getProjects())||[];
   const anio=p=>{const m=String(p.fecha||'').match(/20\d{2}/);return m?+m[0]:null;};
   const mesDe=p=>{const t=sinTildes(p.fecha);return MESES.findIndex(m=>t.includes(m));};
-  const ubicacion=p=>p.tipo==='general'?'Toda la infraestructura':((typeof COLORES_PABELLON!=='undefined'&&COLORES_PABELLON[p.pabellon]||{}).nombre||'Sin asignar');
+  const ubicacion=p=>p.ubicacion?p.ubicacion:p.tipo==='general'?'Toda la infraestructura':((typeof COLORES_PABELLON!=='undefined'&&COLORES_PABELLON[p.pabellon]||{}).nombre||'Sin asignar');
   const abs=u=>{try{return new URL(u,location.href).href;}catch(_){return u;}};
 
   function donut(items,total,size){
