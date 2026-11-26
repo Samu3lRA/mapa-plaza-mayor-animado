@@ -2048,3 +2048,8 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
 .info-panel.no-photo .panel-scroll{padding-top:58px}
 
 .tl-phase-count[hidden]{display:none!important}
+
+/* Contratado resaltado en dorado */
+.tl-sum-gold,.tl-sum-gold b{color:#ffc247!important;font-weight:800}
+.tl-sum-gold{font-size:13px}
+[data-theme="light"] .tl-sum-gold,[data-theme="light"] .tl-sum-gold b{color:#a34f00!important}
