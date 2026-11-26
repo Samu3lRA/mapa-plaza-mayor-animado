@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=22;
+const DATOS_VERSION=23;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -35,7 +35,7 @@ const PROYECTOS = [
   {id:'g5',tipo:'general',nombre:'Diseño Arquitectónico',valor:'$15',fecha:'octubre 2026',estado:'En ejecución',x:41.9,y:56.1,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g6',tipo:'general',nombre:'Pantallas externas',valor:'$4.300',fecha:'junio 2027',estado:'Estructuración',x:81.6,y:43.3,fotos:['assets/fotos/pantallas-externas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g7',tipo:'general',nombre:'Acondicionamiento Acústico',valor:'$2.117',fecha:'junio 2027',estado:'Estructuración',x:81.6,y:51.0,fotos:['assets/fotos/acondicionamiento-acustico.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:69.9,y:47.3,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:69.9,y:47.3,fotos:['assets/fotos/senaletica.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:76.7,y:46.6,fotos:['assets/fotos/adecuaciones-locativas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:80.7,y:35.9,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:76.1,y:33.7,fotos:['assets/fotos/mejoras-locativas-pm.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
