@@ -4,6 +4,9 @@ const DATOS_VERSION=22;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
+/* Valores en millones de pesos: se muestran con una M al lado. */
+function valorM(v){const s=String(v==null?'':v).trim();return s&&!/M$/i.test(s)?s+' M':s;}
+
 const COLORES_PABELLON = {
   amarillo:{nombre:'Amarillo',fondo:'#F2C200',texto:'#14171C'},
   rojo:{nombre:'Rojo',fondo:'#D93636',texto:'#FFFFFF'},

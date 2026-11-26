@@ -39,7 +39,7 @@
     const corte=(typeof FECHA_ACTUALIZACION!=='undefined'&&FECHA_ACTUALIZACION)||hoy.toLocaleDateString('es-CO');
     const logo=abs('./IMAGEN_MAPA/LOGO.png');
     const disc=(document.querySelector('.investment-disclaimer p')||{}).textContent||'';
-    const kpis=[[ps.length,'Proyectos del plan','#7fb3ff'],[con,'En ejecución','#43c69b'],[est,'En estructuración','#ffb44a'],['$'+fmt(valor),'Valor registrado','#c9d6e8']]
+    const kpis=[[ps.length,'Proyectos del plan','#7fb3ff'],[con,'En ejecución','#43c69b'],[est,'En estructuración','#ffb44a'],['$'+fmt(valor)+' M','Valor registrado','#c9d6e8']]
       .map(k=>'<div class="kpi" style="border-top-color:'+k[2]+'"><b>'+esc(k[0])+'</b><small>'+esc(k[1])+'</small></div>').join('');
     const graf=graficas().map(g=>'<div class="chart"><p class="eb">'+esc(g.k)+'</p><h3>'+esc(g.t)+'</h3><div class="chart-row">'+donut(g.items,g.total,120)+'<ul>'+g.items.map(i=>'<li><i style="background:'+i.c+'"></i><span>'+esc(i.n)+'</span><b>'+esc(i.v)+'%</b></li>').join('')+'</ul></div></div>').join('');
     const anios=[...new Set(ps.map(anio).filter(Boolean))].sort();
@@ -50,7 +50,7 @@
     const meses={};ps.forEach(p=>{const y=anio(p),m=mesDe(p);if(!y||m<0)return;const k=y*12+m;(meses[k]=meses[k]||{y,m,l:[]}).l.push(p);});
     const cal=Object.keys(meses).map(Number).sort((a,b)=>a-b).map(k=>{const x=meses[k];
       return '<tr><td class="mes">'+MESES[x.m]+' '+x.y+'</td><td class="n">'+x.l.length+'</td><td>'+x.l.map(p=>esc(p.nombre)).join(' · ')+'</td></tr>';}).join('');
-    const filas=ps.map((p,i)=>'<tr><td class="n">'+(i+1)+'</td><td><b>'+esc(p.nombre)+'</b></td><td>'+esc(ubicacion(p))+'</td><td>'+esc(p.estado)+'</td><td class="r">'+esc(p.valor)+'</td><td>'+esc(p.fecha)+'</td></tr>').join('');
+    const filas=ps.map((p,i)=>'<tr><td class="n">'+(i+1)+'</td><td><b>'+esc(p.nombre)+'</b></td><td>'+esc(ubicacion(p))+'</td><td>'+esc(p.estado)+'</td><td class="r">'+esc(valorM(p.valor))+'</td><td>'+esc(p.fecha)+'</td></tr>').join('');
     const css='@page{size:A4;margin:12mm}*{box-sizing:border-box}html{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{margin:0;font:12px/1.45 Arial,Helvetica,sans-serif;color:#172b45}'
      +'.band{background:linear-gradient(110deg,#002f75,#003f9f);color:#fff;padding:18px 22px;border-radius:10px;display:flex;align-items:center;gap:18px;border-bottom:4px solid #ff9700}.band img{height:54px}.band h1{margin:0;font-size:22px;letter-spacing:.01em}.band p{margin:3px 0 0;font-size:11px;color:#c9d9f2}.band .corte{margin-left:auto;text-align:right;font-size:10px;color:#c9d9f2}.band .corte b{display:block;font-size:14px;color:#fff}'
      +'h2{break-after:avoid}h2.pb{break-before:page}h2{margin:20px 0 8px;font-size:13px;color:#003f9f;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #d5e0ee;padding-bottom:4px}'
