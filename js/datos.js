@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=32;
+const DATOS_VERSION=33;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -22,7 +22,7 @@ const PROYECTOS = [
   {id:'e1',tipo:'especifico',nombre:'Zona de Comidas',ubicacion:'Exposiciones',valor:'$2.699',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:27.6,y:47.7,fotos:['assets/fotos/zona-comidas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e2',tipo:'especifico',nombre:'Supervisión técnica Z. Comidas',ubicacion:'Exposiciones',valor:'$64,5',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:22.6,y:48.8,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e3',tipo:'especifico',nombre:'Remodelación de baños',ubicacion:'Exposiciones y Convenciones',valor:'$2.982',fecha:'octubre 2026',estado:'Finalizado',pabellon:'sin',x:42.2,y:48.1,fotos:['assets/fotos/banos-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e4',tipo:'especifico',nombre:'Equipos gimnasio',ubicacion:'Exposiciones',valor:'$26',fecha:'octubre 2026',estado:'Finalizado',pabellon:'sin',x:93.7,y:48.7,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e4',tipo:'especifico',nombre:'Equipos gimnasio',ubicacion:'Exposiciones',valor:'$26',fecha:'octubre 2026',estado:'Finalizado',pabellon:'sin',x:93.7,y:48.7,fotos:['assets/fotos/equipos-gimnasio.jpg'],fotoRatio:'4/5',fotoPos:'50% 50%',descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e5',tipo:'especifico',nombre:'Cubierta Terraza',valor:'$1.000',fecha:'febrero 2027',estado:'Estructuración',pabellon:'sin',x:85.1,y:39.2,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e6',tipo:'especifico',nombre:'Zonas de descanso Occ.',valor:'$163',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:69.4,y:38.4,fotos:['assets/fotos/zona-descanso.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e7',tipo:'especifico',nombre:'Mtto Listones de Madera',valor:'$1.000',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:88.0,y:42.3,fotos:['assets/fotos/mtto-listones-madera.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
