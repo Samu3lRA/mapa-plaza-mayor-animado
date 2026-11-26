@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=52;
+const DATOS_VERSION=53;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -53,5 +53,5 @@ const RESUMEN_EJECUCION={contratado:16321,ejecutado:8334};
 /* Datos de la línea de tiempo institucional. */
 const LINEA_TIEMPO = [
  {year:2026,title:'Contratación y estructuración',summary:'Seguimiento de proyectos, contratación y preparación de intervenciones.',foto:'assets/fotos/contratacion-2026.jpg',fotoEjecucion:'assets/fotos/ejecucion-2026.jpg',detalle:'Año en el que se concentran proyectos contratados y proyectos en estructuración dentro del tablero.'},
- {year:2027,title:'Ejecución proyectada',summary:'Año con fechas previstas para contratación, ejecución y entrega de diferentes intervenciones.',foto:'',detalle:'Las fechas mostradas corresponden a la información registrada actualmente en cada proyecto y pueden actualizarse.'}
+ {year:2027,title:'Ejecución proyectada',summary:'Año con fechas previstas para contratación, ejecución y entrega de diferentes intervenciones.',foto:'assets/fotos/ejecucion-2027.jpg',detalle:'Las fechas mostradas corresponden a la información registrada actualmente en cada proyecto y pueden actualizarse.'}
 ];
