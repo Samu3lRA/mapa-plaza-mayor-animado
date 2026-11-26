@@ -2053,3 +2053,5 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
 .tl-sum-gold,.tl-sum-gold b{color:#ffc247!important;font-weight:800}
 .tl-sum-gold{font-size:13px}
 [data-theme="light"] .tl-sum-gold,[data-theme="light"] .tl-sum-gold b{color:#a34f00!important}
+
+.tl-year-list{margin:12px 0 4px}
