@@ -4,7 +4,7 @@ Tablero web interactivo de seguimiento de los proyectos de inversión de Plaza M
 
 ## Qué incluye
 
-- Mapa responsive con 22 proyectos numerados (1–22), leyenda de pabellones, tooltips, búsqueda y filtros por estado y pabellón.
+- Mapa responsive con 19 proyectos numerados (1–19), leyenda de pabellones, tooltips, búsqueda y filtros por estado y pabellón.
 - Búsqueda y filtros por estado y pabellón.
 - Panel de información por proyecto: foto o galería, valor, fecha, ubicación, cronología, alcance, avance, responsable y notas.
 - Línea de tiempo 2026 – 2027: Ejecución (9 proyectos con mes y año, y resumen Contratado / Ejecutado / Ejecución) y Contratación y estructuración.
@@ -50,7 +50,7 @@ python -m http.server 8000
 
 Abre `http://localhost:8000`.
 
-## Editar los 22 proyectos
+## Editar los 19 proyectos
 
 Todo el contenido editable está en `js/datos.js`. Cada registro admite `nombre`, `valor`, `fecha`, `estado`, `pabellon`, `x`, `y`, `fotos`, `descripcion`, `alcance`, `avance`, `responsable` y `notas`.
 
@@ -95,7 +95,7 @@ Las cifras de las gráficas (distribución de la inversión, estado y tipo) se e
 
 ## Modo presentación
 
-Pulsa **Modo presentación**: entra en pantalla completa y recorre los 22 proyectos en el orden de `ORDEN_PRESENTACION` en `js/datos.js`. Esc para salir.
+Pulsa **Modo presentación**: entra en pantalla completa y recorre los 19 proyectos en el orden de `ORDEN_PRESENTACION` en `js/datos.js`. Esc para salir.
 
 Cada punto permanece 6 segundos por defecto (`PRESENTATION_MS` en `app.js`).
 
@@ -156,8 +156,8 @@ Los archivos CSS y JS se cargan con un parámetro de versión (`?v=…` en `inde
 Quedan deliberadamente vacíos hasta que el usuario los proporcione:
 
 - pabellón definitivo de los 9 específicos;
-- posiciones definitivas de los 22 puntos;
-- fotos de los proyectos que aún no la tienen (hoy hay fotos para 4 de 22);
+- posiciones definitivas de los 19 puntos;
+- fotos de los proyectos que aún no la tienen (hoy hay fotos para varios de los 19);
 - descripciones;
 - alcances;
 - avances;
