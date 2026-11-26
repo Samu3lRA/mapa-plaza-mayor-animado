@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=11;
+const DATOS_VERSION=12;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -35,7 +35,7 @@ const PROYECTOS = [
   {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:80,y:48,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:30,y:28,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:66,y:38,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:46,y:80,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:46,y:80,fotos:['assets/fotos/mejoras-locativas-pm.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g12',tipo:'general',nombre:'Puntos Hidratación',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:76,y:56,fotos:['assets/fotos/puntos-hidratacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:18,y:34,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
 ];
