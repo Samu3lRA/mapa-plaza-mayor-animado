@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=51;
+const DATOS_VERSION=52;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -36,8 +36,8 @@ const PROYECTOS = [
   {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',ubicacion:'Convenciones y Exposiciones',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:76.6,y:46.7,fotos:['assets/fotos/adecuaciones-locativas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g10',tipo:'general',nombre:'Pantallas Internas',ubicacion:'Convenciones',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:80.6,y:36.0,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',ubicacion:'Convenciones',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:76.0,y:33.8,fotos:['assets/fotos/adecuaciones-locativas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g12',tipo:'general',nombre:'Puntos Hidratación',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:72.6,y:53.3,fotos:['assets/fotos/puntos-hidratacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:59.4,y:51.2,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
+  {id:'g12',tipo:'general',nombre:'Puntos Hidratación',ubicacion:'Convenciones y Exposiciones',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:72.6,y:53.3,fotos:['assets/fotos/puntos-hidratacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g13',tipo:'general',nombre:'Radios',ubicacion:'Convenciones y Exposiciones',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:59.4,y:51.2,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
 ];
 /* Rutas anteriores de las fotos. Sirve para que respaldos y ediciones guardadas con las rutas viejas sigan mostrando la foto correcta. */
 const FOTO_RUTAS_ANTERIORES={
