@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=9;
+const DATOS_VERSION=10;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -30,7 +30,7 @@ const PROYECTOS = [
   {id:'g3',tipo:'general',nombre:'Apoyo Técnico',valor:'$32',fecha:'enero 2027',estado:'En ejecución',x:62,y:52,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g4',tipo:'general',nombre:'Evaluación estructural',valor:'$27',fecha:'diciembre 2026',estado:'En ejecución',x:20,y:70,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g5',tipo:'general',nombre:'Diseño Arquitectónico',valor:'$15',fecha:'octubre 2026',estado:'En ejecución',x:42,y:56,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g6',tipo:'general',nombre:'Pantallas externas',valor:'$4.300',fecha:'junio 2027',estado:'Estructuración',x:70,y:66,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g6',tipo:'general',nombre:'Pantallas externas',valor:'$4.300',fecha:'junio 2027',estado:'Estructuración',x:70,y:66,fotos:['assets/fotos/pantallas-externas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g7',tipo:'general',nombre:'Acondicionamiento Acústico',valor:'$2.117',fecha:'junio 2027',estado:'Estructuración',x:55,y:34,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:80,y:48,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:30,y:28,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
