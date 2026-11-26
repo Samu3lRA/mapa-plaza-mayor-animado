@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=49;
+const DATOS_VERSION=50;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -34,7 +34,7 @@ const PROYECTOS = [
   {id:'g7',tipo:'general',nombre:'Acondicionamiento Acústico',ubicacion:'Convenciones',valor:'$2.117',fecha:'junio 2027',estado:'Estructuración',x:81.5,y:51.1,fotos:['assets/fotos/acondicionamiento-acustico.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g8',tipo:'general',nombre:'Señalética',ubicacion:'Convenciones y Exposiciones',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:69.9,y:47.3,fotos:['assets/fotos/senaletica.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',ubicacion:'Convenciones y Exposiciones',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:76.6,y:46.7,fotos:['assets/fotos/adecuaciones-locativas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:80.6,y:36.0,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g10',tipo:'general',nombre:'Pantallas Internas',ubicacion:'Convenciones',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:80.6,y:36.0,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:76.0,y:33.8,fotos:['assets/fotos/adecuaciones-locativas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g12',tipo:'general',nombre:'Puntos Hidratación',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:72.6,y:53.3,fotos:['assets/fotos/puntos-hidratacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:59.4,y:51.2,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
