@@ -2046,3 +2046,5 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
 /* Sin foto: no se muestra ningún recuadro de imagen */
 .panel-photo-wrap[hidden],.timeline-detail-photo[hidden]{display:none!important}
 .info-panel.no-photo .panel-scroll{padding-top:58px}
+
+.tl-phase-count[hidden]{display:none!important}

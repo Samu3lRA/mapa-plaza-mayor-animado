@@ -499,7 +499,7 @@ function initInteractiveTimeline(){
   if(navProgress)navProgress.style.width=((yearIndex+1)/yearCount*100)+'%';
   if(prevYearBtn)prevYearBtn.disabled=yearIndex<=0;
   if(nextYearBtn)nextYearBtn.disabled=yearIndex>=yearCount-1;
-  eyebrow.textContent='LÍNEA DE TIEMPO · '+year+(fase==='ejecucion'?' · EJECUCIÓN':fase==='contratacion'?' · CONTRATACIÓN Y ESTRUCTURACIÓN':'');window.dispatchEvent(new CustomEvent('plaza:yearopen',{detail:{year,fase}}));title.textContent=fase==='ejecucion'?'Ejecución':event.title;summary.textContent=fase==='ejecucion'?'Todos los proyectos que ya están en ejecución, con su mes y año previsto de entrega.':event.summary;
+  eyebrow.textContent='LÍNEA DE TIEMPO · '+year+(fase==='ejecucion'?' · AVANCE PLAN DE INVERSIÓN':fase==='contratacion'?' · CONTRATACIÓN Y ESTRUCTURACIÓN':'');window.dispatchEvent(new CustomEvent('plaza:yearopen',{detail:{year,fase}}));title.textContent=fase==='ejecucion'?'Avance plan de inversión':event.title;summary.textContent=fase==='ejecucion'?'Todos los proyectos que ya están en ejecución, con su mes y año previsto de entrega.':event.summary;
   photoBox.hidden=!photo;photoBox.innerHTML=photo?'<img src="'+escapeHtml(photo)+'" alt="'+escapeHtml(event.title)+'" loading="lazy">':'';
   stats.innerHTML='<div><span>Proyectos</span><strong>'+projects.length+'</strong></div><div><span>En ejecución</span><strong>'+contracted+'</strong></div><div><span>Estructuración</span><strong>'+structured+'</strong></div><div><span>Valor registrado</span><strong>$'+formatNumber(amount)+' M</strong></div>';
   const grouped=[];projects.forEach(p=>{const key=getMonth(p);let g=grouped.find(x=>x.key===key);if(!g){g={key,items:[]};grouped.push(g);}g.items.push(p);});
