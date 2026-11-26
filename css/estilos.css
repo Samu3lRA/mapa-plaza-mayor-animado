@@ -2042,3 +2042,7 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
 
 /* Se quitan los botones Centrar y Enfoque de la esquina del mapa */
 .map-center-control{display:none!important}
+
+/* Sin foto: no se muestra ningún recuadro de imagen */
+.panel-photo-wrap[hidden],.timeline-detail-photo[hidden]{display:none!important}
+.info-panel.no-photo .panel-scroll{padding-top:58px}

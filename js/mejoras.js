@@ -27,7 +27,7 @@ function history(p){
 function gallery(p){
  const wrap=$('#panelPhotoWrap'),controls=$('#galleryControls'),counter=$('#galleryCounter');if(!wrap)return;
  const photos=p.fotos||[];let index=0;
- function show(){if(!photos.length){wrap.innerHTML='<div class="photo-pending">Fotografía pendiente de cargar</div>';if(controls)controls.hidden=true;return;}
+ function show(){const panel=$('#infoPanel');if(!photos.length){wrap.innerHTML='';wrap.hidden=true;if(panel)panel.classList.add('no-photo');if(controls)controls.hidden=true;return;}wrap.hidden=false;if(panel)panel.classList.remove('no-photo');
  const item=photos[index],src=typeof item==='string'?item:item.url;
  const pos=/^[0-9% .a-z-]{1,30}$/i.test(p.fotoPos||'')?' style="object-position:'+p.fotoPos+'"':'';
  wrap.innerHTML='<img class="panel-photo" src="'+safe(src||'')+'" alt="'+safe(p.nombre)+' · fotografía '+(index+1)+'"'+pos+' loading="lazy">';
