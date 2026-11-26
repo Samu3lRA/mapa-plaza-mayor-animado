@@ -209,7 +209,7 @@ function resetEdits(){
  if(!window.confirm('¿Restablecer posiciones, pabellones, porcentajes y personalización de la línea de tiempo a sus valores iniciales? Esta acción no se puede deshacer en este navegador.'))return;
  removeLocal(STORAGE_KEY);removeLocal(VERSION_KEY);removeLocal(PLACE_STORAGE_KEY);removeLocal(PRIORITY_STORAGE_KEY);removeLocal('plaza-mayor-mini-charts-v1');window.PlazaMayorControles?.reset();removeLocal(TIMELINE_STORAGE_KEY);timelineConfig=cloneTimeline();window.PlazaMayorTimeline?.refresh();
  state.data=cloneProjects(PROYECTOS);PLACE_MARKERS.forEach((p,i)=>Object.assign(placeState[i],p));
- const priorityDefaults={experience:45,technology:37,safety:15};
+ const priorityDefaults={experience:48,technology:37,safety:15};
  $$('[data-priority]').forEach(input=>{input.value=priorityDefaults[input.dataset.priority];input.dispatchEvent(new Event('input',{bubbles:true}));});
  const miniDefaults={statusA:58,statusB:42,typeA:45,typeB:27,typeC:28};
  $$('[data-mini-chart]').forEach(input=>{input.value=miniDefaults[input.dataset.miniChart];input.dispatchEvent(new Event('input',{bubbles:true}));});
@@ -322,7 +322,7 @@ const PRIORITY_STORAGE_KEY='plaza-mayor-lineas-inversion-v1';
 function initPriorityChart(){
  const chart=$('#priorityDonut'),totalLabel=$('#priorityTotal'),inputs=$$('[data-priority]');
  if(!chart||!totalLabel||inputs.length!==3)return;
- const defaults={experience:45,technology:37,safety:15};
+ const defaults={experience:48,technology:37,safety:15};
  const colors={experience:'#ff9700',technology:'#42a5f5',safety:'#43c69b'};
  let saved={};
  try{saved=JSON.parse(localStorage.getItem(PRIORITY_STORAGE_KEY)||'{}')||{};}catch(_){}
