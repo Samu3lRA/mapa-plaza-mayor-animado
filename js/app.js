@@ -31,12 +31,12 @@ function createPoint(p,index){const c=colorFor(p),b=document.createElement('butt
 function renderPoints(){els.pointsLayer.innerHTML='';state.data.forEach((p,i)=>els.pointsLayer.appendChild(createPoint(p,i)));}
 
 const PLACE_MARKERS=[
- {id:'amarillo',name:'Pabellón Amarillo',x:21.8,y:30.9,color:'#F2C200'},
- {id:'rojo',name:'Pabellón Rojo',x:50.1,y:30.3,color:'#D93636'},
- {id:'verde',name:'Pabellón Verde',x:78.3,y:33.5,color:'#2F9E50'},
- {id:'azul',name:'Pabellón Azul',x:23.7,y:69.9,color:'#1D5FD6'},
- {id:'blanco',name:'Pabellón Blanco',x:54.8,y:72.5,color:'#F6F6F6'},
- {id:'convenciones',name:'Convenciones',x:82.1,y:68.0,color:'#8B5A2B'}
+ {id:'amarillo',name:'Pabellón Amarillo',x:44.6,y:60.8,color:'#F2C200'},
+ {id:'rojo',name:'Pabellón Rojo',x:39.2,y:43.1,color:'#D93636'},
+ {id:'verde',name:'Pabellón Verde',x:53.2,y:29.9,color:'#2F9E50'},
+ {id:'azul',name:'Pabellón Azul',x:40.5,y:38.3,color:'#1D5FD6'},
+ {id:'blanco',name:'Pabellón Blanco',x:59.4,y:44.6,color:'#F6F6F6'},
+ {id:'convenciones',name:'Convenciones',x:90.3,y:34.0,color:'#8B5A2B'}
 ];
 const placeState=PLACE_MARKERS.map(p=>({...p}));
 function renderPlaceMarkers(){

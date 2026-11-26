@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=21;
+const DATOS_VERSION=22;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -16,28 +16,28 @@ const COLORES_PABELLON = {
 };
 
 const PROYECTOS = [
-  {id:'e1',tipo:'especifico',nombre:'Zona de Comidas',valor:'$2.540',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:35.9,y:62.8,fotos:['assets/fotos/zona-comidas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e2',tipo:'especifico',nombre:'Supervisión técnica Z. Comidas',valor:'$61',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:40.6,y:65.4,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e3',tipo:'especifico',nombre:'Remodelación de baños',valor:'$264',fecha:'octubre 2026',estado:'Ejecutado',pabellon:'sin',x:25.6,y:49.1,fotos:['assets/fotos/banos-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e4',tipo:'especifico',nombre:'Equipos gimnasio',valor:'$26',fecha:'octubre 2026',estado:'En ejecución',pabellon:'sin',x:15.2,y:68.6,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e5',tipo:'especifico',nombre:'Cubierta Terraza',valor:'$1.000',fecha:'febrero 2027',estado:'Estructuración',pabellon:'sin',x:53.8,y:49.8,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e6',tipo:'especifico',nombre:'Zonas de descanso Occ.',valor:'$163',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:18.1,y:59.5,fotos:['assets/fotos/zona-descanso.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e7',tipo:'especifico',nombre:'Mtto Listones de Madera',valor:'$1.000',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:36.9,y:43.3,fotos:['assets/fotos/mtto-listones-madera.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e8',tipo:'especifico',nombre:'Renovación Policarbonato',valor:'$850',fecha:'abril 2027',estado:'Estructuración',pabellon:'sin',x:49.1,y:36.1,fotos:['assets/fotos/renovacion-policarbonato.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e9',tipo:'especifico',nombre:'Cambio telas paneles',valor:'$700',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:60.4,y:60.2,fotos:['assets/fotos/cambio-telas-paneles.jpg'],fotoRatio:'4/5',fotoPos:'50% 20%',descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g1',tipo:'general',nombre:'Renovación Tecnológica',valor:'$4.404',fecha:'abril 2027',estado:'En ejecución',x:45,y:38,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g2',tipo:'general',nombre:'Ingeniería detalle Climatización',valor:'$617',fecha:'abril 2027',estado:'En ejecución',x:27,y:56,fotos:['assets/fotos/climatizacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g3',tipo:'general',nombre:'Apoyo Técnico',valor:'$32',fecha:'enero 2027',estado:'En ejecución',x:62,y:52,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g4',tipo:'general',nombre:'Evaluación estructural',valor:'$27',fecha:'diciembre 2026',estado:'En ejecución',x:20,y:70,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g5',tipo:'general',nombre:'Diseño Arquitectónico',valor:'$15',fecha:'octubre 2026',estado:'En ejecución',x:42,y:56,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g6',tipo:'general',nombre:'Pantallas externas',valor:'$4.300',fecha:'junio 2027',estado:'Estructuración',x:70,y:66,fotos:['assets/fotos/pantallas-externas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g7',tipo:'general',nombre:'Acondicionamiento Acústico',valor:'$2.117',fecha:'junio 2027',estado:'Estructuración',x:55,y:34,fotos:['assets/fotos/acondicionamiento-acustico.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:80,y:48,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:30,y:28,fotos:['assets/fotos/adecuaciones-locativas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:66,y:38,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:46,y:80,fotos:['assets/fotos/mejoras-locativas-pm.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g12',tipo:'general',nombre:'Puntos Hidratación',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:76,y:56,fotos:['assets/fotos/puntos-hidratacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:18,y:34,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
+  {id:'e1',tipo:'especifico',nombre:'Zona de Comidas',valor:'$2.540',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:27.7,y:47.5,fotos:['assets/fotos/zona-comidas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e2',tipo:'especifico',nombre:'Supervisión técnica Z. Comidas',valor:'$61',fecha:'enero 2027',estado:'En ejecución',pabellon:'sin',x:22.7,y:48.7,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e3',tipo:'especifico',nombre:'Remodelación de baños',valor:'$264',fecha:'octubre 2026',estado:'Ejecutado',pabellon:'sin',x:42.3,y:48.0,fotos:['assets/fotos/banos-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e4',tipo:'especifico',nombre:'Equipos gimnasio',valor:'$26',fecha:'octubre 2026',estado:'En ejecución',pabellon:'sin',x:93.7,y:48.6,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e5',tipo:'especifico',nombre:'Cubierta Terraza',valor:'$1.000',fecha:'febrero 2027',estado:'Estructuración',pabellon:'sin',x:21.0,y:65.3,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e6',tipo:'especifico',nombre:'Zonas de descanso Occ.',valor:'$163',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:69.4,y:38.4,fotos:['assets/fotos/zona-descanso.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e7',tipo:'especifico',nombre:'Mtto Listones de Madera',valor:'$1.000',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:88.0,y:42.3,fotos:['assets/fotos/mtto-listones-madera.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e8',tipo:'especifico',nombre:'Renovación Policarbonato',valor:'$850',fecha:'abril 2027',estado:'Estructuración',pabellon:'sin',x:30.6,y:54.7,fotos:['assets/fotos/renovacion-policarbonato.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e9',tipo:'especifico',nombre:'Cambio telas paneles',valor:'$700',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:74.8,y:39.9,fotos:['assets/fotos/cambio-telas-paneles.jpg'],fotoRatio:'4/5',fotoPos:'50% 20%',descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g1',tipo:'general',nombre:'Renovación Tecnológica',valor:'$4.404',fecha:'abril 2027',estado:'En ejecución',x:44.9,y:38.1,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g2',tipo:'general',nombre:'Ingeniería detalle Climatización',valor:'$617',fecha:'abril 2027',estado:'En ejecución',x:48.2,y:47.5,fotos:['assets/fotos/climatizacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g3',tipo:'general',nombre:'Apoyo Técnico',valor:'$32',fecha:'enero 2027',estado:'En ejecución',x:13.7,y:66.4,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g4',tipo:'general',nombre:'Evaluación estructural',valor:'$27',fecha:'diciembre 2026',estado:'En ejecución',x:28.4,y:63.2,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g5',tipo:'general',nombre:'Diseño Arquitectónico',valor:'$15',fecha:'octubre 2026',estado:'En ejecución',x:41.9,y:56.1,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g6',tipo:'general',nombre:'Pantallas externas',valor:'$4.300',fecha:'junio 2027',estado:'Estructuración',x:81.6,y:43.3,fotos:['assets/fotos/pantallas-externas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g7',tipo:'general',nombre:'Acondicionamiento Acústico',valor:'$2.117',fecha:'junio 2027',estado:'Estructuración',x:81.6,y:51.0,fotos:['assets/fotos/acondicionamiento-acustico.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g8',tipo:'general',nombre:'Señalética',valor:'$1.600',fecha:'abril 2027',estado:'Estructuración',x:69.9,y:47.3,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g9',tipo:'general',nombre:'Adecuaciones locativas',valor:'$700',fecha:'febrero 2027',estado:'Estructuración',x:76.7,y:46.6,fotos:['assets/fotos/adecuaciones-locativas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g10',tipo:'general',nombre:'Pantallas Internas',valor:'$600',fecha:'marzo 2027',estado:'Estructuración',x:80.7,y:35.9,fotos:['assets/fotos/pantallas-internas-2.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g11',tipo:'general',nombre:'Mejoras locativas empleados PM',valor:'$183',fecha:'marzo 2027',estado:'Estructuración',x:76.1,y:33.7,fotos:['assets/fotos/mejoras-locativas-pm.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g12',tipo:'general',nombre:'Puntos Hidratación',valor:'$160',fecha:'enero 2027',estado:'Estructuración',x:72.7,y:53.4,fotos:['assets/fotos/puntos-hidratacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'g13',tipo:'general',nombre:'Radios',valor:'$130',fecha:'diciembre 2026',estado:'Estructuración',x:59.4,y:51.3,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''}
 ];
 /* Rutas anteriores de las fotos. Sirve para que respaldos y ediciones guardadas con las rutas viejas sigan mostrando la foto correcta. */
 const FOTO_RUTAS_ANTERIORES={
