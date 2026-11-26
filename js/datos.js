@@ -1,6 +1,6 @@
 /* Versión de los datos. Súbela (1 -> 2 -> 3...) cada vez que publiques cambios en este archivo:
    así el modo edición avisa si el navegador conserva ediciones de una versión anterior. */
-const DATOS_VERSION=42;
+const DATOS_VERSION=43;
 /* Fecha que se muestra en el encabezado como "Fecha de actualización". */
 const FECHA_ACTUALIZACION='06/11/2026';
 
@@ -27,7 +27,7 @@ const PROYECTOS = [
   {id:'e6',tipo:'especifico',nombre:'Zonas de descanso Occ.',ubicacion:'Convenciones',valor:'$163',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:69.4,y:38.4,fotos:['assets/fotos/zona-descanso.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e7',tipo:'especifico',nombre:'Mtto Listones de Madera',ubicacion:'Convenciones',valor:'$1.000',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:88.0,y:42.2,fotos:['assets/fotos/mtto-listones-madera.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'e8',tipo:'especifico',nombre:'Renovación Policarbonato',ubicacion:'Convenciones',valor:'$850',fecha:'abril 2027',estado:'Estructuración',pabellon:'sin',x:84.3,y:39.1,fotos:['assets/fotos/mtto-listones-madera.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
-  {id:'e9',tipo:'especifico',nombre:'Cambio telas paneles',valor:'$700',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:74.7,y:39.8,fotos:['assets/fotos/cambio-telas-paneles.jpg'],fotoRatio:'4/5',fotoPos:'50% 20%',descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
+  {id:'e9',tipo:'especifico',nombre:'Cambio telas paneles',ubicacion:'Convenciones',valor:'$700',fecha:'enero 2027',estado:'Estructuración',pabellon:'sin',x:74.7,y:39.8,fotos:['assets/fotos/cambio-telas-paneles.jpg'],fotoRatio:'4/5',fotoPos:'50% 20%',descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g1',tipo:'general',nombre:'Renovación Tecnológica',valor:'$4.404',fecha:'abril 2027',estado:'En ejecución',x:44.8,y:38.1,fotos:[],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g2',tipo:'general',nombre:'Ingeniería detalle Climatización',valor:'$617',fecha:'abril 2027',estado:'En ejecución',x:48.1,y:47.7,fotos:['assets/fotos/climatizacion.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
   {id:'g6',tipo:'general',nombre:'Pantallas externas',valor:'$4.300',fecha:'junio 2027',estado:'Estructuración',x:81.5,y:43.2,fotos:['assets/fotos/pantallas-externas.jpg'],descripcion:'',alcance:[],avance:null,responsable:'',notas:''},
