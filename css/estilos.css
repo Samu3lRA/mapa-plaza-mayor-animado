@@ -2055,3 +2055,6 @@ html[data-theme="light"] .map-viewport:fullscreen{background:#edf3fa}
 [data-theme="light"] .tl-sum-gold,[data-theme="light"] .tl-sum-gold b{color:#a34f00!important}
 
 .tl-year-list{margin:12px 0 4px}
+
+/* Gráficas: sin el "100%" en el centro del anillo */
+.priority-donut::after,.mini-donut::after{content:""!important}
